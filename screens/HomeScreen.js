@@ -1,11 +1,11 @@
-import * as React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
 function HomeScreen() {
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <Text
         style={{
+          flex: 1,
           textAlign: "center",
           justifyContent: "center",
           alignItems: "center",
