@@ -1,20 +1,10 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+// import { StatusBar } from "expo-status-bar";
+import { StyleSheet} from "react-native";
+
+import BookInformationScreen from "./screens/Book_Information_Screen";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Hi</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+  return <BookInformationScreen />;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+const styles = StyleSheet.create({});
