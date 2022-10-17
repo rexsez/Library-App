@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Image } from "react-native";
 
 import { FontAwesome5, Fontisto, Entypo, Ionicons } from "@expo/vector-icons";
 import BookSubdetail from "./Book_Subdetail";
+import { getFotmattedDate } from "../util/date";
 
 function BookDetails({ isbn, author, date, genre, bookImage }) {
   return (
@@ -29,7 +30,7 @@ function BookDetails({ isbn, author, date, genre, bookImage }) {
         />
         <BookSubdetail //Date
           icon={<Fontisto name={"date"} size={18} />}
-          text={date}
+          text={getFotmattedDate(date)}
         />
         <BookSubdetail //Genre
           icon={<Entypo name={"tag"} size={18} />}

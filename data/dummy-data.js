@@ -13,7 +13,7 @@ export const BOOKS = [
     "book title", //title
     "../assets/icon.png", //imageUrl
     "This is some dummy author name", //author
-    Date.now(), //date
+    new Date('1818-12-15'), //date
     "genre", //genre
     "some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary ",
     3, //rating
