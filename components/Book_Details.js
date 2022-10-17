@@ -7,30 +7,35 @@ function BookDetails({ isbn, author, date, genre, bookImage }) {
   return (
     <View style={styles.rootContainer}>
       <View style={styles.imageContainer}>
-        {bookImage !== null ? (
-          <Image
-            style={styles.image}
-            source={bookImage}
-            /* Dummy image source to test */
-          />
+        {bookImage !== null ? ( // checking if we have an image or not
+          //displaying the image
+          <Image style={styles.image} source={bookImage} />
         ) : (
-          //Display this view if no image is found
+          //Display no book image text if we didn't receive an image
           <View>
             <Text>No book image</Text>
           </View>
         )}
       </View>
+
+      {/* 
+      Rightside of the details container
+      it uses the bookSubdetail component to display some book details
+      */}
       <View style={styles.bookDeatilsContainer}>
-        <BookSubdetail
+        <BookSubdetail //Author
           icon={<FontAwesome5 name={"signature"} size={18} />}
           text={author}
         />
-        <BookSubdetail
+        <BookSubdetail //Date
           icon={<Fontisto name={"date"} size={18} />}
           text={date}
         />
-        <BookSubdetail icon={<Entypo name={"tag"} size={18} />} text={genre} />
-        <BookSubdetail
+        <BookSubdetail //Genre
+          icon={<Entypo name={"tag"} size={18} />}
+          text={genre}
+        />
+        <BookSubdetail //ISBN
           icon={<Ionicons name={"barcode-outline"} size={18} />}
           text={isbn}
         />

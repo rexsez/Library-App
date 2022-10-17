@@ -1,4 +1,4 @@
-import { View, Text , StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 
 function BookSummary({ children }) {
   return (
@@ -15,9 +15,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     marginTop: 12,
-    padding: 6
+    padding: 6,
   },
   text: {
-    fontSize: 16
-  }
+    fontSize: 16,
+  },
 });

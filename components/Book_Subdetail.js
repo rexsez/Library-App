@@ -1,5 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 
+//this component is used to display the sub-details of the book
+//for example: author name, date, etc...
 function BookSubdetail({ icon, text }) {
   return (
     <View style={styles.detailContainer}>

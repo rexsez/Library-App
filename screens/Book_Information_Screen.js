@@ -43,6 +43,7 @@ function BookInformationScreen({ route, navigation }) {
         genre={selectedBook.genre}
         bookImage={bookImage}
       />
+      {/* Some icons bar goes here (borrow / favorite / etc...) */}
       <BookSummary>{selectedBook.summary}</BookSummary>
     </ScrollView>
   );
