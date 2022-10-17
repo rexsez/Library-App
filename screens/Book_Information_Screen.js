@@ -2,6 +2,7 @@ import { StyleSheet, ScrollView } from "react-native";
 
 import { BOOKS } from "../data/dummy-data";
 import BookDetails from "../components/Book_Details";
+import BookSummary from "../components/Book_Summary";
 
 function BookInformationScreen({ route, navigation }) {
   //getting the book isbn using the passed route params
@@ -42,6 +43,7 @@ function BookInformationScreen({ route, navigation }) {
         genre={selectedBook.genre}
         bookImage={bookImage}
       />
+      <BookSummary>{selectedBook.summary}</BookSummary>
     </ScrollView>
   );
 }
