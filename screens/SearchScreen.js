@@ -1,21 +1,19 @@
-import { Text, View } from "react-native";
-
+import { View, StyleSheet, Text } from "react-native";
+import ListOfBooks from "../components/SearchScreenComponets/ListOfBooks";
+import Title from "../components/Title";
 function SearchScreen() {
   return (
-    <View>
-      <Text
-        style={{
-          textAlign: "center",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: 26,
-          fontWeight: "bold",
-        }}
-      >
-        Search Screen
-      </Text>
+    <View style={styles.container}>
+      <Title>Search</Title>
+
+      <ListOfBooks></ListOfBooks>
     </View>
   );
 }
-
 export default SearchScreen;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+});

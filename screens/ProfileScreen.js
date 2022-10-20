@@ -1,21 +1,21 @@
-import { Text, View } from "react-native";
+import { View, StyleSheet } from "react-native";
+import ProfileNavigator from "../components/ProfileScreenComponents/ProfileNavigator";
+import Title from "../components/Title";
 
 function ProfileScreen() {
   return (
-    <View>
-      <Text
-        style={{
-          textAlign: "center",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: 26,
-          fontWeight: "bold",
-        }}
-      >
-        Profile Screen
-      </Text>
+    <View style={styles.outerContainer}>
+      <View>
+        <Title>Profile</Title>
+      </View>
+      <ProfileNavigator></ProfileNavigator>
     </View>
   );
 }
 
 export default ProfileScreen;
+const styles = StyleSheet.create({
+  outerContainer: {
+    flex: 1,
+  },
+});

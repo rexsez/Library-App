@@ -1,22 +1,8 @@
 import { Text, View } from "react-native";
+import Title from "../components/Title";
 
 function HomeScreen() {
-  return (
-    <View style={{ flex: 1 }}>
-      <Text
-        style={{
-          flex: 1,
-          textAlign: "center",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: 26,
-          fontWeight: "bold",
-        }}
-      >
-        Home Screen
-      </Text>
-    </View>
-  );
+  return <Title>Home</Title>;
 }
 
 export default HomeScreen;
