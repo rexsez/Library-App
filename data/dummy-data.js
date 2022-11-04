@@ -1,4 +1,5 @@
 import Book from "../models/Book";
+import Student from "../models/Student";
 import {
   generateISBN,
   generateSummary,
@@ -46,3 +47,4 @@ for (let i = 0; i < 30; i++) {
   );
   BOOKS.push(book);
 }
+export const STUDENS = [];

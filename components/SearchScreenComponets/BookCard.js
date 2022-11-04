@@ -1,4 +1,13 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Share,
+  Pressable,
+  BackHandler,
+} from "react-native";
+import BookInformationScreen from "../../screens/Book_Information_Screen";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import formateDate from "../Utlity/Date";
 import MyButton from "../MyButton";
@@ -6,9 +15,9 @@ import { useNavigation } from "@react-navigation/native";
 function BookCard({ bookData }) {
   const navigation = useNavigation();
   function onPress() {
-    // Note: here im just getting bookData and spreading it variables into
-    // new object, so if this object is change, the original one doesn't change
-    // Avoiding coupling them together
+    // Note: here im just getting bookData and spreading it varabiles into
+    // new object, so if this object is change, the original one doesnt change
+    // Avoiding coupling them togather
     navigation.navigate("BookInformationScreen", { bookId: bookData.isbn });
   }
 
