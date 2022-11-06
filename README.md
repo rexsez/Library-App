@@ -1,2 +1,3 @@
 # Library-App
-This is our graduation project, which is about library management system.
+
+This is out graduation project, which is about library management system.

@@ -3,16 +3,27 @@ import { StyleSheet, ScrollView } from "react-native";
 import { BOOKS } from "../data/dummy-data";
 import BookDetails from "../components/Book_Details";
 import BookSummary from "../components/Book_Summary";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useLayoutEffect } from "react";
 
-function BookInformationScreen({ route, navigation }) {
+function BookInformationScreen() {
+  //  Getting isbn of the book that the user
+  // has clicked on
+  //  This iformation is sent from bookCard where each
+  // BookCard containts infomation about the book
   //getting the book isbn using the passed route params
   //const isbn = route.params.isbn;
-  const isbn = 3456456; //DUMMY ISBN FOR TESTING (using the dummy data)
+  const Route = useRoute();
+  const isbn = Route.params.bookId;
 
   //using the isbn to find the selected book object
   const selectedBook = BOOKS.find((book) => book.isbn === isbn);
+  // setting the tilte of the page to the name of book
+  const Navigation = useNavigation();
+  useLayoutEffect(() => {
+    Navigation.setOptions({ title: selectedBook.title });
+  }, [Navigation, selectedBook.title]);
 
-  //const formatedDate = selectedBook.date.formatDate();
   const bookImage = require("../assets/icon.png"); //dummy image to test
 
   /*
