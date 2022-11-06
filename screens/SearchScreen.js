@@ -1,11 +1,9 @@
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet } from "react-native";
 import ListOfBooks from "../components/SearchScreenComponets/ListOfBooks";
-import Title from "../components/Title";
+
 function SearchScreen() {
   return (
     <View style={styles.container}>
-      <Title>Search</Title>
-
       <ListOfBooks></ListOfBooks>
     </View>
   );

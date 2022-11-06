@@ -15,7 +15,7 @@ function NavigationFooter() {
           component={HomeScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="home-outline" color={color} size={size} />
+              <Ionicons name="home" color={color} size={size} />
             ),
           }}
         />
@@ -24,7 +24,7 @@ function NavigationFooter() {
           component={SearchScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="search-outline" color={color} size={size} />
+              <Ionicons name="search" color={color} size={size} />
             ),
           }}
         />
@@ -33,7 +33,7 @@ function NavigationFooter() {
           component={ProfileScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="person-outline" color={color} size={size} />
+              <Ionicons name="person" color={color} size={size} />
             ),
           }}
         />

@@ -18,8 +18,10 @@ function ListOfBooks() {
   function SearchFilter(enteredSearch) {
     if (enteredSearch) {
       const temp = enteredSearch.toLowerCase();
-      const filteredBooks = BOOKS.filter((book) =>
-        book.title.toLowerCase().includes(temp)
+      const filteredBooks = BOOKS.filter(
+        (book) =>
+          book.title.toLowerCase().includes(temp) ||
+          book.author.toLowerCase().includes(temp)
       );
       setSearch(enteredSearch);
       setBooks(filteredBooks);
@@ -48,7 +50,7 @@ function ListOfBooks() {
           // touch any position on the screen, error could be caused by this??
           // if you think it could cause an error please tell Hisham as I will
           // probably forget about it
-          onEndEditing={this.clearFocus}
+          // onEndEditing={this.clearFocus}
         />
       </View>
       <FlatList
