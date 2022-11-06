@@ -1,5 +1,5 @@
-import { STUDENS } from "../../../data/dummy-data";
 import { getStudents } from "../http";
+
 function hasNumber(myString) {
   return /\d/.test(myString);
 }

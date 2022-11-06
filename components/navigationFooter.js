@@ -1,4 +1,5 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { SafeAreaView, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import HomeScreen from "../screens/HomeScreen";
@@ -7,9 +8,13 @@ import ProfileScreen from "../screens/ProfileScreen";
 
 function NavigationFooter() {
   const Tab = createBottomTabNavigator();
+
   return (
-    <>
-      <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <SafeAreaView style={styles.container}>
+      <Tab.Navigator
+        style={styles.container}
+        screenOptions={{ headerShown: false }}
+      >
         <Tab.Screen
           name="Home"
           component={HomeScreen}
@@ -38,7 +43,13 @@ function NavigationFooter() {
           }}
         />
       </Tab.Navigator>
-    </>
+    </SafeAreaView>
   );
 }
 export default NavigationFooter;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

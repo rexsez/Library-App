@@ -1,8 +1,10 @@
 import { View, StyleSheet, TextInput, FlatList } from "react-native";
 import { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
+
 import BookCard from "./BookCard";
 import { BOOKS } from "../../data/dummy-data";
+
 function ListOfBooks() {
   //   This state will be used to keep track of the search item
   const [currentSearch, setSearch] = useState("");
@@ -31,7 +33,7 @@ function ListOfBooks() {
     }
   }
   return (
-    <View style={styles.Container}>
+    <View style={styles.Container} behavior="padding" >
       {/* Here is the Search Bar Container */}
       <View style={styles.seacrhContainer}>
         {/* Search Bar Icon */}

@@ -1,4 +1,5 @@
 import { View, Image, Pressable, StyleSheet } from "react-native";
+
 export default function Logo({ uri }) {
   return (
     <View style={styles.Container}>
