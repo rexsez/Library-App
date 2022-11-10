@@ -1,10 +1,10 @@
 import { StyleSheet, ScrollView } from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useLayoutEffect } from "react";
 
 import { BOOKS } from "../data/dummy-data";
 import BookDetails from "../components/BookInfoComponents/Book_Details";
 import BookSummary from "../components/BookInfoComponents/Book_Summary";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { useLayoutEffect } from "react";
 
 function BookInformationScreen() {
   //  Getting isbn of the book that the user

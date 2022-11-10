@@ -27,7 +27,7 @@ function Input({ label, style, textInputConfig, invalid }) {
         {/* 
             TextInputConfig is taken from the parameter to control how this input field behaves
             E.g. Keyboard Type, AutoCorrect, etc...
-            check: https://reactnative.dev/docs/textinput for the available props from ReactNative
+            check: https://reactnative.dev/docs/textinput for the available TextInput props
         */}
       <TextInput style={inputStyles} {...textInputConfig} />
     </View>
@@ -43,12 +43,10 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 12,
-    // color: GlobalStyles.colors.primary100,
     marginBottom: 4,
   },
   input: {
-    // backgroundColor: GlobalStyles.colors.primary100,
-    // color: GlobalStyles.colors.primary700,
+    borderWidth: 1,
     padding: 6,
     borderRadius: 6,
     fontSize: 18,
@@ -61,6 +59,7 @@ const styles = StyleSheet.create({
     color: "red",
   },
   invalidInput: {
-    backgroundColor: "red",
+    borderWidth: 1,
+    borderColor: "red",
   },
 });

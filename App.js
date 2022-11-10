@@ -11,6 +11,15 @@ import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import AddIcon from "./components/AddIcon";
 import TermsAndConditions from "./components/TemrsAndConditions";
+import Add_Book_Screen from "./screens/Add_Book_Screen";
+
+// export default function App() {
+
+//   return (
+//         <Add_Book_Screen />
+//   );
+// }
+
 export default function App() {
   const Stack = createStackNavigator();
   return (
