@@ -5,6 +5,7 @@ import { ScrollView } from "react-native-gesture-handler";
 
 import Input from "../components/AddBookComponents/Input";
 import MyButton from "../components/MyButton";
+import ErrorComponent from "../components/RegisterAndLogin/ErrorComponent";
 import Title from "../components/Title";
 
 function AddBookScreen() {
@@ -144,9 +145,9 @@ function AddBookScreen() {
 
         {/* if the some input is invalid, display an error text */}
         {formIsInvalid && (
-          <Text style={styles.errorText}>
+          <ErrorComponent style={styles.errorText}>
             Invalid input values, please check your entered data
-          </Text>
+          </ErrorComponent>
         )}
 
         <MyButton onPress={submitHandler}>Submit</MyButton>
