@@ -62,7 +62,7 @@ function ListOfBooks() {
             SearchFilter(enteredSearch);
           }}
         />
-        <MyButton style={styles.barcodeScanner}>
+        <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
           <Ionicons
             name="barcode-outline"
             size={18}

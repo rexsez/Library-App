@@ -2,11 +2,15 @@ import { View, Text, StyleSheet, Button } from "react-native";
 import React, { useState, useEffect } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
 
-function BarcodeScanner() {
+function BarcodeScanner({ navigation }) {
+  // To track permission of accessing camera
   const [hasPermission, setHasPermission] = useState(null);
+  // To track what if something got scanned or no (boolean)
   const [scanned, setScanned] = useState(false);
+  // To track the scanned item, which is going to be the ISBN
   const [text, setText] = useState("Not yet scanned");
 
+  // To ask for camera permission
   const askForCameraPermission = () => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -15,16 +19,15 @@ function BarcodeScanner() {
   };
 
   // Request Camera Permission
-
   useEffect(() => {
     askForCameraPermission();
   }, []);
 
-  // What happens when we scan the bar code
+  // If something is scanned we will update the states declared above
   const handleBardCodeScanned = ({ type, data }) => {
     setScanned(true);
     setText(data);
-    console.log("Type: " + type + "\nData: " + data);
+    navigation.navigate("Book", { bookId: data });
   };
 
   // Check permission and return the screens
