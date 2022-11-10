@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image } from "react-native";
 
 import { FontAwesome5, Fontisto, Entypo, Ionicons } from "@expo/vector-icons";
 import BookSubdetail from "./Book_Subdetail";
-import { getFotmattedDate } from "../util/date";
+import { getFotmattedDate } from "../../util/date";
 
 function BookDetails({ isbn, author, date, genre, bookImage }) {
   return (
