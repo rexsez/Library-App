@@ -4,6 +4,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 import BookCard from "./BookCard";
 import { BOOKS } from "../../data/dummy-data";
+import MyButton from "../MyButton";
 
 function ListOfBooks() {
   //   This state will be used to keep track of the search item
@@ -17,23 +18,33 @@ function ListOfBooks() {
     return book.isbn;
   }
 
+  // This is the function used to search for a book
+  // with a title or an author by default
   function SearchFilter(enteredSearch) {
+    // if something is entered (not empty), it will enter the condition
     if (enteredSearch) {
+      // converting it to lower case to avoid case sensitive issues
       const temp = enteredSearch.toLowerCase();
+      // Storing the list of books that matches the enteredSearch
+      // in the list, which will be used as a source of data to display books
       const filteredBooks = BOOKS.filter(
         (book) =>
-          book.title.toLowerCase().includes(temp) ||
-          book.author.toLowerCase().includes(temp)
+          book.title.toLowerCase().includes(temp) || // filtering based on the title
+          book.author.toLowerCase().includes(temp) // filtering based on the author
       );
+      // To update the value that is displayed in the search bar
       setSearch(enteredSearch);
+      // Setting the new list of books to the filtered one
       setBooks(filteredBooks);
     } else {
+      // To update the value that is displayed in the search bar
       setSearch(enteredSearch);
+      // If nothing is entered make the list of books as the default one which is BOOKS
       setBooks(BOOKS);
     }
   }
   return (
-    <View style={styles.Container} behavior="padding" >
+    <View style={styles.Container} behavior="padding">
       {/* Here is the Search Bar Container */}
       <View style={styles.seacrhContainer}>
         {/* Search Bar Icon */}
@@ -48,12 +59,15 @@ function ListOfBooks() {
           onChangeText={(enteredSearch) => {
             SearchFilter(enteredSearch);
           }}
-          // This is used to be able to close the keyboard when the user
-          // touch any position on the screen, error could be caused by this??
-          // if you think it could cause an error please tell Hisham as I will
-          // probably forget about it
-          // onEndEditing={this.clearFocus}
         />
+        <MyButton style={styles.barcodeScanner}>
+          <Ionicons
+            name="barcode-outline"
+            size={18}
+            color="white"
+            style={styles.icon}
+          />
+        </MyButton>
       </View>
       <FlatList
         data={currentBooks}
@@ -90,5 +104,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     margin: 0,
     color: "white",
+  },
+  barcodeScanner: {
+    marginTop: 12,
+    marginHorizontal: 8,
   },
 });
