@@ -1,5 +1,6 @@
 import { View, StyleSheet, TextInput, FlatList } from "react-native";
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import BookCard from "./BookCard";
@@ -7,6 +8,7 @@ import { BOOKS } from "../../data/dummy-data";
 import MyButton from "../MyButton";
 
 function ListOfBooks() {
+  const navigation = useNavigation();
   //   This state will be used to keep track of the search item
   const [currentSearch, setSearch] = useState("");
   const [currentBooks, setBooks] = useState(BOOKS);
@@ -66,6 +68,7 @@ function ListOfBooks() {
             size={18}
             color="white"
             style={styles.icon}
+            onPress={() => navigation.navigate("Barcode")}
           />
         </MyButton>
       </View>

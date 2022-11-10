@@ -3,8 +3,8 @@ import { SafeAreaView, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import HomeScreen from "../screens/HomeScreen";
-import SearchScreen from "../screens/SearchScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import SearchScreenStack from "../screens/SearchScreenStack";
 
 function NavigationFooter() {
   const Tab = createBottomTabNavigator();
@@ -26,7 +26,7 @@ function NavigationFooter() {
         />
         <Tab.Screen
           name="Search"
-          component={SearchScreen}
+          component={SearchScreenStack}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="search" color={color} size={size} />
