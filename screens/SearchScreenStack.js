@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import SearchScreen from "./SearchScreen";
 import BarcodeScanner from "../components/SearchScreenComponents/BarcodeScanner";
 import BookInformationScreen from "./Book_Information_Screen";
+import AddBookScreen from "./Add_Book_Screen";
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,7 @@ function SearchScreenStack() {
       />
       <Stack.Screen name="Barcode" component={BarcodeScanner} />
       <Stack.Screen name="Book" component={BookInformationScreen} />
+      <Stack.Screen name="Add" component={AddBookScreen} />
     </Stack.Navigator>
   );
 }

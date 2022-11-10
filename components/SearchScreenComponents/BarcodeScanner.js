@@ -2,6 +2,8 @@ import { View, Text, StyleSheet, Button } from "react-native";
 import React, { useState, useEffect } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
 
+import { BOOKS } from "../../data/dummy-data";
+
 function BarcodeScanner({ navigation }) {
   // To track permission of accessing camera
   const [hasPermission, setHasPermission] = useState(null);
@@ -27,7 +29,11 @@ function BarcodeScanner({ navigation }) {
   const handleBardCodeScanned = ({ type, data }) => {
     setScanned(true);
     setText(data);
-    navigation.navigate("Book", { bookId: data });
+    const selectedBook = BOOKS.find((book) => book.isbn === +data);
+
+    if (selectedBook)
+      navigation.navigate("Book", { bookId: data, isScanned: true });
+    else navigation.navigate("Add", { bookId: data, isScanned: true });
   };
 
   // Check permission and return the screens
