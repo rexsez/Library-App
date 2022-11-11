@@ -1,10 +1,9 @@
 import { Text, View } from "react-native";
-import Title from "../components/Title";
 import { useContext } from "react";
 import { StudentContext } from "../store/StudentContext";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
-import { useFocusEffect } from "@react-navigation/native";
+import Title from "../components/Title";
 
 function ProfileScreen() {
   const navigation = useNavigation();

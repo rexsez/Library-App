@@ -1,5 +1,4 @@
 import Book from "../models/Book";
-import Student from "../models/Student";
 import {
   generateISBN,
   generateSummary,
@@ -18,7 +17,7 @@ import {
 // Keeping the first book as it is so we know if there is a prob.
 export const BOOKS = [
   new Book(
-    3456456, //isbn
+    9786039048909, //isbn
     "book title", //title
     "../assets/icon.png", //imageUrl
     "This is some dummy author name", //author

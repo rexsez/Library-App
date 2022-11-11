@@ -1,7 +1,9 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
 import { Pressable, View, StyleSheet, Text } from "react-native";
+
 import MyButton from "../MyButton";
+
 function CheckBox({
   text,
   highlightedText,

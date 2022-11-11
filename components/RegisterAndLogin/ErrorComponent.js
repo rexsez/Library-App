@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+
 function ErrorComponent({ children }) {
   return (
     <View style={styles.Container}>

@@ -1,4 +1,5 @@
 import { TextInput, View, StyleSheet } from "react-native";
+
 function Inpute({ inputeTextProps, onChangeTextHandler, style }) {
   return (
     <View style={styles.Container}>

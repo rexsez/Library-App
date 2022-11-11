@@ -1,5 +1,4 @@
 // edite for backend---------------------------------
-import { STUDENS } from "../../../data/dummy-data";
 import { getStudents } from "../http";
 // ---------------------------------------------------
 async function validateLoginStudent(loginStudentInfo, setError) {

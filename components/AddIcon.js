@@ -1,8 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
-import { StyleSheet } from "react-native";
 
 export default function AddIcon({ name, color, size, onPress }) {
   return (

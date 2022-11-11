@@ -1,4 +1,5 @@
 import { ImageBackground, View, StyleSheet, Text } from "react-native";
+
 import LoginForm from "../components/RegisterAndLogin/LoginForm";
 
 function LoginScreen() {

@@ -1,30 +1,35 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { SafeAreaView, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import HomeScreen from "../screens/HomeScreen";
-import SearchScreen from "../screens/SearchScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import SearchScreenStack from "../screens/SearchScreenStack";
 
 function NavigationFooter() {
   const Tab = createBottomTabNavigator();
+
   return (
-    <>
-      <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <SafeAreaView style={styles.container}>
+      <Tab.Navigator
+        style={styles.container}
+        screenOptions={{ headerShown: false }}
+      >
         <Tab.Screen
           name="Home"
           component={HomeScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="home-outline" color={color} size={size} />
+              <Ionicons name="home" color={color} size={size} />
             ),
           }}
         />
         <Tab.Screen
           name="Search"
-          component={SearchScreen}
+          component={SearchScreenStack}
           options={{
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="search-outline" color={color} size={size} />
+              <Ionicons name="search" color={color} size={size} />
             ),
           }}
         />
@@ -33,12 +38,18 @@ function NavigationFooter() {
           component={ProfileScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="person-outline" color={color} size={size} />
+              <Ionicons name="person" color={color} size={size} />
             ),
           }}
         />
       </Tab.Navigator>
-    </>
+    </SafeAreaView>
   );
 }
 export default NavigationFooter;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

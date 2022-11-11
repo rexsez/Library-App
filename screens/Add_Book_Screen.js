@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-// import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 import Input from "../components/AddBookComponents/Input";
 import MyButton from "../components/MyButton";
@@ -9,10 +9,10 @@ import ErrorComponent from "../components/RegisterAndLogin/ErrorComponent";
 import Title from "../components/Title";
 
 function AddBookScreen() {
-  //   const Route = useRoute();
-  //   const isbn = Route.params.ISBN;
+  const Route = useRoute();
+  const isbn = parseInt(Route.params.bookId);
 
-  const isbn = 2153652468; //## test ISBN ##
+  // const isbn = 2153652468; //## test ISBN ##
 
   const [inputs, setInputs] = useState({
     //default input values

@@ -1,19 +1,18 @@
-import { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { useState, useContext, useLayoutEffect } from "react";
+import { View, StyleSheet, KeyboardAvoidingView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
 import Student from "../../models/Student";
 import MyButton from "../MyButton";
 import CheckBox from "./CheckBox";
 import ErrorComponent from "./ErrorComponent";
-import { KeyboardAvoidingView } from "react-native";
 import validateNewStudent from "../Utlity/InputValidation/ValidateNewStudent";
 import Inpute from "./Inpute";
 import PressableButton from "./PressableButton";
-import { useContext } from "react";
 import { StudentContext } from "../../store/StudentContext";
-import { useNavigation } from "@react-navigation/native";
 import AddIcon from "../AddIcon";
-import { useLayoutEffect } from "react";
 import { registerStudent } from "../Utlity/http";
+
 function RegisterForm() {
   // ----------------- Navigation stuff --------------
 

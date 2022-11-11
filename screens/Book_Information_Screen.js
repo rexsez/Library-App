@@ -18,10 +18,12 @@ function BookInformationScreen() {
   //getting the book isbn using the passed route params
   //const isbn = route.params.isbn;
   const Route = useRoute();
-  const isbn = Route.params.bookId;
+  const isbn = parseInt(Route.params.bookId);
+  const isScanned = Route.params.isScanned; // ### test  ###
 
   //using the isbn to find the selected book object
   const selectedBook = BOOKS.find((book) => book.isbn === isbn);
+  
   // setting the tilte of the page to the name of book
   const Navigation = useNavigation();
   useLayoutEffect(() => {
@@ -53,7 +55,7 @@ function BookInformationScreen() {
     size: 32,
     color: "black",
   };
-  
+
   const bookIsFavorite = true; // ### test  ###
 
   //List of buttons to be added to the IconButtonBar
@@ -74,7 +76,6 @@ function BookInformationScreen() {
     </MyButton>,
   ];
 
-  const isScanned = true; // ### test  ###
   if (isScanned) {
     //add the borrow option if the book is scanned
     iconBarButtons.push(
