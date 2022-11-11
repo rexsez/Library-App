@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, Platform } from "react-native";
 import React, { useState, useEffect } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
 
@@ -68,7 +68,7 @@ function BarcodeScanner({ navigation }) {
       </View>
 
       <Text style={styles.maintext}> {text}</Text>
-      {scanned && (
+      {Platform.OS === "ios" && scanned && (
         <Button
           title="Scan again"
           onPress={() => setScanned(false)}
