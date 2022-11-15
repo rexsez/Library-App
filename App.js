@@ -10,6 +10,8 @@ import StudentContextProvidor from "./store/StudentContext";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import TermsAndConditions from "./components/TermsAndConditions";
+import AddBookScreen from "./screens/Add_Book_Screen";
+import BarcodeScanner from "./components/SearchScreenComponents/BarcodeScanner";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -23,29 +25,26 @@ export default function App() {
               component={NavigationFooter}
               name="Navigation-Footer"
               options={{ headerShown: false }}
-            ></Stack.Screen>
+            />
             <Stack.Screen
               component={SearchScreen}
-              name="SearchScreen"
-            ></Stack.Screen>
-            <Stack.Screen
-              component={BookInformationScreen}
-              name={"BookInformationScreen"}
-            ></Stack.Screen>
+              name="SearchScreenStack"
+              options={{ headerShown: false }}
+            />
             <Stack.Screen
               component={LoginScreen}
               name={"LoginScreen"}
               options={{
                 title: "Login",
               }}
-            ></Stack.Screen>
+            />
             <Stack.Screen
               component={RegisterScreen}
               name={"RegisterScreen"}
               options={{
                 title: "Create An Account",
               }}
-            ></Stack.Screen>
+            />
             <Stack.Screen
               component={TermsAndConditions}
               name={"TermsAndConditions"}
@@ -53,7 +52,11 @@ export default function App() {
                 title: "Terms And Conditions",
                 headerShown: false,
               }}
-            ></Stack.Screen>
+            />
+            <Stack.Screen name="Book" component={BookInformationScreen} />
+
+            <Stack.Screen name="Add" component={AddBookScreen} />
+            <Stack.Screen name="Barcode" component={BarcodeScanner} />
           </Stack.Navigator>
         </NavigationContainer>
       </StudentContextProvidor>

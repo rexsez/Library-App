@@ -1,14 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
+import { HeaderBackButton } from "react-navigation-stack";
+import { StackActions } from "@react-navigation/native";
 
 import Input from "../components/AddBookComponents/Input";
 import MyButton from "../components/MyButton";
 import ErrorComponent from "../components/RegisterAndLogin/ErrorComponent";
 import Title from "../components/Title";
 
-function AddBookScreen() {
+function AddBookScreen({ navigation }) {
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft:
+        Platform.OS === "android"
+          ? () => (
+              <HeaderBackButton
+                onPress={() => {
+                  // This will remove The previous screen (Barcode scanner screen)
+                  navigation.dispatch(StackActions.popToTop());
+                }}
+              />
+            )
+          : undefined,
+    }); // if platform is IOS don't do anything
+  }, []);
   const Route = useRoute();
   const isbn = parseInt(Route.params.bookId);
 

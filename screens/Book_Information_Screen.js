@@ -1,8 +1,9 @@
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView, Platform } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { useLayoutEffect } from "react";
-
+import { useLayoutEffect, useEffect } from "react";
+import { HeaderBackButton } from "react-navigation-stack";
 import { FontAwesome } from "@expo/vector-icons";
+import { StackActions } from "@react-navigation/native";
 
 import { BOOKS } from "../data/dummy-data";
 import BookDetails from "../components/BookInfoComponents/Book_Details";
@@ -10,11 +11,28 @@ import BookSummary from "../components/BookInfoComponents/Book_Summary";
 import ItemsBar from "../components/ItemsBar";
 import MyButton from "../components/MyButton";
 
-function BookInformationScreen() {
+function BookInformationScreen({ navigation }) {
+  useEffect(() => {
+
+    navigation.setOptions({
+      headerLeft:
+        Platform.OS === "android"
+          ? () => (
+              <HeaderBackButton
+                onPress={() => {
+                  // This will remove The previous screen (Barcode scanner screen)
+                  navigation.dispatch(StackActions.popToTop());
+                }}
+              />
+            )
+          : undefined,
+    }); // if platform is IOS don't do anything
+  }, []);
+
   //  Getting isbn of the book that the user
   // has clicked on
-  //  This iformation is sent from bookCard where each
-  // BookCard containts infomation about the book
+  //  This information is sent from bookCard where each
+  // BookCard contains information about the book
   //getting the book isbn using the passed route params
   //const isbn = route.params.isbn;
   const Route = useRoute();
@@ -23,7 +41,7 @@ function BookInformationScreen() {
 
   //using the isbn to find the selected book object
   const selectedBook = BOOKS.find((book) => book.isbn === isbn);
-  
+
   // setting the tilte of the page to the name of book
   const Navigation = useNavigation();
   useLayoutEffect(() => {
