@@ -9,6 +9,7 @@ import Input from "../components/AddBookComponents/Input";
 import MyButton from "../components/MyButton";
 import ErrorComponent from "../components/RegisterAndLogin/ErrorComponent";
 import Title from "../components/Title";
+import DropDownMenu from "../components/AddBookComponents/Drop_Down_Menu";
 
 function AddBookScreen({ navigation }) {
   useEffect(() => {
@@ -67,10 +68,14 @@ function AddBookScreen({ navigation }) {
     const authorIsValid = bookData.author.trim().length > 0;
     //JS returns 'Invalid Date' if invalid date is passed when creating a new date object
     const dateIsValid = bookData.date.toString() !== "Invalid Date";
-    const categoryIsValid = bookData.category.trim().length > 0;
+    // const categoryIsValid = bookData.category.trim().length > 0;
 
     //if one of the inputs is invalid..
-    if (!titleIsValid || !authorIsValid || !dateIsValid || !categoryIsValid) {
+    if (
+      !titleIsValid ||
+      !authorIsValid ||
+      !dateIsValid /*|| !categoryIsValid*/
+    ) {
       setInputs((curInputs) => {
         return {
           isbn: { value: curInputs.isbn.value, isValid: true },
@@ -79,18 +84,28 @@ function AddBookScreen({ navigation }) {
           date: { value: curInputs.date.value, isValid: dateIsValid },
           category: {
             value: curInputs.category.value,
-            isValid: categoryIsValid,
+            // isValid: categoryIsValid,
+            isValid: true,
           },
           summary: { value: curInputs.summary.value, isValid: true },
         };
       });
 
+      console.log(inputs);
       return;
     }
 
+    console.log(inputs);
     // if input is valid..
     // onSubmit(bookData); //imp
   }
+
+  //list of categories (test)
+  const categories = [
+    { label: "Math", value: "math" },
+    { label: "Science", value: "science" },
+    { label: "Harith", value: "harith" },
+  ];
 
   //helper variable to display form error text if some input is invalid
   const formIsInvalid =
@@ -104,10 +119,9 @@ function AddBookScreen({ navigation }) {
   return (
     <View>
       <ScrollView>
-        {/* Using the Input component to create input fields */}
-
         <Title>Add Book</Title>
 
+        {/* Using the Input component to create input fields */}
         <Input //ISBN
           label="ISBN"
           invalid={!inputs.isbn.isValid}
@@ -125,6 +139,24 @@ function AddBookScreen({ navigation }) {
           }}
         />
 
+        <DropDownMenu
+          label={"Category"}
+          elements={categories}
+          dropDownConfig={{
+            search: true,
+            searchPlaceholder: "Search...",
+            value: inputs.category.value,
+            onChange: inputChangedHandler.bind(this, "category"),
+          }}
+        />
+        {/* <Input //Category
+            label="Category"
+            invalid={!inputs.category.isValid}
+            textInputConfig={{
+            onChangeText: inputChangedHandler.bind(this, "category"),
+            }}
+        /> */}
+
         <Input //Author
           label="Author"
           invalid={!inputs.author.isValid}
@@ -140,14 +172,6 @@ function AddBookScreen({ navigation }) {
             placeholder: "YYYY-MM-DD",
             maxLength: 10,
             onChangeText: inputChangedHandler.bind(this, "date"),
-          }}
-        />
-
-        <Input //Category
-          label="Category"
-          invalid={!inputs.category.isValid}
-          textInputConfig={{
-            onChangeText: inputChangedHandler.bind(this, "category"),
           }}
         />
 
