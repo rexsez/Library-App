@@ -93,13 +93,13 @@ function AddBookScreen({ navigation }) {
       return;
     }
 
-    console.log(inputs);
+    // console.log(inputs);
     // if input is valid..
     // onSubmit(bookData); //imp
   }
 
   //list of categories (test)
-  const categories = [
+  const CATEGORIES = [
     { label: "Math", value: "math" },
     { label: "Science", value: "science" },
     { label: "Harith", value: "harith" },
@@ -137,7 +137,18 @@ function AddBookScreen({ navigation }) {
           }}
         />
 
-        <DropDownMenu label={"Category"} elements={categories} />
+        <DropDownMenu
+          label={"Category"}
+          elements={CATEGORIES}
+          dropDownConfig={{
+            search: true,
+            searchPlaceholder: "Search...",
+            value: inputs.category.value,
+            onChange: (item) => {
+              inputChangedHandler("category", item.value);
+            },
+          }}
+        />
         {/* <Input //Category
             label="Category"
             invalid={!inputs.category.isValid}

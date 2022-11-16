@@ -5,6 +5,7 @@ import { Dropdown } from "react-native-element-dropdown";
 Dropdown component properties:
 label: should take a String
 style: should take a style object for styling the root container (View)
+dropDownConfig: takes dropdown configurations (IMPORTANT to add the value, and onChange) check the link below
 elemnts: should take a list of {label , value} objects
 Example: 
     [
@@ -15,13 +16,11 @@ Example:
 More dropdown configurations can be found in the following link:
 https://www.npmjs.com/package/react-native-element-dropdown
 */
-function DropDownMenu({ label, style, elements }) {
-  const [value, setValue] = useState(null);
-
+function DropDownMenu({ label, style, elements, dropDownConfig }) {
   const data = elements;
 
   const renderLabel = () => {
-    if (value) {
+    if (dropDownConfig && dropDownConfig.value) {
       return <Text style={styles.label}>{label}</Text>;
     }
     return null;
@@ -31,19 +30,14 @@ function DropDownMenu({ label, style, elements }) {
     <View style={[styles.rootContainer, style]}>
       {renderLabel()}
       <Dropdown
+        {...dropDownConfig}
         style={styles.dropdown}
         data={data}
-        search
-        searchPlaceholder="Search..."
         placeholderStyle={styles.placeholderStyle}
         maxHeight={300}
         labelField="label"
         valueField="value"
-        value={value}
         placeholder={label}
-        onChange={(item) => {
-          setValue(item.value);
-        }}
       />
     </View>
   );
