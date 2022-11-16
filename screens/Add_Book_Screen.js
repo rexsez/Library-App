@@ -10,6 +10,7 @@ import MyButton from "../components/MyButton";
 import ErrorComponent from "../components/RegisterAndLogin/ErrorComponent";
 import Title from "../components/Title";
 import DropDownMenu from "../components/AddBookComponents/Drop_Down_Menu";
+import { CATEGORIES } from "../data/Book_Categories";
 
 function AddBookScreen({ navigation }) {
   useEffect(() => {
@@ -89,7 +90,7 @@ function AddBookScreen({ navigation }) {
         };
       });
 
-      console.log(inputs);
+      // console.log(inputs);
       return;
     }
 
@@ -97,13 +98,6 @@ function AddBookScreen({ navigation }) {
     // if input is valid..
     // onSubmit(bookData); //imp
   }
-
-  //list of categories (test)
-  const CATEGORIES = [
-    { label: "Math", value: "math" },
-    { label: "Science", value: "science" },
-    { label: "Harith", value: "harith" },
-  ];
 
   //helper variable to display form error text if some input is invalid
   const formIsInvalid =
@@ -137,7 +131,7 @@ function AddBookScreen({ navigation }) {
           }}
         />
 
-        <DropDownMenu
+        <DropDownMenu //Category
           label={"Category"}
           elements={CATEGORIES}
           dropDownConfig={{
@@ -149,13 +143,6 @@ function AddBookScreen({ navigation }) {
             },
           }}
         />
-        {/* <Input //Category
-            label="Category"
-            invalid={!inputs.category.isValid}
-            textInputConfig={{
-            onChangeText: inputChangedHandler.bind(this, "category"),
-            }}
-        /> */}
 
         <Input //Author
           label="Author"

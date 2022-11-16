@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   label: {
-    fontSize: 12,
+    fontSize: 8,
     marginBottom: 4,
   },
   placeholderStyle: {
