@@ -30,8 +30,6 @@ function AddBookScreen({ navigation }) {
   const Route = useRoute();
   const isbn = parseInt(Route.params.bookId);
 
-  // const isbn = 2153652468; //## test ISBN ##
-
   const [inputs, setInputs] = useState({
     //default input values
     isbn: { value: isbn.toString(), isValid: true },
@@ -139,16 +137,7 @@ function AddBookScreen({ navigation }) {
           }}
         />
 
-        <DropDownMenu
-          label={"Category"}
-          elements={categories}
-          dropDownConfig={{
-            search: true,
-            searchPlaceholder: "Search...",
-            value: inputs.category.value,
-            onChange: inputChangedHandler.bind(this, "category"),
-          }}
-        />
+        <DropDownMenu label={"Category"} elements={categories} />
         {/* <Input //Category
             label="Category"
             invalid={!inputs.category.isValid}
