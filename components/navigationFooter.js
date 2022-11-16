@@ -1,10 +1,10 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { SafeAreaView, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
 import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import SearchScreenStack from "../screens/SearchScreenStack";
+import SearchScreen from "../screens/SearchScreen";
+// import SearchScreenStack from "../screens/SearchScreenStack";
 
 function NavigationFooter() {
   const Tab = createBottomTabNavigator();
@@ -26,7 +26,7 @@ function NavigationFooter() {
         />
         <Tab.Screen
           name="Search"
-          component={SearchScreenStack}
+          component={SearchScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="search" color={color} size={size} />

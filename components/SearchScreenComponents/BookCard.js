@@ -11,7 +11,7 @@ function BookCard({ bookData }) {
     // Note: here im just getting bookData and spreading it varabiles into
     // new object, so if this object is change, the original one doesnt change
     // Avoiding coupling them togather
-    navigation.navigate("BookInformationScreen", { bookId: bookData.isbn });
+    navigation.navigate("Book", { bookId: bookData.isbn });
   }
 
   return (
