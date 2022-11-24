@@ -9,6 +9,8 @@ import Input from "../components/AddBookComponents/Input";
 import MyButton from "../components/MyButton";
 import ErrorComponent from "../components/RegisterAndLogin/ErrorComponent";
 import Title from "../components/Title";
+import DropDownMenu from "../components/AddBookComponents/Drop_Down_Menu";
+import { CATEGORIES } from "../data/Book_Categories";
 
 function AddBookScreen({ navigation }) {
   useEffect(() => {
@@ -29,8 +31,6 @@ function AddBookScreen({ navigation }) {
   const Route = useRoute();
   const isbn = parseInt(Route.params.bookId);
 
-  // const isbn = 2153652468; //## test ISBN ##
-
   const [inputs, setInputs] = useState({
     //default input values
     isbn: { value: isbn.toString(), isValid: true },
@@ -46,7 +46,7 @@ function AddBookScreen({ navigation }) {
       return {
         ...curInputs,
         [inputIdentifier]: { value: enteredValue, isValid: true }, //assume it's true here
-        //we check whther the input is valid or not during submission
+        //we check whether the input is valid or not during submission
       };
     });
   }
@@ -67,10 +67,14 @@ function AddBookScreen({ navigation }) {
     const authorIsValid = bookData.author.trim().length > 0;
     //JS returns 'Invalid Date' if invalid date is passed when creating a new date object
     const dateIsValid = bookData.date.toString() !== "Invalid Date";
-    const categoryIsValid = bookData.category.trim().length > 0;
+    // const categoryIsValid = bookData.category.trim().length > 0;
 
     //if one of the inputs is invalid..
-    if (!titleIsValid || !authorIsValid || !dateIsValid || !categoryIsValid) {
+    if (
+      !titleIsValid ||
+      !authorIsValid ||
+      !dateIsValid /*|| !categoryIsValid*/
+    ) {
       setInputs((curInputs) => {
         return {
           isbn: { value: curInputs.isbn.value, isValid: true },
@@ -79,15 +83,18 @@ function AddBookScreen({ navigation }) {
           date: { value: curInputs.date.value, isValid: dateIsValid },
           category: {
             value: curInputs.category.value,
-            isValid: categoryIsValid,
+            // isValid: categoryIsValid,
+            isValid: true,
           },
           summary: { value: curInputs.summary.value, isValid: true },
         };
       });
 
+      // console.log(inputs);
       return;
     }
 
+    // console.log(inputs);
     // if input is valid..
     // onSubmit(bookData); //imp
   }
@@ -104,10 +111,9 @@ function AddBookScreen({ navigation }) {
   return (
     <View>
       <ScrollView>
-        {/* Using the Input component to create input fields */}
-
         <Title>Add Book</Title>
 
+        {/* Using the Input component to create input fields */}
         <Input //ISBN
           label="ISBN"
           invalid={!inputs.isbn.isValid}
@@ -122,6 +128,19 @@ function AddBookScreen({ navigation }) {
           invalid={!inputs.title.isValid}
           textInputConfig={{
             onChangeText: inputChangedHandler.bind(this, "title"),
+          }}
+        />
+
+        <DropDownMenu //Category
+          label={"Category"}
+          elements={CATEGORIES}
+          dropDownConfig={{
+            search: true,
+            searchPlaceholder: "Search...",
+            value: inputs.category.value,
+            onChange: (item) => {
+              inputChangedHandler("category", item.value);
+            },
           }}
         />
 
@@ -140,14 +159,6 @@ function AddBookScreen({ navigation }) {
             placeholder: "YYYY-MM-DD",
             maxLength: 10,
             onChangeText: inputChangedHandler.bind(this, "date"),
-          }}
-        />
-
-        <Input //Category
-          label="Category"
-          invalid={!inputs.category.isValid}
-          textInputConfig={{
-            onChangeText: inputChangedHandler.bind(this, "category"),
           }}
         />
 

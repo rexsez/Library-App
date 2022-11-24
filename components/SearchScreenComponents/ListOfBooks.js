@@ -1,4 +1,4 @@
-import { View, StyleSheet, TextInput, FlatList } from "react-native";
+import { View, StyleSheet, TextInput, FlatList, Platform } from "react-native";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -6,12 +6,29 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import BookCard from "./BookCard";
 import { BOOKS } from "../../data/dummy-data";
 import MyButton from "../MyButton";
+import FilterModal from "./FilterModal";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 function ListOfBooks() {
   const navigation = useNavigation();
   //   This state will be used to keep track of the search item
   const [currentSearch, setSearch] = useState("");
   const [currentBooks, setBooks] = useState(BOOKS);
+  const iconSize = 24;
+  // This will be used to filter search results, in specific to show the modal which contains the options
+  // available to be used as a filter
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [openedFilter, setOpenedFilter] = useState(false);
+  function toggleModal() {
+    setModalVisible(!isModalVisible);
+    setOpenedFilter(true);
+  }
+
+  function cancelFilter() {
+    setSearch("");
+    setBooks(BOOKS);
+    setOpenedFilter(false);
+  }
 
   function renderItem(BOOKS) {
     return <BookCard bookData={BOOKS.item}></BookCard>;
@@ -45,12 +62,103 @@ function ListOfBooks() {
       setBooks(BOOKS);
     }
   }
+
+  // This section is to display button according to what's entered in the search
+  // if nothing is entered both barcode button and filter button will be displayed
+  // once one letter is entered in the search bar, barcode button will disappear leaving
+  // filter button alone
+  let loadedButton = null;
+  if (currentSearch) {
+    if (!openedFilter) {
+      loadedButton = (
+        <>
+          <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
+            <Ionicons
+              name="options-sharp"
+              size={iconSize}
+              color="white"
+              style={styles.icon}
+              onPress={toggleModal}
+            />
+          </MyButton>
+        </>
+      );
+    } else {
+      loadedButton = (
+        <>
+          <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
+            <Ionicons
+              name="options-sharp"
+              size={iconSize}
+              color="red"
+              style={styles.icon}
+              onPress={cancelFilter}
+            />
+          </MyButton>
+        </>
+      );
+    }
+  } else {
+    if (!openedFilter) {
+      loadedButton = (
+        <>
+          <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
+            <Ionicons
+              name="barcode-outline"
+              size={iconSize}
+              color="white"
+              style={styles.icon}
+              onPress={() => navigation.navigate("Barcode")}
+            />
+          </MyButton>
+          <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
+            <Ionicons
+              name="options-sharp"
+              size={iconSize}
+              color="white"
+              style={styles.icon}
+              onPress={toggleModal}
+            />
+          </MyButton>
+        </>
+      );
+    } else {
+      loadedButton = (
+        <>
+          <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
+            <Ionicons
+              name="barcode-outline"
+              size={iconSize}
+              color="white"
+              style={styles.icon}
+              onPress={() => navigation.navigate("Barcode")}
+            />
+          </MyButton>
+          <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
+            <Ionicons
+              name="options-sharp"
+              size={iconSize}
+              color="red"
+              style={styles.icon}
+              onPress={cancelFilter}
+            />
+          </MyButton>
+        </>
+      );
+    }
+  }
+
   return (
-    <View style={styles.Container} behavior="padding">
+    <View style={styles.Container}>
       {/* Here is the Search Bar Container */}
       <View style={styles.seacrhContainer}>
         {/* Search Bar Icon */}
-        <Ionicons name="search" size={18} color="white" style={styles.icon} />
+        <Ionicons
+          name="search"
+          size={iconSize}
+          color="white"
+          style={styles.icon}
+        />
         <TextInput
           placeholder="Search"
           placeholderTextColor="white"
@@ -62,16 +170,15 @@ function ListOfBooks() {
             SearchFilter(enteredSearch);
           }}
         />
-        <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
-          <Ionicons
-            name="barcode-outline"
-            size={18}
-            color="white"
-            style={styles.icon}
-            onPress={() => navigation.navigate("Barcode")}
-          />
-        </MyButton>
+        {loadedButton}
       </View>
+      <FilterModal
+        isModalVisible={isModalVisible}
+        setModalVisible={setModalVisible}
+        setBooks={setBooks}
+        currentBooks={currentBooks}
+        toggleModal={toggleModal}
+      />
       <FlatList
         data={currentBooks}
         renderItem={renderItem}
@@ -87,6 +194,7 @@ export default ListOfBooks;
 const styles = StyleSheet.create({
   Container: {
     flex: 1,
+    backgroundColor: "white",
   },
   seacrhContainer: {
     backgroundColor: "#1b7ce4",

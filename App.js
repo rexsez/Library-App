@@ -3,6 +3,7 @@ import { StyleSheet, SafeAreaView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
+import Contact_Us_Screen from "./screens/Contact_Us_Screen";
 import SearchScreen from "./screens/SearchScreen";
 import BookInformationScreen from "./screens/Book_Information_Screen";
 import NavigationFooter from "./components/navigationFooter";
@@ -57,6 +58,7 @@ export default function App() {
 
             <Stack.Screen name="Add" component={AddBookScreen} />
             <Stack.Screen name="Barcode" component={BarcodeScanner} />
+            <Stack.Screen name="ContactUs" component={Contact_Us_Screen} />
           </Stack.Navigator>
         </NavigationContainer>
       </StudentContextProvidor>

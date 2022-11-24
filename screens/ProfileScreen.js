@@ -17,7 +17,7 @@ function ProfileScreen() {
   // --------------------------------------------
   // "!!" turns an empty string into false,
   //  "!" the third one is just so if it is empty --> false
-  //  it will become !flase --> true
+  //  it will become !false --> true
   useFocusEffect(() => {
     if (!!!studentContext.student.Email) {
       navigation.navigate("RegisterScreen");

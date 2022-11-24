@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, Button, Platform, Alert } from "react-native";
 import React, { useState, useEffect } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import { StackActions } from "@react-navigation/native";
 
 import { BOOKS } from "../../data/dummy-data";
 
@@ -60,7 +61,7 @@ function BarcodeScanner({ navigation }) {
           onPress: () =>
             // only android will be redirected to Search screen page (Bug in the framework), IOS won't be redirected
             Platform.OS === "android"
-              ? navigation.navigate("SearchScreenStack")
+              ? navigation.dispatch(StackActions.popToTop())
               : undefined,
           style: "cancel",
         },

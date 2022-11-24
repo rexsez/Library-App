@@ -22,7 +22,43 @@ export const BOOKS = [
     "../assets/icon.png", //imageUrl
     "This is some dummy author name", //author
     new Date("1818-12-15"), //date
-    "genre", //genre
+    "math", //genre
+    "some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary ",
+    3, //rating
+    false, //borrowed
+    null //badge
+  ),
+  new Book(
+    9780076577041, //isbn
+    "book title", //title
+    "../assets/icon.png", //imageUrl
+    "This is some dummy author name", //author
+    new Date("1818-12-15"), //date
+    "science", //genre
+    "some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary ",
+    3, //rating
+    false, //borrowed
+    null //badge
+  ),
+  new Book(
+    9780076577042, //isbn
+    "book title", //title
+    "../assets/icon.png", //imageUrl
+    "This is some dummy author name", //author
+    new Date("1818-12-15"), //date
+    "harith", //genre
+    "some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary ",
+    3, //rating
+    false, //borrowed
+    null //badge
+  ),
+  new Book(
+    9780076577043, //isbn
+    "book title", //title
+    "../assets/icon.png", //imageUrl
+    "This is some dummy author name", //author
+    new Date("1818-12-15"), //date
+    "harithhhh", //genre
     "some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary ",
     3, //rating
     false, //borrowed
