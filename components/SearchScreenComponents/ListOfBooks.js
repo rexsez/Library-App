@@ -7,7 +7,6 @@ import BookCard from "./BookCard";
 import { BOOKS } from "../../data/dummy-data";
 import MyButton from "../MyButton";
 import FilterModal from "./FilterModal";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 function ListOfBooks() {
   const navigation = useNavigation();
@@ -18,16 +17,10 @@ function ListOfBooks() {
   // This will be used to filter search results, in specific to show the modal which contains the options
   // available to be used as a filter
   const [isModalVisible, setModalVisible] = useState(false);
-  const [openedFilter, setOpenedFilter] = useState(false);
+  const [chosenFilter, setChosenFilter] = useState(1);
+  const [chosenOrder, setChosenOrder] = useState(1);
   function toggleModal() {
     setModalVisible(!isModalVisible);
-    setOpenedFilter(true);
-  }
-
-  function cancelFilter() {
-    setSearch("");
-    setBooks(BOOKS);
-    setOpenedFilter(false);
   }
 
   function renderItem(BOOKS) {
@@ -69,83 +62,42 @@ function ListOfBooks() {
   // filter button alone
   let loadedButton = null;
   if (currentSearch) {
-    if (!openedFilter) {
-      loadedButton = (
-        <>
-          <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
-            <Ionicons
-              name="options-sharp"
-              size={iconSize}
-              color="white"
-              style={styles.icon}
-              onPress={toggleModal}
-            />
-          </MyButton>
-        </>
-      );
-    } else {
-      loadedButton = (
-        <>
-          <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
-            <Ionicons
-              name="options-sharp"
-              size={iconSize}
-              color="red"
-              style={styles.icon}
-              onPress={cancelFilter}
-            />
-          </MyButton>
-        </>
-      );
-    }
+    loadedButton = (
+      <>
+        <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
+          <Ionicons
+            name="options-sharp"
+            size={iconSize}
+            color="white"
+            style={styles.icon}
+            onPress={toggleModal}
+          />
+        </MyButton>
+      </>
+    );
   } else {
-    if (!openedFilter) {
-      loadedButton = (
-        <>
-          <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
-            <Ionicons
-              name="barcode-outline"
-              size={iconSize}
-              color="white"
-              style={styles.icon}
-              onPress={() => navigation.navigate("Barcode")}
-            />
-          </MyButton>
-          <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
-            <Ionicons
-              name="options-sharp"
-              size={iconSize}
-              color="white"
-              style={styles.icon}
-              onPress={toggleModal}
-            />
-          </MyButton>
-        </>
-      );
-    } else {
-      loadedButton = (
-        <>
-          <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
-            <Ionicons
-              name="barcode-outline"
-              size={iconSize}
-              color="white"
-              style={styles.icon}
-              onPress={() => navigation.navigate("Barcode")}
-            />
-          </MyButton>
-          <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
-            <Ionicons
-              name="options-sharp"
-              size={iconSize}
-              color="red"
-              style={styles.icon}
-              onPress={cancelFilter}
-            />
-          </MyButton>
-        </>
-      );
-    }
+    loadedButton = (
+      <>
+        <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
+          <Ionicons
+            name="barcode-outline"
+            size={iconSize}
+            color="white"
+            style={styles.icon}
+            onPress={() => navigation.navigate("Barcode")}
+          />
+        </MyButton>
+        <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
+          <Ionicons
+            name="options-sharp"
+            size={iconSize}
+            color="white"
+            style={styles.icon}
+            onPress={toggleModal}
+          />
+        </MyButton>
+      </>
+    );
   }
 
   return (
@@ -178,6 +130,12 @@ function ListOfBooks() {
         setBooks={setBooks}
         currentBooks={currentBooks}
         toggleModal={toggleModal}
+        SearchFilter={SearchFilter}
+        currentSearch={currentSearch}
+        chosenFilter={chosenFilter}
+        setChosenFilter={setChosenFilter}
+        chosenOrder={chosenOrder}
+        setChosenOrder={setChosenOrder}
       />
       <FlatList
         data={currentBooks}
@@ -204,7 +162,7 @@ const styles = StyleSheet.create({
   },
 
   icon: {
-    marginTop: 12,
+    alignSelf: "center",
     marginHorizontal: 8,
   },
 
@@ -217,7 +175,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   barcodeScanner: {
-    marginTop: 12,
+    alignSelf: "center",
     marginHorizontal: 8,
   },
 });

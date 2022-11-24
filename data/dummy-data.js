@@ -24,7 +24,7 @@ export const BOOKS = [
     new Date("1818-12-15"), //date
     "math", //genre
     "some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary ",
-    3, //rating
+    Math.floor(Math.random() * (5 - 0 + 1) + 0),
     false, //borrowed
     null //badge
   ),
@@ -33,10 +33,10 @@ export const BOOKS = [
     "book title", //title
     "../assets/icon.png", //imageUrl
     "This is some dummy author name", //author
-    new Date("1818-12-15"), //date
+    new Date("1817-12-15"), //date
     "science", //genre
     "some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary ",
-    3, //rating
+    Math.floor(Math.random() * (5 - 0 + 1) + 0), // rating
     false, //borrowed
     null //badge
   ),
@@ -45,10 +45,10 @@ export const BOOKS = [
     "book title", //title
     "../assets/icon.png", //imageUrl
     "This is some dummy author name", //author
-    new Date("1818-12-15"), //date
+    new Date("1817-12-08"), //date
     "harith", //genre
     "some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary ",
-    3, //rating
+    Math.floor(Math.random() * (5 - 0 + 1) + 0), // rating
     false, //borrowed
     null //badge
   ),
@@ -57,10 +57,10 @@ export const BOOKS = [
     "book title", //title
     "../assets/icon.png", //imageUrl
     "This is some dummy author name", //author
-    new Date("1818-12-15"), //date
+    new Date("1818-10-15"), //date
     "harithhhh", //genre
     "some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary ",
-    3, //rating
+    Math.floor(Math.random() * (5 - 0 + 1) + 0), // rating
     false, //borrowed
     null //badge
   ),
@@ -76,7 +76,7 @@ for (let i = 0; i < 30; i++) {
     new Date("1818-12-15"),
     generateTitle(),
     generateSummary(),
-    3,
+    Math.floor(Math.random() * (5 - 0 + 1) + 0), // rating
     false,
     null
   );
