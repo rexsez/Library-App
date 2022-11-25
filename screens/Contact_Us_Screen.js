@@ -1,8 +1,6 @@
 import React from "react";
 import { ImageBackground, View, StyleSheet, SafeAreaView, ScrollView, Text, Image, Linking } from "react-native";
 
-
-
 import My_Table from "./My_Table_Contact_Us";
 
 
@@ -159,7 +157,6 @@ const styles = StyleSheet.create({
 
     },
     bannerText: {
-        fontFamily: 'monospace',
         fontSize: 16,
         fontWeight: "bold",
         color: '#366EA0',
