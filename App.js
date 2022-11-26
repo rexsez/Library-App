@@ -1,65 +1,97 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, SafeAreaView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { Ionicons } from "@expo/vector-icons";
+import { useContext } from "react";
 
+import StudentContextProvidor, { StudentContext } from "./store/StudentContext";
+import StackNavigator from "./components/StackNavigator";
+import ProfileScreen from "./screens/ProfileScreen";
+import LogoutScreen from "./screens/LogoutScreen";
 import Contact_Us_Screen from "./screens/Contact_Us_Screen";
-import SearchScreen from "./screens/SearchScreen";
-import BookInformationScreen from "./screens/Book_Information_Screen";
-import NavigationFooter from "./components/navigationFooter";
-import StudentContextProvidor from "./store/StudentContext";
 import LoginScreen from "./screens/LoginScreen";
-import RegisterScreen from "./screens/RegisterScreen";
-import TermsAndConditions from "./components/TermsAndConditions";
-import AddBookScreen from "./screens/Add_Book_Screen";
-import BarcodeScanner from "./components/SearchScreenComponents/BarcodeScanner";
+import { color } from "react-native-reanimated";
 
 export default function App() {
-  const Stack = createStackNavigator();
+  const Drawer = createDrawerNavigator();
+  const studentContext = useContext(StudentContext);
+  let screen = null;
+  if (!!!studentContext.student.Email) {
+    screen = (
+      <Drawer.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{
+          title: "Log in",
+          drawerIcon: ({ color, size }) => (
+            <Ionicons name="log-in-outline" color={color} size={size} />
+          ),
+        }}
+      />
+    );
+  } else {
+    screen = (
+      <Drawer.Screen
+        name="Logout"
+        component={LogoutScreen}
+        options={{
+          title: "Log out",
+          drawerIcon: ({ color, size }) => (
+            <Ionicons name="log-out-outline" color={color} size={size} />
+          ),
+        }}
+      />
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light "></StatusBar>
       <StudentContextProvidor>
         <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              component={NavigationFooter}
-              name="Navigation-Footer"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              component={SearchScreen}
-              name="SearchScreenStack"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              component={LoginScreen}
-              name={"LoginScreen"}
+          <Drawer.Navigator
+            initialRouteName="StackNavigator"
+            screenOptions={{
+              headerShown: true,
+              headerTitle: "",
+            }}
+          >
+            <Drawer.Screen
+              name="HomeScreen"
+              component={StackNavigator}
               options={{
-                title: "Login",
+                title: "Home",
+                drawerIcon: ({ color, size }) => (
+                  <Ionicons name="home" color={color} size={size} />
+                ),
               }}
             />
-            <Stack.Screen
-              component={RegisterScreen}
-              name={"RegisterScreen"}
+            {screen}
+            <Drawer.Screen
+              name="Starred"
+              component={ProfileScreen}
               options={{
-                title: "Create An Account",
+                drawerIcon: ({ color, size }) => (
+                  <Ionicons name="star" color={color} size={size} />
+                ),
               }}
             />
-            <Stack.Screen
-              component={TermsAndConditions}
-              name={"TermsAndConditions"}
+            <Drawer.Screen
+              name="ContactUsScreen"
+              component={Contact_Us_Screen}
               options={{
-                title: "Terms And Conditions",
-                headerShown: false,
+                title: "About us",
+                drawerIcon: ({ color, size }) => (
+                  <Ionicons
+                    name="ios-information-circle-outline"
+                    color={color}
+                    size={size}
+                  />
+                ),
               }}
             />
-            <Stack.Screen name="Book" component={BookInformationScreen} />
-
-            <Stack.Screen name="Add" component={AddBookScreen} />
-            <Stack.Screen name="Barcode" component={BarcodeScanner} />
-            <Stack.Screen name="ContactUs" component={Contact_Us_Screen} />
-          </Stack.Navigator>
+          </Drawer.Navigator>
         </NavigationContainer>
       </StudentContextProvidor>
     </SafeAreaView>

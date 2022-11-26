@@ -16,7 +16,7 @@ function LoginForm() {
   // -----------------Navigation stuff------------------------
   const navigation = useNavigation();
   function onPressCreateAccHandler() {
-    navigation.goBack();
+    navigation.navigate("RegisterScreen");
   }
   const studentContext = useContext(StudentContext);
   const initialError = {
