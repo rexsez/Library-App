@@ -8,26 +8,29 @@ import { useNavigation } from "@react-navigation/native";
 function HomeScreen() {
   const navigation = useNavigation();
   function GoToSearch() {
-    return (navigation.navigate({ name: "Search" }));
+    return navigation.navigate({ name: "TabSearch" });
   }
   function GoToProfile() {
-    return (navigation.navigate({ name: "Profile" }));
+    return navigation.navigate({ name: "TabProfile" });
   }
   function GoToContactUs() {
-    return (navigation.navigate({ name: "ContactUs" }));
+    return navigation.navigate({ name: "StackContact" });
   }
   return (
     <View style={styles.container}>
       <Title>Home</Title>
       <View style={styles.cardContainer}>
-          <View style={styles.rowContainer}>
-            <SearchCard text = "Search" onPressed={GoToSearch}></SearchCard>
-            <ProfileCard text = "Profile" onPressed={GoToProfile}></ProfileCard>
-          </View>
-          <View style={styles.rowContainer}>
-            <ContactUsCard text = "Contact Us" onPressed={GoToContactUs}></ContactUsCard>
-            <StatisticsCard text = "Statistics"></StatisticsCard>
-          </View>
+        <View style={styles.rowContainer}>
+          <SearchCard text="Search" onPressed={GoToSearch}></SearchCard>
+          <ProfileCard text="Profile" onPressed={GoToProfile}></ProfileCard>
+        </View>
+        <View style={styles.rowContainer}>
+          <ContactUsCard
+            text="Contact Us"
+            onPressed={GoToContactUs}
+          ></ContactUsCard>
+          <StatisticsCard text="Statistics"></StatisticsCard>
+        </View>
       </View>
     </View>
   );
@@ -42,11 +45,11 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     padding: 30,
-    paddingTop:100,
+    paddingTop: 100,
   },
   rowContainer: {
-    flexDirection:"row",
-    paddingVertical:30,
-    justifyContent: "space-around"
+    flexDirection: "row",
+    paddingVertical: 30,
+    justifyContent: "space-around",
   },
 });

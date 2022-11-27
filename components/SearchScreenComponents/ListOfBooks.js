@@ -84,7 +84,7 @@ function ListOfBooks() {
             size={iconSize}
             color="white"
             style={styles.icon}
-            onPress={() => navigation.navigate("Barcode")}
+            onPress={() => navigation.navigate("StackBarcode")}
           />
         </MyButton>
         <MyButton style={styles.barcodeScanner} Flate={"Flate"}>

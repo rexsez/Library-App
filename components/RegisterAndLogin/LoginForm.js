@@ -16,7 +16,7 @@ function LoginForm() {
   // -----------------Navigation stuff------------------------
   const navigation = useNavigation();
   function onPressCreateAccHandler() {
-    navigation.navigate("RegisterScreen");
+    navigation.navigate("StackRegister");
   }
   const studentContext = useContext(StudentContext);
   const initialError = {
@@ -48,7 +48,7 @@ function LoginForm() {
         Email: loginStudentInfomation.Email,
         psw: loginStudentInfomation.psw,
       });
-      navigation.navigate({ name: "Profile" });
+      navigation.navigate({ name: "DrawerProfile" });
     }
   }
 

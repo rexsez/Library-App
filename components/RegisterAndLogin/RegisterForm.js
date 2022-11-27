@@ -21,13 +21,13 @@ function RegisterForm() {
     rerender();
   }
   function onPressLoginHandler() {
-    navigation.navigate("LoginScreen");
+    navigation.navigate("StackLogin");
   }
   function onPressGoBackhandler() {
-    navigation.navigate("Home");
+    navigation.navigate("TabHome");
   }
   function onPressTermshandler() {
-    navigation.navigate("TermsAndConditions");
+    navigation.navigate("StackTerms");
   }
   // ------------------------------------------------------
   useLayoutEffect(() => {
@@ -82,7 +82,7 @@ function RegisterForm() {
       studentContext.registerStudent(newStudent);
       // adding the new student data to the database using post
       registerStudent(newStudent);
-      navigation.navigate({ name: "Profile" });
+      navigation.navigate({ name: "DrawerProfile" });
     }
   }
 

@@ -37,7 +37,7 @@ function SearchScreenStack({ navigation }) {
               ? () => (
                   <HeaderBackButton
                     onPress={() => {
-                      navigation.navigate("SearchScreenStack");
+                      navigation.navigate("StackSearch");
                     }}
                   />
                 )
@@ -55,7 +55,7 @@ function SearchScreenStack({ navigation }) {
               ? () => (
                   <HeaderBackButton
                     onPress={() => {
-                      navigation.navigate("SearchScreenStack");
+                      navigation.navigate("StackSearch");
                     }}
                   />
                 )

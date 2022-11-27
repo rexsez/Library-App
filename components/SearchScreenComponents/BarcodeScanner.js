@@ -50,8 +50,8 @@ function BarcodeScanner({ navigation }) {
       const selectedBook = BOOKS.find((book) => book.isbn === parseInt(data));
       //  If selectedBook is set (not null),it means that there is a book and we should go to book information
       if (selectedBook)
-        navigation.navigate("Book", { bookId: data, isScanned: true });
-      else navigation.navigate("Add", { bookId: data, isScanned: true });
+        navigation.navigate("StackBook", { bookId: data, isScanned: true });
+      else navigation.navigate("StackAdd", { bookId: data, isScanned: true });
       // selectedBook not set means there is no book with the scanned ISBN, so we should load Add book screen
     } else {
       setText("Not yet scanned");

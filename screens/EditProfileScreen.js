@@ -1,13 +1,13 @@
 import { View, Text, StyleSheet } from "react-native";
-function LogoutScreen() {
+function EditProfileScreen() {
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 50 }}>This is logout screen</Text>
+      <Text style={{ fontSize: 50 }}>This is edit profile screen</Text>
     </View>
   );
 }
 
-export default LogoutScreen;
+export default EditProfileScreen;
 
 const styles = StyleSheet.create({
   container: {

@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
 import Student from "../models/Student";
 
 export const StudentContext = createContext({
@@ -11,10 +11,13 @@ export const StudentContext = createContext({
     barrowedBooks: [],
     favBooks: [],
   },
-  //  identifying whart operations context should do
-  // Should add more (add barrowed, add fav)
+  //  identifying what operations context should do
+  // Should add more (add borrowed, add fav)
   registerStudent: ({ FName, LName, Email, Password }) => {},
   editStudent: (Email, { FName, LName, Password }) => {},
+  // Will be needed when we try to change themes
+  toggleTheme: ({}) => {},
+  isDarkTheme: false,
 });
 // ----------------------------------------------------------------------------
 // reducer function holds all the different functions that
@@ -50,6 +53,7 @@ function StudentContextProvidor({ children }) {
     favBooks: [],
   };
   const [studentState, dispatch] = useReducer(StudentReducer, student);
+  const [isDarkTheme, setDarkTheme] = useState(false);
   function registerStudent(studentData) {
     dispatch(
       {
@@ -71,6 +75,9 @@ function StudentContextProvidor({ children }) {
       ExpensesContext
     );
   }
+  function toggleTheme() {
+    setDarkTheme(!isDarkTheme);
+  }
   // --------------------------------------------------------
   // More functions needs to be added (add fav, add barrowed)
   // --------------------------------------------------------
@@ -80,6 +87,8 @@ function StudentContextProvidor({ children }) {
     student: studentState,
     registerStudent: registerStudent,
     editStudent: editStudent,
+    isDarkTheme: isDarkTheme,
+    toggleTheme: toggleTheme,
     // ------------------------------------------------------
     // More Functions to be added here (barrowed, fag)
     // ------------------------------------------------------
