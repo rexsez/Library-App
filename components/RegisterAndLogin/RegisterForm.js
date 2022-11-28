@@ -21,7 +21,7 @@ function RegisterForm() {
     rerender();
   }
   function onPressLoginHandler() {
-    navigation.navigate("StackLogin");
+    navigation.navigate("DrawerLogin");
   }
   function onPressGoBackhandler() {
     navigation.navigate("TabHome");
@@ -30,18 +30,18 @@ function RegisterForm() {
     navigation.navigate("StackTerms");
   }
   // ------------------------------------------------------
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: ({ size, color }) => (
-        <AddIcon
-          name="arrow-back-outline"
-          size={25}
-          color={color}
-          onPress={onPressGoBackhandler}
-        ></AddIcon>
-      ),
-    });
-  }, [navigation]);
+  // useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     headerLeft: ({ size, color }) => (
+  //       <AddIcon
+  //         name="arrow-back-outline"
+  //         size={25}
+  //         color={color}
+  //         onPress={onPressGoBackhandler}
+  //       ></AddIcon>
+  //     ),
+  //   });
+  // }, [navigation]);
   const studentContext = useContext(StudentContext);
   const initialError = {
     errorMassage: "",

@@ -29,20 +29,6 @@ function StackNavigator() {
         options={{ headerShown: false, title: "Search" }}
       />
       <Stack.Screen
-        component={LoginScreen}
-        name="StackLogin"
-        options={{
-          title: "Login",
-        }}
-      />
-      <Stack.Screen
-        name="StackLogout"
-        component={LogoutScreen}
-        options={{
-          title: "Logout",
-        }}
-      />
-      <Stack.Screen
         name="StackEdit"
         component={EditProfileScreen}
         options={{

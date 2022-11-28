@@ -87,9 +87,9 @@ export function DrawerContent(props) {
                   color={color}
                 />
               )}
-              label="Edit Profile"
+              label="Edit profile"
               onPress={() => {
-                props.navigation.navigate("StackEdit");
+                props.navigation.navigate("DrawerEdit");
               }}
             />
           </Drawer.Section>
@@ -103,7 +103,7 @@ export function DrawerContent(props) {
             )}
             label="Sign in"
             onPress={() => {
-              props.navigation.navigate("StackLogin");
+              props.navigation.navigate("DrawerLogin");
             }}
           />
         ) : (

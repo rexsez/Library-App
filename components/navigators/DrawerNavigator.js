@@ -6,6 +6,10 @@ import ProfileScreen from "../../screens/ProfileScreen";
 
 import StackNavigator from "./StackNavigator";
 import { DrawerContent } from "./DrawerContent";
+import LoginScreen from "../../screens/LoginScreen";
+import LogoutScreen from "../../screens/LogoutScreen";
+import RegisterScreen from "../../screens/RegisterScreen";
+import EditProfileScreen from "../../screens/EditProfileScreen";
 
 function DrawerNavigator() {
   const Drawer = createDrawerNavigator();
@@ -54,6 +58,38 @@ function DrawerNavigator() {
                 size={size}
               />
             ),
+          }}
+        />
+        <Drawer.Screen
+          component={LoginScreen}
+          name="DrawerLogin"
+          options={{
+            title: "Sign in",
+            drawerItemStyle: { height: 0 },
+          }}
+        />
+        <Drawer.Screen
+          name="DrawerLogout"
+          component={LogoutScreen}
+          options={{
+            title: "Sign out",
+            drawerItemStyle: { height: 0 },
+          }}
+        />
+        <Drawer.Screen
+          name="DrawerRegister"
+          component={RegisterScreen}
+          options={{
+            title: "Sign up",
+            drawerItemStyle: { height: 0 },
+          }}
+        />
+        <Drawer.Screen
+          name="DrawerEdit"
+          component={EditProfileScreen}
+          options={{
+            title: "Edit Profile",
+            drawerItemStyle: { height: 0 },
           }}
         />
       </Drawer.Navigator>

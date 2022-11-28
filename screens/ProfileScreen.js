@@ -20,7 +20,7 @@ function ProfileScreen() {
   //  it will become !false --> true
   useFocusEffect(() => {
     if (!!!studentContext.student.Email) {
-      navigation.navigate("StackRegister");
+      navigation.navigate("DrawerRegister");
     }
   });
   if (!!studentContext.student.Email) {
