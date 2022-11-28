@@ -8,10 +8,10 @@ import Title from "../components/Title";
 function ProfileScreen() {
   const navigation = useNavigation();
   const studentContext = useContext(StudentContext);
-  // Checking if you have loged in / registered already
+  // Checking if you have logged in / registered already
   // If you have logged in, then u can view ur profile
   // -----------------------------------------------
-  // useFocusEffect runs everytime the screen is focused,
+  // useFocusEffect runs every time the screen is focused,
   // This means that whenever u click on profile it will check
   // if student has logged in --> he has put his email
   // --------------------------------------------

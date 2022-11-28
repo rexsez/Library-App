@@ -1,16 +1,11 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
-
 import Contact_Us_Screen from "../../screens/Contact_Us_Screen";
 import ProfileScreen from "../../screens/ProfileScreen";
 
 import StackNavigator from "./StackNavigator";
 import { DrawerContent } from "./DrawerContent";
-import LoginScreen from "../../screens/LoginScreen";
-import HomeScreen from "../../screens/HomeScreen";
-import EditProfileScreen from "../../screens/EditProfileScreen";
-import LogoutScreen from "../../screens/LogoutScreen";
 
 function DrawerNavigator() {
   const Drawer = createDrawerNavigator();
@@ -18,12 +13,13 @@ function DrawerNavigator() {
     <NavigationContainer>
       <Drawer.Navigator
         drawerContent={(props) => <DrawerContent {...props} />}
-        drawerStyle={{ backgroundColor: "#111" }}
         initialRouteName="StackNavigator"
         screenOptions={{
           headerShown: true,
           headerTitle: "",
           headerTransparent: false,
+          drawerActiveBackgroundColor: "#1b7ce4",
+          drawerActiveTintColor: "white",
         }}
       >
         <Drawer.Screen
@@ -31,6 +27,9 @@ function DrawerNavigator() {
           component={StackNavigator}
           options={{
             title: "Home",
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="home" color={color} size={size} />
+            ),
           }}
         />
         <Drawer.Screen
@@ -38,6 +37,9 @@ function DrawerNavigator() {
           component={ProfileScreen}
           options={{
             title: "Favorite",
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="star" color={color} size={size} />
+            ),
           }}
         />
         <Drawer.Screen
@@ -45,27 +47,13 @@ function DrawerNavigator() {
           component={Contact_Us_Screen}
           options={{
             title: "About us",
-          }}
-        />
-        <Drawer.Screen
-          name="DrawerLogin"
-          component={LoginScreen}
-          options={{
-            title: "Login",
-          }}
-        />
-        <Drawer.Screen
-          name="DrawerLogout"
-          component={LogoutScreen}
-          options={{
-            title: "Logout ",
-          }}
-        />
-        <Drawer.Screen
-          name="DrawerEdit"
-          component={EditProfileScreen}
-          options={{
-            title: "Edit Profile",
+            drawerIcon: ({ color, size }) => (
+              <Ionicons
+                name="ios-information-circle-outline"
+                color={color}
+                size={size}
+              />
+            ),
           }}
         />
       </Drawer.Navigator>

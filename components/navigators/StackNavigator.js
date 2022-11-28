@@ -10,6 +10,8 @@ import BookInformationScreen from "../../screens/Book_Information_Screen";
 import AddBookScreen from "../../screens/Add_Book_Screen";
 import BarcodeScanner from "../SearchScreenComponents/BarcodeScanner";
 import Contact_Us_Screen from "../../screens/Contact_Us_Screen";
+import LogoutScreen from "../../screens/LogoutScreen";
+import EditProfileScreen from "../../screens/EditProfileScreen";
 
 function StackNavigator() {
   const Stack = createStackNavigator();
@@ -31,6 +33,21 @@ function StackNavigator() {
         name="StackLogin"
         options={{
           title: "Login",
+        }}
+      />
+      <Stack.Screen
+        name="StackLogout"
+        component={LogoutScreen}
+        options={{
+          title: "Logout",
+        }}
+      />
+      <Stack.Screen
+        name="StackEdit"
+        component={EditProfileScreen}
+        options={{
+          title: "Edit Profile",
+          headerShown:false
         }}
       />
       <Stack.Screen

@@ -1,4 +1,8 @@
-import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
+import {
+  DrawerContentScrollView,
+  DrawerItem,
+  DrawerItemList,
+} from "@react-navigation/drawer";
 import React, { useContext } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { Avatar, Drawer, Switch, TouchableRipple } from "react-native-paper";
@@ -21,7 +25,9 @@ export function DrawerContent(props) {
               />
             </View>
           </Drawer.Section>
-          <Drawer.Section style={styles.drawerSection}>
+          <DrawerItemList {...props} />
+          <Drawer.Section style={styles.drawerSection}></Drawer.Section>
+          {/* <Drawer.Section style={styles.drawerSection}>
             <DrawerItem
               icon={({ color, size }) => (
                 <Ionicons name="home" color={color} size={size} />
@@ -53,7 +59,7 @@ export function DrawerContent(props) {
                 props.navigation.navigate("DrawerContact");
               }}
             />
-          </Drawer.Section>
+          </Drawer.Section> */}
           <Drawer.Section title="Settings">
             <TouchableRipple
               onPress={() => {
@@ -83,7 +89,7 @@ export function DrawerContent(props) {
               )}
               label="Edit Profile"
               onPress={() => {
-                props.navigation.navigate("DrawerEdit");
+                props.navigation.navigate("StackEdit");
               }}
             />
           </Drawer.Section>
@@ -97,12 +103,12 @@ export function DrawerContent(props) {
             )}
             label="Sign in"
             onPress={() => {
-              props.navigation.navigate("DrawerLogin");
+              props.navigation.navigate("StackLogin");
             }}
           />
         ) : (
           <DrawerItem
-            icon={({ coler, size }) => (
+            icon={({ color, size }) => (
               <Ionicons name="log-out-outline" color={color} size={size} />
             )}
             label="Sign out"
@@ -119,32 +125,6 @@ export function DrawerContent(props) {
 const styles = StyleSheet.create({
   drawerContent: {
     flex: 1,
-  },
-  userInfoSection: {
-    paddingLeft: 20,
-  },
-  title: {
-    fontSize: 16,
-    marginTop: 3,
-    fontWeight: "bold",
-  },
-  caption: {
-    fontSize: 14,
-    lineHeight: 14,
-  },
-  row: {
-    marginTop: 20,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  section: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginRight: 15,
-  },
-  paragraph: {
-    fontWeight: "bold",
-    marginRight: 3,
   },
   drawerSection: {
     marginTop: 15,
