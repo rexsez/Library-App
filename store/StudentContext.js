@@ -8,12 +8,19 @@ export const StudentContext = createContext({
     LName: "",
     Email: "",
     psw: "",
-    barrowedBooks: [],
+    borrowedBooks: [],
     favBooks: [],
   },
   //  identifying what operations context should do
   // Should add more (add borrowed, add fav)
-  registerStudent: ({ FName, LName, Email, Password }) => {},
+  registerStudent: ({
+    FName,
+    LName,
+    Email,
+    Password,
+    borrowedBooks,
+    favBooks,
+  }) => {},
   editStudent: (Email, { FName, LName, Password }) => {},
   // Will be needed when we try to change themes
   toggleTheme: ({}) => {},
@@ -37,7 +44,7 @@ function StudentReducer(state, action) {
         studentData.LName,
         studentData.Email,
         studentData.psw,
-        studentData.barrowedBooks,
+        studentData.borrowedBooks,
         studentData.favBooks
       );
       return temp;
@@ -49,7 +56,7 @@ function StudentContextProvidor({ children }) {
     LName: "",
     Email: "",
     psw: "",
-    barrowedBooks: [],
+    borrowedBooks: [],
     favBooks: [],
   };
   const [studentState, dispatch] = useReducer(StudentReducer, student);

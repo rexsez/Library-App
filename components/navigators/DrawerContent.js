@@ -97,15 +97,30 @@ export function DrawerContent(props) {
       </DrawerContentScrollView>
       <Drawer.Section style={styles.bottomDrawerSection}>
         {!!!studentContext.student.Email ? (
-          <DrawerItem
-            icon={({ color, size }) => (
-              <Ionicons name="log-in-outline" color={color} size={size} />
-            )}
-            label="Sign in"
-            onPress={() => {
-              props.navigation.navigate("DrawerLogin");
-            }}
-          />
+          <View>
+            <DrawerItem
+              icon={({ color, size }) => (
+                <Ionicons name="log-in-outline" color={color} size={size} />
+              )}
+              label="Sign in"
+              onPress={() => {
+                props.navigation.navigate("DrawerLogin");
+              }}
+            />
+            <DrawerItem
+              icon={({ color, size }) => (
+                <Ionicons
+                  name="ios-person-add-outline"
+                  color={color}
+                  size={size}
+                />
+              )}
+              label="Sign up"
+              onPress={() => {
+                props.navigation.navigate("DrawerRegister");
+              }}
+            />
+          </View>
         ) : (
           <DrawerItem
             icon={({ color, size }) => (
@@ -113,7 +128,7 @@ export function DrawerContent(props) {
             )}
             label="Sign out"
             onPress={() => {
-              props.navigation.navigate("DrawerEdit");
+              props.navigation.navigate("DrawerLogout");
             }}
           />
         )}

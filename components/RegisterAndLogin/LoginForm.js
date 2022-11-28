@@ -47,6 +47,8 @@ function LoginForm() {
         LName: loginStudentInfomation.LName,
         Email: loginStudentInfomation.Email,
         psw: loginStudentInfomation.psw,
+        borrowedBooks: loginStudentInfomation.borrowedBooks,
+        favBooks: loginStudentInfomation.favBooks,
       });
       navigation.navigate({ name: "DrawerProfile" });
     }

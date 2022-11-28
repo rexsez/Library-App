@@ -10,7 +10,7 @@ function LoginScreen() {
         source={require("../assets/logoNew2.png")}
         resizeMode="cover"
       >
-        <View style={styles.RegistrationCOntainer}>
+        <View style={styles.RegistrationContainer}>
           <LoginForm></LoginForm>
         </View>
       </ImageBackground>
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   ImageBackground: {
     flex: 1,
   },
-  RegistrationCOntainer: {
+  RegistrationContainer: {
     flex: 1,
   },
 });
