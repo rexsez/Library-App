@@ -10,8 +10,8 @@ import validateNewStudent from "../Utlity/InputValidation/ValidateNewStudent";
 import Inpute from "./Inpute";
 import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
-import AddIcon from "../AddIcon";
 import { registerStudent } from "../Utlity/http";
+import AddIcon from "../AddIcon";
 
 function RegisterForm() {
   // ----------------- Navigation stuff --------------
