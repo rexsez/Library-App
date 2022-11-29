@@ -8,9 +8,13 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StudentContext } from "../../store/StudentContext";
 
 export function DrawerContent(props) {
+  // used to get dark mode option from student context, I am storing it in
+  // a context because later on, we will decide the coloring scheme based on it
   const studentContext = useContext(StudentContext);
+  // used to track the current screen, which is then used to change drawer's active screen
+  // background color
   const [currentScreen, setCurrentScreen] = useState("TabHome");
-
+  // just to change screen, will be called when a drawer screen is pressed
   function changeScreenHandler(ScreenName) {
     setCurrentScreen(ScreenName);
   }
@@ -31,6 +35,8 @@ export function DrawerContent(props) {
               icon={({ size }) => (
                 <Ionicons
                   name="home"
+                  // here we decide the icon color based on the active screen
+                  // just to have a good mixture of coloring when the background color is changed
                   color={currentScreen === "TabHome" ? "white" : undefined}
                   size={size}
                 />
@@ -42,10 +48,16 @@ export function DrawerContent(props) {
               }}
               style={{
                 backgroundColor:
+                  // here we decide background color based on the active screen
                   currentScreen === "TabHome" ? "#1b7ce4" : undefined,
               }}
               labelStyle={{
+                // margin here is used to decide the distance between a drawer icon and its label
+                // the bigger the number goes in the negative direction (-20,-50...etc), the closer
+                // the label will be to the icon
                 marginLeft: -15,
+                // here we decide the text color based on the active screen
+                // just to have a good mixture of coloring when the background color is changed
                 color: currentScreen === "TabHome" ? "white" : undefined,
               }}
             />
@@ -110,7 +122,9 @@ export function DrawerContent(props) {
                     <Text>Dark Theme</Text>
                   </View>
                   <View>
+                    {/* This is needed for the switch button to work properly, didn't understand why tbh */}
                     <View pointerEvents="none">
+                      {/* Get switch value (pressed or no) from student context */}
                       <Switch value={studentContext.isDarkTheme} />
                     </View>
                   </View>
@@ -224,32 +238,6 @@ export function DrawerContent(props) {
 const styles = StyleSheet.create({
   drawerContent: {
     flex: 1,
-  },
-  userInfoSection: {
-    paddingLeft: 20,
-  },
-  title: {
-    fontSize: 16,
-    marginTop: 3,
-    fontWeight: "bold",
-  },
-  caption: {
-    fontSize: 14,
-    lineHeight: 14,
-  },
-  row: {
-    marginTop: 20,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  section: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginRight: 15,
-  },
-  paragraph: {
-    fontWeight: "bold",
-    marginRight: 3,
   },
   drawerSection: {
     marginTop: 15,
