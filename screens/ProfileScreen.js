@@ -32,8 +32,8 @@ function ProfileScreen() {
           <Text>{"Last name: " + studentContext.student.LName}</Text>
           <Text>{"Email: " + studentContext.student.Email}</Text>
           <Text>{"Password: " + studentContext.student.psw}</Text>
-          <Text>{"Borrowed Books: " + studentContext.student.borrowedBooks["2222222222"]}</Text>
-          <Text>{"Favorite Books: " + studentContext.student.favBooks.includes(2222222222)}</Text>
+          <Text>{"Borrowed Books: " + JSON.stringify( studentContext.student.borrowedBooks)}</Text>
+          <Text>{"Favorite Books: " + JSON.stringify(studentContext.student.favBooks)}</Text>
         
         </View>
       </View>

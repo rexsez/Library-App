@@ -21,7 +21,7 @@ function StackNavigator() {
       <Stack.Screen
         component={TabNavigator}
         name="StackTabNavigator"
-        options={{ headerShown: false }}
+        options={{ headerShown: false, title: "Search" }}
       />
       <Stack.Screen
         component={SearchScreen}
@@ -33,7 +33,7 @@ function StackNavigator() {
         component={EditProfileScreen}
         options={{
           title: "Edit Profile",
-          headerShown:false
+          headerShown: false,
         }}
       />
       <Stack.Screen

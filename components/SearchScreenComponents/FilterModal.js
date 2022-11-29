@@ -74,6 +74,7 @@ function FilterModal({
   const [category, setCategory] = useState();
   const [filter, setFilter] = useState();
   const [orderBy, setOrderBy] = useState();
+  console.log(rating);
 
   // Here we handle the options that is chosen as a sort options
   // it could be Title, Author, Date and Rating
@@ -159,7 +160,12 @@ function FilterModal({
       // The else will handle the case in which a category isn't chosen as an option
     } else {
       // Filtering books with ratings higher than the chosen rating
-      const selectedBook = currentBooks.filter((book) => book.rating >= rate);
+      const selectedBook = BOOKS.filter(
+        (book) =>
+          (book.title.toLowerCase().includes(currentSearch.toLowerCase()) ||
+            book.author.toLowerCase().includes(currentSearch.toLowerCase())) &&
+          book.rating >= rate
+      );
       // Checking if there is a book that have a rating that matches the criteria
       if (selectedBook) {
         current = selectedBook;
