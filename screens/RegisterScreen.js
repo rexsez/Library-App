@@ -22,15 +22,12 @@ function RegisterScreen() {
 const styles = StyleSheet.create({
   Container: {
     flex: 1,
-    
   },
   ImageBackground: {
     flex: 1,
-    
   },
   RegistrationCOntainer: {
     flex: 1,
-    
   },
 });
 export default RegisterScreen;

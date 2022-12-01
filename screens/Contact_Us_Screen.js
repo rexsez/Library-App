@@ -1,7 +1,6 @@
 import React from "react";
 import { ImageBackground, View, StyleSheet, SafeAreaView, ScrollView, Text, Image, Linking } from "react-native";
-
-
+import Announcements from "./Announcements";
 
 import My_Table from "./My_Table_Contact_Us";
 
@@ -20,6 +19,7 @@ function Contact_Us_Screen() {
                 >
                     <View style={styles.scrollViewContactUs}>
                         <ScrollView>
+                            <Announcements></Announcements>
                             <View style={{ borderBottomWidth: 2, borderColor: 'gray' }}>
                                 <Text style={[styles.bannerText, { textAlign: 'center' }]}>
                                     Men Campus
@@ -159,7 +159,6 @@ const styles = StyleSheet.create({
 
     },
     bannerText: {
-        fontFamily: 'monospace',
         fontSize: 16,
         fontWeight: "bold",
         color: '#366EA0',

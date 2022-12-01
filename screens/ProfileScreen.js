@@ -8,19 +8,19 @@ import Title from "../components/Title";
 function ProfileScreen() {
   const navigation = useNavigation();
   const studentContext = useContext(StudentContext);
-  // Checking if you have loged in / registered already
+  // Checking if you have logged in / registered already
   // If you have logged in, then u can view ur profile
   // -----------------------------------------------
-  // useFocusEffect runs everytime the screen is focused,
+  // useFocusEffect runs every time the screen is focused,
   // This means that whenever u click on profile it will check
   // if student has logged in --> he has put his email
   // --------------------------------------------
   // "!!" turns an empty string into false,
   //  "!" the third one is just so if it is empty --> false
-  //  it will become !flase --> true
+  //  it will become !false --> true
   useFocusEffect(() => {
     if (!!!studentContext.student.Email) {
-      navigation.navigate("RegisterScreen");
+      navigation.navigate("DrawerRegister");
     }
   });
   if (!!studentContext.student.Email) {
@@ -32,6 +32,9 @@ function ProfileScreen() {
           <Text>{"Last name: " + studentContext.student.LName}</Text>
           <Text>{"Email: " + studentContext.student.Email}</Text>
           <Text>{"Password: " + studentContext.student.psw}</Text>
+          <Text>{"Borrowed Books: " + JSON.stringify( studentContext.student.borrowedBooks)}</Text>
+          <Text>{"Favorite Books: " + JSON.stringify(studentContext.student.favBooks)}</Text>
+        
         </View>
       </View>
     );

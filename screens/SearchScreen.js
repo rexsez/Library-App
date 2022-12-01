@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native";
 
-import ListOfBooks from "../components/SearchScreenComponets/ListOfBooks";
+import ListOfBooks from "../components/SearchScreenComponents/ListOfBooks";
 
 function SearchScreen() {
   return (
