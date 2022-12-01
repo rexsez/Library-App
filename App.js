@@ -1,19 +1,19 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, SafeAreaView } from "react-native";
-import { useContext } from "react";
 
-import StudentContextProvidor, { StudentContext } from "./store/StudentContext";
+import StudentContextProvider from "./store/StudentContext";
 import DrawerNavigator from "./components/navigators/DrawerNavigator";
+import AppContextProvider from "./store/AppContext";
 
 export default function App() {
-  const studentContext = useContext(StudentContext);
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light "></StatusBar>
-      <StudentContextProvidor>
-        <DrawerNavigator />
-      </StudentContextProvidor>
+      <AppContextProvider>
+        <StudentContextProvider>
+          <DrawerNavigator />
+        </StudentContextProvider>
+      </AppContextProvider>
     </SafeAreaView>
   );
 }

@@ -50,7 +50,7 @@ function StudentReducer(state, action) {
       return temp;
   }
 }
-function StudentContextProvidor({ children }) {
+function StudentContextProvider({ children }) {
   const student = {
     FName: "",
     LName: "",
@@ -104,4 +104,4 @@ function StudentContextProvidor({ children }) {
     <StudentContext.Provider value={value}>{children}</StudentContext.Provider>
   );
 }
-export default StudentContextProvidor;
+export default StudentContextProvider;

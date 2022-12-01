@@ -3,14 +3,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import TabNavigator from "./TabNavigator";
 import SearchScreen from "../../screens/SearchScreen";
-import LoginScreen from "../../screens/LoginScreen";
 import RegisterScreen from "../../screens/RegisterScreen";
 import TermsAndConditions from "../TermsAndConditions";
 import BookInformationScreen from "../../screens/Book_Information_Screen";
 import AddBookScreen from "../../screens/Add_Book_Screen";
 import BarcodeScanner from "../SearchScreenComponents/BarcodeScanner";
 import Contact_Us_Screen from "../../screens/Contact_Us_Screen";
-import LogoutScreen from "../../screens/LogoutScreen";
 import EditProfileScreen from "../../screens/EditProfileScreen";
 
 function StackNavigator() {

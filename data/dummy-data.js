@@ -17,6 +17,7 @@ import {
 // Keeping the first book as it is so we know if there is a prob.
 export const BOOKS = [
   new Book(
+    1,
     9780076577040, //isbn
     "book title", //title
     "../assets/icon.png", //imageUrl
@@ -24,11 +25,12 @@ export const BOOKS = [
     new Date("1818-12-15"), //date
     "math", //genre
     "some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary some summary ",
-    Math.floor(Math.random() * (5 - 0 + 1) + 0),
+    Math.floor(Math.random() * (5 - 0 + 1) + 0.5),
     false, //borrowed
     null //badge
   ),
   new Book(
+    1,
     9780076577041, //isbn
     "book title", //title
     "../assets/icon.png", //imageUrl
@@ -41,6 +43,7 @@ export const BOOKS = [
     null //badge
   ),
   new Book(
+    1,
     9780076577042, //isbn
     "book title", //title
     "../assets/icon.png", //imageUrl
@@ -53,6 +56,7 @@ export const BOOKS = [
     null //badge
   ),
   new Book(
+    1,
     9780076577043, //isbn
     "book title", //title
     "../assets/icon.png", //imageUrl
@@ -69,6 +73,7 @@ export const BOOKS = [
 // Generating random books
 for (let i = 0; i < 30; i++) {
   let book = new Book(
+    1,
     generateISBN(),
     generateTitle(),
     "../assets/icon.png",

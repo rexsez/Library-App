@@ -1,30 +1,44 @@
 import { View, StyleSheet, TextInput, FlatList, Platform } from "react-native";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import BookCard from "./BookCard";
-import { BOOKS } from "../../data/dummy-data";
 import MyButton from "../MyButton";
 import FilterModal from "./FilterModal";
+import { fetchBooks, fetchCategories } from "../Utlity/http";
+import { AppContext } from "../../store/AppContext";
 
 function ListOfBooks() {
+  const appCtx = useContext(AppContext);
   const navigation = useNavigation();
   //   This state will be used to keep track of the search item
   const [currentSearch, setSearch] = useState("");
-  const [currentBooks, setBooks] = useState(BOOKS);
+  const [currentBooks, setBooks] = useState([]);
   const iconSize = 24;
   // This will be used to filter search results, in specific to show the modal which contains the options
   // available to be used as a filter
   const [isModalVisible, setModalVisible] = useState(false);
   const [chosenFilter, setChosenFilter] = useState(1);
   const [chosenOrder, setChosenOrder] = useState(1);
+
+  useEffect(() => {
+    async function getBooks() {
+      const books = await fetchBooks();
+      const categories = await fetchCategories();
+      appCtx.changeBooks(books);
+      appCtx.changeCategories(categories);
+      setBooks(books);
+    }
+    getBooks();
+  }, []);
+
   function toggleModal() {
     setModalVisible(!isModalVisible);
   }
 
-  function renderItem(BOOKS) {
-    return <BookCard bookData={BOOKS.item}></BookCard>;
+  function renderItem(book) {
+    return <BookCard bookData={book.item}></BookCard>;
   }
   function keyExtractor(book) {
     return book.isbn;
@@ -39,7 +53,7 @@ function ListOfBooks() {
       const temp = enteredSearch.toLowerCase();
       // Storing the list of books that matches the enteredSearch
       // in the list, which will be used as a source of data to display books
-      const filteredBooks = BOOKS.filter(
+      const filteredBooks = appCtx.books.filter(
         (book) =>
           book.title.toLowerCase().includes(temp) || // filtering based on the title
           book.author.toLowerCase().includes(temp) // filtering based on the author
@@ -52,7 +66,7 @@ function ListOfBooks() {
       // To update the value that is displayed in the search bar
       setSearch(enteredSearch);
       // If nothing is entered make the list of books as the default one which is BOOKS
-      setBooks(BOOKS);
+      setBooks(appCtx.books);
     }
   }
 

@@ -1,19 +1,19 @@
 import { StyleSheet, ScrollView, Platform } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { useLayoutEffect, useEffect } from "react";
+import { useLayoutEffect, useEffect, useContext } from "react";
 import { HeaderBackButton } from "react-navigation-stack";
 import { FontAwesome } from "@expo/vector-icons";
 import { StackActions } from "@react-navigation/native";
 
-import { BOOKS } from "../data/dummy-data";
 import BookDetails from "../components/BookInfoComponents/Book_Details";
 import BookSummary from "../components/BookInfoComponents/Book_Summary";
 import ItemsBar from "../components/ItemsBar";
 import MyButton from "../components/MyButton";
+import { AppContext } from "../store/AppContext";
 
 function BookInformationScreen({ navigation }) {
+  const appCtx = useContext(AppContext);
   useEffect(() => {
-
     navigation.setOptions({
       headerLeft:
         Platform.OS === "android"
@@ -36,11 +36,13 @@ function BookInformationScreen({ navigation }) {
   //getting the book isbn using the passed route params
   //const isbn = route.params.isbn;
   const Route = useRoute();
-  const isbn = parseInt(Route.params.bookId);
+  const isbn = Route.params.bookId;
   const isScanned = Route.params.isScanned; // ### test  ###
 
+  // console.log(JSON.stringify(appCtx.books));
+
   //using the isbn to find the selected book object
-  const selectedBook = BOOKS.find((book) => book.isbn === isbn);
+  const selectedBook = appCtx.books.find((book) => book.isbn === isbn);
 
   // setting the tilte of the page to the name of book
   const Navigation = useNavigation();

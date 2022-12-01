@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Button,
   StyleSheet,
@@ -10,7 +10,6 @@ import {
 import Modal from "react-native-modal";
 import RadioButtonRN from "radio-buttons-react-native";
 
-import { CATEGORIES } from "../../data/Book_Categories";
 import DropDownMenu from "../AddBookComponents/Drop_Down_Menu";
 import SliderExample from "../Utlity/SliderExample";
 import {
@@ -23,8 +22,7 @@ import {
   AscendingRating,
   DescendingRating,
 } from "../Utlity/Sorting";
-import MyButton from "../MyButton";
-import { BOOKS } from "../../data/dummy-data";
+import { AppContext } from "../../store/AppContext";
 
 // This is going to be used to show filter options as a radio button
 // label is needed for radio button to work
@@ -69,6 +67,8 @@ function FilterModal({
   SearchFilter,
   currentSearch,
 }) {
+  const appCtx = useContext(AppContext);
+  console.log(JSON.stringify(appCtx.categories));
   var current = [...currentBooks];
   const [rating, setRating] = useState(0);
   const [category, setCategory] = useState();
@@ -142,7 +142,7 @@ function FilterModal({
       // Here we filter the selected Books
       // (which is the list of books left as a result of the search the user made) and we also check for rating
       // if rating is not chosen as a criteria, its value will be zero, so it won't affect the result
-      const selectedBook = BOOKS.filter(
+      const selectedBook = appCtx.books.filter(
         (book) =>
           (book.title.toLowerCase().includes(currentSearch.toLowerCase()) ||
             book.author.toLowerCase().includes(currentSearch.toLowerCase())) &&
@@ -160,7 +160,7 @@ function FilterModal({
       // The else will handle the case in which a category isn't chosen as an option
     } else {
       // Filtering books with ratings higher than the chosen rating
-      const selectedBook = BOOKS.filter(
+      const selectedBook = appCtx.books.filter(
         (book) =>
           (book.title.toLowerCase().includes(currentSearch.toLowerCase()) ||
             book.author.toLowerCase().includes(currentSearch.toLowerCase())) &&
@@ -254,7 +254,7 @@ function FilterModal({
             <Text style={styles.headerText}>Filter By</Text>
             <DropDownMenu //Category
               label={category}
-              elements={CATEGORIES}
+              elements={appCtx.categories}
               dropDownConfig={{
                 onChange: (item) => {
                   inputChangedHandler(item.value);

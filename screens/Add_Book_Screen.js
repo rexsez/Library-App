@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useRoute } from "@react-navigation/native";
@@ -10,9 +10,11 @@ import MyButton from "../components/MyButton";
 import ErrorComponent from "../components/RegisterAndLogin/ErrorComponent";
 import Title from "../components/Title";
 import DropDownMenu from "../components/AddBookComponents/Drop_Down_Menu";
-import { CATEGORIES } from "../data/Book_Categories";
+import { AppContext } from "../store/AppContext";
 
 function AddBookScreen({ navigation }) {
+  const appCtx = useContext(AppContext);
+
   useEffect(() => {
     navigation.setOptions({
       headerLeft:
@@ -29,7 +31,7 @@ function AddBookScreen({ navigation }) {
     }); // if platform is IOS don't do anything
   }, []);
   const Route = useRoute();
-  const isbn = parseInt(Route.params.bookId);
+  const isbn = Route.params.bookId;
 
   const [inputs, setInputs] = useState({
     //default input values
@@ -54,7 +56,7 @@ function AddBookScreen({ navigation }) {
   function submitHandler() {
     //taking the inputs
     const bookData = {
-      isbn: +inputs.isbn.value, //converting the string to a number
+      isbn: inputs.isbn.value,
       title: inputs.title.value,
       author: inputs.author.value,
       date: new Date(inputs.date.value),
@@ -133,7 +135,7 @@ function AddBookScreen({ navigation }) {
 
         <DropDownMenu //Category
           label={"Category"}
-          elements={CATEGORIES}
+          elements={appCtx.categories}
           dropDownConfig={{
             search: true,
             searchPlaceholder: "Search...",

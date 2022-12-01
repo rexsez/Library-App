@@ -1,11 +1,12 @@
 import { View, Text, StyleSheet, Button, Platform, Alert } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { StackActions } from "@react-navigation/native";
 
-import { BOOKS } from "../../data/dummy-data";
+import { AppContext } from "../../store/AppContext";
 
 function BarcodeScanner({ navigation }) {
+  const appCtx = useContext(AppContext);
   // To track permission of accessing camera
   const [hasPermission, setHasPermission] = useState(null);
   // To track what if something got scanned or no (boolean)
@@ -45,9 +46,7 @@ function BarcodeScanner({ navigation }) {
       // Checking if the list of books we have include the scanned barcode, which is needed to decide
       // which page to load, if we have I'll load the book information page. Otherwise, Add book screen should
       // be loaded to give the option to user to add the new book
-      // Parse int is needed because we stored the isbn as a number, while the scanner is reading
-      // it as a string
-      const selectedBook = BOOKS.find((book) => book.isbn === parseInt(data));
+      const selectedBook = appCtx.books.find((book) => book.isbn === data);
       //  If selectedBook is set (not null),it means that there is a book and we should go to book information
       if (selectedBook)
         navigation.navigate("StackBook", { bookId: data, isScanned: true });
