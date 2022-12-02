@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import axios from "axios";
 
 import Announcement from "../../models/Announcement";
@@ -18,10 +19,7 @@ export async function fetchBooks() {
     let author = bookData.author;
     let category = bookData.category;
     let date = new Date(bookData.date);
-    let img =
-      "https://static.remove.bg/remove-bg-web/c05ac62d076574fad1fbc81404cd6083e9a4152b/assets/start-1abfb4fe2980eabfbbaaa4365a0692539f7cd2725f324f904565a9a744f8e214.jpg";
-
-    let rating = -1.0;
+    let rating = -1;
     if (!!bookData.ratings) {
       let ratings = [];
       let sum = 0.0;
@@ -44,6 +42,7 @@ export async function fetchBooks() {
     let isbn = bookData.isbn;
     let summary = bookData.summary;
     let title = bookData.title;
+    let img = await getImage(bookData.image);
     databaseBooks.push(
       new Book(
         id,
@@ -73,6 +72,21 @@ export async function fetchCategories() {
   }
   return databaseCategories;
 }
+
+export async function getImage(imageName) {
+  var finalUrl =
+    "https://firebasestorage.googleapis.com/v0/b/psu-library-app.appspot.com/o/images%2F" +
+    imageName +
+    "?alt=media&token=";
+
+  const respone = await axios.get(finalUrl);
+  const header = respone.headers.get(
+    "x-goog-meta-firebasestoragedownloadtokens"
+  );
+  const final = finalUrl + header;
+  return final;
+}
+
 // ------------------------------------------Announcement---------------------------------------------------
 export async function fetchAnnouncements() {
   // basically await waits for the promise to happen. ---> returns a promise ....

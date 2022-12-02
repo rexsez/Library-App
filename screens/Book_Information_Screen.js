@@ -50,8 +50,8 @@ function BookInformationScreen({ navigation }) {
     Navigation.setOptions({ title: selectedBook.title });
   }, [Navigation, selectedBook.title]);
 
-  const bookImage = require("../assets/icon.png"); //dummy image to test
-
+  const bookImage = selectedBook.imageUrl; //dummy image to test
+  console.log(bookImage);
   /*
   // This commented section might be used later to implement the favorite books feature
   // Note: Some variable / function namings might be changed
@@ -92,7 +92,7 @@ function BookInformationScreen({ navigation }) {
 
     //rating
     <MyButton style={styles.iconButton} Flate={true} textStyle={styles.rating}>
-      {selectedBook.rating!=-1?selectedBook.rating + " / 5":'N/A'}
+      {selectedBook.rating != -1 ? selectedBook.rating + " / 5" : "N/A"}
     </MyButton>,
   ];
 
