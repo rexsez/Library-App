@@ -5,6 +5,7 @@ import ProfileCard from "../components/Utlity/Cards/ProfileCard";
 import ContactUsCard from "../components/Utlity/Cards/ContactUsCard";
 import StatisticsCard from "../components/Utlity/Cards/StatisticsCard";
 import { useNavigation } from "@react-navigation/native";
+import Announcements from "./Announcements";
 function HomeScreen() {
   const navigation = useNavigation();
   function GoToSearch() {
@@ -19,6 +20,7 @@ function HomeScreen() {
   return (
     <View style={styles.container}>
       <Title>Home</Title>
+      <Announcements />
       <View style={styles.cardContainer}>
         <View style={styles.rowContainer}>
           <SearchCard text="Search" onPressed={GoToSearch}></SearchCard>
