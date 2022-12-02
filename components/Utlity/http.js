@@ -3,6 +3,7 @@ import axios from "axios";
 import Announcement from "../../models/Announcement";
 import Book from "../../models/Book";
 import Student from "../../models/Student";
+import { toFixed } from "./UtilityFunctions";
 
 const database =
   "https://psu-library-app-default-rtdb.europe-west1.firebasedatabase.app/";
@@ -20,7 +21,26 @@ export async function fetchBooks() {
     let img =
       "https://static.remove.bg/remove-bg-web/c05ac62d076574fad1fbc81404cd6083e9a4152b/assets/start-1abfb4fe2980eabfbbaaa4365a0692539f7cd2725f324f904565a9a744f8e214.jpg";
 
-    let rating = 1;
+    let rating = -1.0;
+    if (!!bookData.ratings) {
+      let ratings = [];
+      let sum = 0.0;
+      for (const rate in bookData.ratings) {
+        const currentRating = bookData.ratings[rate];
+        // rates are stored as string in database for accuracy purposes, so here we are converting it
+        // to float
+        currentRating = parseFloat(currentRating);
+        ratings.push(currentRating);
+        sum += currentRating;
+      }
+      // getting average
+      rating = sum / ratings.length;
+      // toFixed take two arguments, the first one being the number, and the second one being the
+      // number of the desired decimal points without any rounding
+      // Note: toFixed is implemented locally not the one implemented by javascript itself; because that
+      // one rounds answers automatically
+      rating = toFixed(rating, 2);
+    }
     let isbn = bookData.isbn;
     let summary = bookData.summary;
     let title = bookData.title;
@@ -34,7 +54,7 @@ export async function fetchBooks() {
         date,
         category,
         summary,
-        (Math.random() * (5 - 0 + 1) + 0).toFixed(2),
+        rating,
         false,
         null
       )
@@ -48,7 +68,7 @@ export async function fetchCategories() {
   let databaseCategories = [];
   for (const key in response.data) {
     let category = response.data[key].category;
-    console.log(category);
+    // console.log(category);
     databaseCategories.push({ label: category, value: category });
   }
   return databaseCategories;

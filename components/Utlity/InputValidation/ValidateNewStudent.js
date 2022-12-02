@@ -42,7 +42,7 @@ async function isUsedEmail(potentialStudent) {
   // the method that returns the promise.
   const studens = await getStudents();
   for (let i = 0; i < studens.length; i++) {
-    console.log(studens[i].Email + "\n");
+    // console.log(studens[i].Email + "\n");
   }
   const isUsedEmail1 = !!studens.find(
     (student) => student.Email === potentialStudent

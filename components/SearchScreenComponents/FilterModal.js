@@ -21,7 +21,7 @@ import {
   DescendingDate,
   AscendingRating,
   DescendingRating,
-} from "../Utlity/Sorting";
+} from "../Utlity/UtilityFunctions";
 import { AppContext } from "../../store/AppContext";
 
 // This is going to be used to show filter options as a radio button
@@ -68,13 +68,12 @@ function FilterModal({
   currentSearch,
 }) {
   const appCtx = useContext(AppContext);
-  console.log(JSON.stringify(appCtx.categories));
   var current = [...currentBooks];
   const [rating, setRating] = useState(0);
   const [category, setCategory] = useState();
   const [filter, setFilter] = useState();
   const [orderBy, setOrderBy] = useState();
-  console.log(rating);
+  // console.log(rating);
 
   // Here we handle the options that is chosen as a sort options
   // it could be Title, Author, Date and Rating
@@ -147,7 +146,7 @@ function FilterModal({
           (book.title.toLowerCase().includes(currentSearch.toLowerCase()) ||
             book.author.toLowerCase().includes(currentSearch.toLowerCase())) &&
           book.genre.toLowerCase() === cat &&
-          book.rating >= rate
+          (book.rating >= rate || book.rating == -1)
       );
       // checking if there is a book with  the given criteria, to avoid null issues
       if (selectedBook) {
@@ -164,7 +163,7 @@ function FilterModal({
         (book) =>
           (book.title.toLowerCase().includes(currentSearch.toLowerCase()) ||
             book.author.toLowerCase().includes(currentSearch.toLowerCase())) &&
-          book.rating >= rate
+          (book.rating >= rate || book.rating == -1)
       );
       // Checking if there is a book that have a rating that matches the criteria
       if (selectedBook) {

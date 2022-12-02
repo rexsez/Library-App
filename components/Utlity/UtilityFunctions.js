@@ -96,3 +96,14 @@ export function AscendingRating(book1, book2) {
   }
   return 0;
 }
+
+export function toFixed(num, fixed) {
+  var re = new RegExp("^-?\\d+(?:.\\d{0," + (fixed || -1) + "})?");
+  return num.toString().match(re)[0];
+}
+
+export function formateDate(date) {
+  return (
+    date.getFullYear() + " - " + (date.getMonth() + 1) + " - " + date.getDate()
+  );
+}

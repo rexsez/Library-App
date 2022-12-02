@@ -92,7 +92,7 @@ function BookInformationScreen({ navigation }) {
 
     //rating
     <MyButton style={styles.iconButton} Flate={true} textStyle={styles.rating}>
-      {selectedBook.rating + " / 5"}
+      {selectedBook.rating!=-1?selectedBook.rating + " / 5":'N/A'}
     </MyButton>,
   ];
 
