@@ -246,11 +246,20 @@ function FilterModal({
   }
 
   return (
-    <Modal isVisible={isModalVisible}>
+    <Modal
+      isVisible={isModalVisible}
+      style={{
+        backgroundColor: "white",
+        width: "100%",
+        alignSelf: "center",
+        marginTop: 100,
+        borderRadius: 30,
+      }}
+    >
       <View>
         <ScrollView>
           <View style={styles.Container}>
-            <Text style={styles.headerText}>Filter By</Text>
+            <Text style={styles.Text}>Filter By</Text>
             <DropDownMenu //Category
               label={category}
               elements={appCtx.categories}
@@ -260,25 +269,27 @@ function FilterModal({
                 },
               }}
             />
-            <Text style={[styles.headerText, { borderBottomWidth: 0 }]}>
-              minimum rating
+            <Text style={[styles.Text, { borderBottomWidth: 0 }]}>
+              Minimum Rating
             </Text>
             <SliderExample rating={rating} setRating={setRating} />
-            <Text style={styles.headerText}>Sort By</Text>
+            <Text style={styles.Text}>Sort By</Text>
             {/* This component is taken from npm library, check the following link for info: */}
             {/* https://github.com/sramezani/radio-buttons-react-native#readme*/}
             <RadioButtonRN
               data={filterationOptions}
               selectedBtn={(e) => handleRadioSortBy(e)}
               initial={chosenFilter}
+              activeColor="#1b7ce4"
             />
-            <Text style={styles.headerText}>Order By</Text>
+            <Text style={styles.Text}>Order By</Text>
             {/* This component is taken from npm library, check the following link for info: */}
             {/* https://github.com/sramezani/radio-buttons-react-native#readme*/}
             <RadioButtonRN
               data={orderOptions}
               selectedBtn={(e) => handleRadioOrderBy(e)}
               initial={chosenOrder}
+              activeColor="#1b7ce4"
             />
 
             <View style={styles.btnsContainer}>
@@ -315,7 +326,6 @@ export default FilterModal;
 const styles = StyleSheet.create({
   Container: {
     flex: 1,
-    backgroundColor: "white",
   },
   headerText: {
     textAlign: "center",
@@ -333,5 +343,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flex: 1,
     justifyContent: "center",
+  },
+  Text: {
+    fontSize: 20,
+    color: "gray",
   },
 });

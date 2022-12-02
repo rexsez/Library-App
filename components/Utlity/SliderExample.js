@@ -27,7 +27,7 @@ function SliderExample({ rating, setRating }) {
         onSlidingComplete={(value) => changeValue(value)}
         step={0.5}
       />
-      <Text>Value: {rating}</Text>
+      <Text style={styles.Text}>Value: {rating}</Text>
     </View>
   );
 }
@@ -40,5 +40,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
     alignItems: "stretch",
     justifyContent: "center",
+  },
+  Text: {
+    fontSize: 18,
+    color: "gray",
   },
 });
