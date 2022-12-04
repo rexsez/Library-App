@@ -2,8 +2,8 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import formateDate from "../Utlity/Date";
 import MyButton from "../MyButton";
+import { formateDate } from "../Utlity/UtilityFunctions";
 
 function BookCard({ bookData }) {
   const navigation = useNavigation();
@@ -11,7 +11,7 @@ function BookCard({ bookData }) {
     // Note: here im just getting bookData and spreading it varabiles into
     // new object, so if this object is change, the original one doesnt change
     // Avoiding coupling them togather
-    navigation.navigate("Book", { bookId: bookData.isbn });
+    navigation.navigate("StackBook", { bookId: bookData.isbn });
   }
 
   return (
@@ -21,7 +21,7 @@ function BookCard({ bookData }) {
         <Image
           style={styles.Image}
           source={{
-            uri: "https://static.remove.bg/remove-bg-web/c05ac62d076574fad1fbc81404cd6083e9a4152b/assets/start-1abfb4fe2980eabfbbaaa4365a0692539f7cd2725f324f904565a9a744f8e214.jpg ",
+            uri: bookData.imageUrl,
           }}
         ></Image>
       </View>
@@ -47,6 +47,9 @@ function BookCard({ bookData }) {
       {/* ----------------------Share icon container ------------------- */}
       <View style={styles.ShareIconContainer}>
         <Ionicons name="share-social-outline" size={24} color="blue"></Ionicons>
+        <Text style={styles.ratingStyle}>
+          {bookData.rating != -1 ? bookData.rating : "N/A"}
+        </Text>
       </View>
     </View>
   );
@@ -90,4 +93,9 @@ const styles = StyleSheet.create({
   },
   TextContainer: { flex: 1, marginVertical: 2 },
   onPress: { opacity: 0.75, backgroundColor: "black" },
+  ratingStyle: {
+    fontSize: 12,
+    color: "gray",
+    paddingVertical: 20,
+  },
 });

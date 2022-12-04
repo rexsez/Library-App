@@ -11,7 +11,12 @@ function BookDetails({ isbn, author, date, genre, bookImage }) {
       <View style={styles.imageContainer}>
         {bookImage !== null ? ( // checking if we have an image or not
           //displaying the image
-          <Image style={styles.image} source={bookImage} />
+          <Image
+            style={styles.image}
+            source={{
+              uri: bookImage,
+            }}
+          />
         ) : (
           //Display no book image text if we didn't receive an image
           <View>

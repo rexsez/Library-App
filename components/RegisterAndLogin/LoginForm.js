@@ -16,7 +16,7 @@ function LoginForm() {
   // -----------------Navigation stuff------------------------
   const navigation = useNavigation();
   function onPressCreateAccHandler() {
-    navigation.goBack();
+    navigation.navigate("DrawerRegister");
   }
   const studentContext = useContext(StudentContext);
   const initialError = {
@@ -47,8 +47,10 @@ function LoginForm() {
         LName: loginStudentInfomation.LName,
         Email: loginStudentInfomation.Email,
         psw: loginStudentInfomation.psw,
+        borrowedBooks: loginStudentInfomation.borrowedBooks,
+        favBooks: loginStudentInfomation.favBooks,
       });
-      navigation.navigate({ name: "Profile" });
+      navigation.navigate({ name: "DrawerProfile" });
     }
   }
 

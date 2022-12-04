@@ -66,5 +66,5 @@ const styles = StyleSheet.create({
   head: { height: 40, backgroundColor: '#808B97' },
   headerText:{ fontWeight: 'bold', fontSize: 15 },
   text: { margin: 6 ,   },
-  row: { flexDirection: 'row', backgroundColor: 'f5f5f5' },
+  row: { flexDirection: 'row', backgroundColor: '#f5f5f5' },
 });

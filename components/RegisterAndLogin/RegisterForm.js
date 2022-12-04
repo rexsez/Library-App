@@ -10,8 +10,8 @@ import validateNewStudent from "../Utlity/InputValidation/ValidateNewStudent";
 import Inpute from "./Inpute";
 import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
-import AddIcon from "../AddIcon";
 import { registerStudent } from "../Utlity/http";
+import AddIcon from "../AddIcon";
 
 function RegisterForm() {
   // ----------------- Navigation stuff --------------
@@ -21,27 +21,27 @@ function RegisterForm() {
     rerender();
   }
   function onPressLoginHandler() {
-    navigation.navigate("LoginScreen");
+    navigation.navigate("DrawerLogin");
   }
   function onPressGoBackhandler() {
-    navigation.navigate("Home");
+    navigation.navigate("TabHome");
   }
   function onPressTermshandler() {
-    navigation.navigate("TermsAndConditions");
+    navigation.navigate("StackTerms");
   }
   // ------------------------------------------------------
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: ({ size, color }) => (
-        <AddIcon
-          name="arrow-back-outline"
-          size={25}
-          color={color}
-          onPress={onPressGoBackhandler}
-        ></AddIcon>
-      ),
-    });
-  }, [navigation]);
+  // useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     headerLeft: ({ size, color }) => (
+  //       <AddIcon
+  //         name="arrow-back-outline"
+  //         size={25}
+  //         color={color}
+  //         onPress={onPressGoBackhandler}
+  //       ></AddIcon>
+  //     ),
+  //   });
+  // }, [navigation]);
   const studentContext = useContext(StudentContext);
   const initialError = {
     errorMassage: "",
@@ -82,7 +82,7 @@ function RegisterForm() {
       studentContext.registerStudent(newStudent);
       // adding the new student data to the database using post
       registerStudent(newStudent);
-      navigation.navigate({ name: "Profile" });
+      navigation.navigate({ name: "DrawerProfile" });
     }
   }
 

@@ -1,5 +1,6 @@
 class Book {
   constructor(
+    id,
     isbn,
     title,
     imageUrl,
@@ -11,6 +12,7 @@ class Book {
     borrowed,
     badge
   ) {
+    this.id = id;
     this.isbn = isbn;
     this.title = title;
     this.imageUrl = imageUrl;

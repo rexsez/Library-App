@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
 import Student from "../models/Student";
 
 export const StudentContext = createContext({
@@ -8,13 +8,23 @@ export const StudentContext = createContext({
     LName: "",
     Email: "",
     psw: "",
-    barrowedBooks: [],
+    borrowedBooks: [],
     favBooks: [],
   },
-  //  identifying whart operations context should do
-  // Should add more (add barrowed, add fav)
-  registerStudent: ({ FName, LName, Email, Password }) => {},
+  //  identifying what operations context should do
+  // Should add more (add borrowed, add fav)
+  registerStudent: ({
+    FName,
+    LName,
+    Email,
+    Password,
+    borrowedBooks,
+    favBooks,
+  }) => {},
   editStudent: (Email, { FName, LName, Password }) => {},
+  // Will be needed when we try to change themes
+  toggleTheme: ({}) => {},
+  isDarkTheme: false,
 });
 // ----------------------------------------------------------------------------
 // reducer function holds all the different functions that
@@ -27,29 +37,30 @@ function StudentReducer(state, action) {
     }
     case "ADD":
       let studentData = action.payload;
-      console.log(studentData);
+      // console.log(studentData);
 
       const temp = new Student(
         studentData.FName,
         studentData.LName,
         studentData.Email,
         studentData.psw,
-        studentData.barrowedBooks,
+        studentData.borrowedBooks,
         studentData.favBooks
       );
       return temp;
   }
 }
-function StudentContextProvidor({ children }) {
+function StudentContextProvider({ children }) {
   const student = {
     FName: "",
     LName: "",
     Email: "",
     psw: "",
-    barrowedBooks: [],
+    borrowedBooks: [],
     favBooks: [],
   };
   const [studentState, dispatch] = useReducer(StudentReducer, student);
+  const [isDarkTheme, setDarkTheme] = useState(false);
   function registerStudent(studentData) {
     dispatch(
       {
@@ -71,6 +82,9 @@ function StudentContextProvidor({ children }) {
       ExpensesContext
     );
   }
+  function toggleTheme() {
+    setDarkTheme(!isDarkTheme);
+  }
   // --------------------------------------------------------
   // More functions needs to be added (add fav, add barrowed)
   // --------------------------------------------------------
@@ -80,6 +94,8 @@ function StudentContextProvidor({ children }) {
     student: studentState,
     registerStudent: registerStudent,
     editStudent: editStudent,
+    isDarkTheme: isDarkTheme,
+    toggleTheme: toggleTheme,
     // ------------------------------------------------------
     // More Functions to be added here (barrowed, fag)
     // ------------------------------------------------------
@@ -88,4 +104,4 @@ function StudentContextProvidor({ children }) {
     <StudentContext.Provider value={value}>{children}</StudentContext.Provider>
   );
 }
-export default StudentContextProvidor;
+export default StudentContextProvider;

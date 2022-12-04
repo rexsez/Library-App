@@ -6,7 +6,7 @@ Dropdown component properties:
 label: should take a String
 style: should take a style object for styling the root container (View)
 dropDownConfig: takes dropdown configurations (IMPORTANT to add the value, and onChange) check the link below
-elemnts: should take a list of {label , value} objects
+elements: should take a list of {label , value} objects
 Example: 
     [
     { label: 'Item 1', value: '1' },
