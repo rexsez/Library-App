@@ -217,8 +217,19 @@ export function DrawerContent(props) {
             )}
             label="Sign out"
             onPress={() => {
-              props.navigation.navigate("DrawerLogout");
-              changeScreenHandler("DrawerLogout");
+              {
+                () => {
+                  const initialNewStudent1 = new Student(
+                    "",
+                    "",
+                    "",
+                    "",
+                    [],
+                    []
+                  );
+                  studentContext.editStudent();
+                };
+              }
             }}
             style={{
               backgroundColor:

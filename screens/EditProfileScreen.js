@@ -1,18 +1,32 @@
-import { View, Text, StyleSheet } from "react-native";
-function EditProfileScreen() {
+import { ImageBackground, View, StyleSheet, SafeAreaView } from "react-native";
+
+import EditProfileForm from "../components/RegisterAndLogin/EditProfileForm";
+function RegisterScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={{ fontSize: 50 }}>This is edit profile screen</Text>
-    </View>
+    <SafeAreaView style={styles.Container}>
+      <View style={styles.Container}>
+        <ImageBackground
+          style={styles.ImageBackground}
+          source={require("../assets/logoNew2.png")}
+          resizeMode="cover"
+        >
+          <View style={styles.RegistrationCOntainer}>
+            <EditProfileForm></EditProfileForm>
+          </View>
+        </ImageBackground>
+      </View>
+    </SafeAreaView>
   );
 }
-
-export default EditProfileScreen;
-
 const styles = StyleSheet.create({
-  container: {
+  Container: {
     flex: 1,
-    justifyContent: "center",
-    alignSelf: "center",
+  },
+  ImageBackground: {
+    flex: 1,
+  },
+  RegistrationCOntainer: {
+    flex: 1,
   },
 });
+export default RegisterScreen;

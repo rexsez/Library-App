@@ -21,7 +21,7 @@ export const StudentContext = createContext({
     borrowedBooks,
     favBooks,
   }) => {},
-  editStudent: (Email, { FName, LName, Password }) => {},
+  editStudent: () => {},
   // Will be needed when we try to change themes
   isDarkTheme: false,
   toggleTheme: () => {},
@@ -35,7 +35,14 @@ export const StudentContext = createContext({
 function StudentReducer(state, action) {
   switch (action.type) {
     case "UPDATE": {
-      const updatedStudent = { ...state, ...action.payload.studentData };
+      const updatedStudent = {
+        FName: "",
+        LName: "",
+        Email: "",
+        Password: "",
+        borrowedBooks: [],
+        favBooks: [],
+      };
       return updatedStudent;
     }
     case "ADD":
@@ -74,16 +81,13 @@ function StudentContextProvider({ children }) {
       StudentContext
     );
   }
-  function editStudent(Email, studentData) {
+  function editStudent() {
     dispatch(
       {
         type: "UPDATE",
-        payload: {
-          data: studentData,
-          Email: Email,
-        },
+        payload: {},
       },
-      ExpensesContext
+      StudentContext
     );
   }
   function toggleTheme() {

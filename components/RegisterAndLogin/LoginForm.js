@@ -20,8 +20,8 @@ function LoginForm() {
   }
   const studentContext = useContext(StudentContext);
   const initialError = {
-    errorMassage: "",
-    isValid: true,
+    errorMassage: "Fill the form first please!",
+    isValid: false,
     feilds: "",
     errorComponent: <View></View>,
   };
