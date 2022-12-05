@@ -23,8 +23,11 @@ export const StudentContext = createContext({
   }) => {},
   editStudent: (Email, { FName, LName, Password }) => {},
   // Will be needed when we try to change themes
-  toggleTheme: ({}) => {},
   isDarkTheme: false,
+  toggleTheme: () => {},
+  // Needed to track book ratings
+  ID: "",
+  setID: () => {},
 });
 // ----------------------------------------------------------------------------
 // reducer function holds all the different functions that
@@ -61,6 +64,7 @@ function StudentContextProvider({ children }) {
   };
   const [studentState, dispatch] = useReducer(StudentReducer, student);
   const [isDarkTheme, setDarkTheme] = useState(false);
+  const [ID, setStudentID] = useState();
   function registerStudent(studentData) {
     dispatch(
       {
@@ -85,6 +89,10 @@ function StudentContextProvider({ children }) {
   function toggleTheme() {
     setDarkTheme(!isDarkTheme);
   }
+
+  function setID(StudentDatabaseID) {
+    setStudentID(StudentDatabaseID);
+  }
   // --------------------------------------------------------
   // More functions needs to be added (add fav, add barrowed)
   // --------------------------------------------------------
@@ -96,6 +104,8 @@ function StudentContextProvider({ children }) {
     editStudent: editStudent,
     isDarkTheme: isDarkTheme,
     toggleTheme: toggleTheme,
+    ID: ID,
+    setID: setID,
     // ------------------------------------------------------
     // More Functions to be added here (barrowed, fag)
     // ------------------------------------------------------

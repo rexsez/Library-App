@@ -10,9 +10,13 @@ import BookSummary from "../components/BookInfoComponents/Book_Summary";
 import ItemsBar from "../components/ItemsBar";
 import MyButton from "../components/MyButton";
 import { AppContext } from "../store/AppContext";
+import { StudentContext } from "../store/StudentContext";
 
 function BookInformationScreen({ navigation }) {
+  // to get the list of books
   const appCtx = useContext(AppContext);
+  // to get student info and use it to rate a book
+  const studentCtx = useContext(StudentContext);
   useEffect(() => {
     navigation.setOptions({
       headerLeft:
@@ -51,7 +55,7 @@ function BookInformationScreen({ navigation }) {
   }, [Navigation, selectedBook.title]);
 
   const bookImage = selectedBook.imageUrl; //dummy image to test
-  console.log(bookImage);
+  // console.log(bookImage);
   /*
   // This commented section might be used later to implement the favorite books feature
   // Note: Some variable / function namings might be changed
@@ -69,6 +73,17 @@ function BookInformationScreen({ navigation }) {
     }
   }
  */
+
+  function rateBook() {
+    if (!!studentCtx.student.Email) {
+      if (selectedBook.rating == -1) {
+        
+        console.log("New Rating");
+      } else {
+        console.log("Already Rated");
+      }
+    }
+  }
 
   //helper variable to style the icons
   const iconStyles = {
@@ -91,7 +106,12 @@ function BookInformationScreen({ navigation }) {
     </MyButton>,
 
     //rating
-    <MyButton style={styles.iconButton} Flate={true} textStyle={styles.rating}>
+    <MyButton
+      style={styles.iconButton}
+      Flate={true}
+      textStyle={styles.rating}
+      onPress={rateBook}
+    >
       {selectedBook.rating != -1 ? selectedBook.rating + " / 5" : "N/A"}
     </MyButton>,
   ];
