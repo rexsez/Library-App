@@ -1,5 +1,3 @@
-import { getStudents } from "../http";
-
 function hasNumber(myString) {
   return /\d/.test(myString);
 }
@@ -36,24 +34,18 @@ function isValidPsw(psw) {
   }
 }
 
-async function isUsedEmail(potentialStudent) {
-  // since we used asnyc on getStudents, so it will return a promise
-  // so we need to wait for that promise using asyn and await beofore
-  // the method that returns the promise.
-  const studens = await getStudents();
-  for (let i = 0; i < studens.length; i++) {
-    // console.log(studens[i].Email + "\n");
-  }
-  const isUsedEmail1 = !!studens.find(
-    (student) => student.Email === potentialStudent
-  );
-  return isUsedEmail1;
+function isCorrectPassword(oldPassword, contextPassword) {
+  if (contextPassword == oldPassword) return true;
+  else return false;
 }
-//  since isUsedEmail is asyn, then it will always also return a promise
-//  so this function also needs to be async and waits for isUsedEmail
-// the return value of validateNewStudent will be promise
-// but it is not used, so we wont have to worry about that anymore
-async function validateNewStudent(newStudent, setError, isChecked) {
+
+async function validateEditStudent(
+  newStudent,
+  setError,
+  oldPsw,
+  contextPassword,
+  rePsw
+) {
   // -----------------------First name checks---------------
   if (newStudent.FName.trim() == "") {
     setError({
@@ -92,32 +84,16 @@ async function validateNewStudent(newStudent, setError, isChecked) {
       isValid: false,
       feilds: "LName",
     });
-  } // -----------------------Email name checks---------------
-  else if (newStudent.Email.trim() == "") {
+  }
+  // -------------------- check if the old password matchs the context ----------------------
+  else if (!isCorrectPassword(oldPsw, contextPassword)) {
     setError({
-      errorMassage: "Please enter your email",
+      errorMassage: "Please enter the correct old password!",
       isValid: false,
-      feilds: "Email",
-    });
-  } else if (!newStudent.Email.toLowerCase().includes("@psu.edu.sa")) {
-    setError({
-      errorMassage: "You need to use your PSU email address",
-      isValid: false,
-      feilds: "Email",
-    });
-    // } else if (newStudent.Email.length != 20) {
-    //   setError({
-    //     errorMassage: "Please enter your PSU email correctly",
-    //     isValid: false,
-    //     feilds: "Email",
-    //   });
-  } else if (!!(await isUsedEmail(newStudent.Email))) {
-    setError({
-      errorMassage: "Sorry! This email is already in use.",
-      isValid: false,
-      feilds: "Email",
+      feilds: "oldPsw",
     });
   }
+
   // -----------------------password name checks---------------
   else if (newStudent.psw.trim == "") {
     setError({
@@ -130,16 +106,18 @@ async function validateNewStudent(newStudent, setError, isChecked) {
       errorMassage:
         "Password most contain 6 character, uppercase letter, lowercase letter and a number",
       isValid: false,
-      feilds: "psw",
+      feilds: "newPsw",
     });
-  } // -----------------------Checking checkbox check, if it has been checked---------------
-  else if (!isChecked) {
+  }
+  // ----------------------- check new passowrd match re-entried password --------
+  else if (!(newStudent.psw == rePsw)) {
     setError({
-      errorMassage: "Sorry, You forgot to accept the Terms & Conditions!",
+      errorMassage: "Re-enter password doesn't match the new password entered",
       isValid: false,
-      feilds: "Term",
+      feilds: "rePsw",
     });
-  } // -----------------------If all things valid, no error---------------
+  }
+  // -----------------------If all things valid, no error---------------
   else {
     setError({
       errorMassage: "",
@@ -148,4 +126,4 @@ async function validateNewStudent(newStudent, setError, isChecked) {
     });
   }
 }
-export default validateNewStudent;
+export default validateEditStudent;

@@ -12,6 +12,7 @@ import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
 import { registerStudent } from "../Utlity/http";
 import AddIcon from "../AddIcon";
+import { useFocusEffect } from "@react-navigation/native";
 
 function RegisterForm() {
   // ----------------- Navigation stuff --------------
@@ -44,8 +45,8 @@ function RegisterForm() {
   // }, [navigation]);
   const studentContext = useContext(StudentContext);
   const initialError = {
-    errorMassage: "",
-    isValid: true,
+    errorMassage: "Fill the form first please!",
+    isValid: false,
     feilds: "",
     errorComponent: <View></View>,
   };
