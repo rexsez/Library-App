@@ -9,7 +9,7 @@ import { toFixed } from "./UtilityFunctions";
 const database =
   "https://psu-library-app-default-rtdb.europe-west1.firebasedatabase.app/";
 
-// ------------------------------------------Books Stuff----------------------------------------------------
+// -----------------------------------------Books Stuff----------------------------------------------------
 // getting books from the database
 export async function fetchBooks() {
   const response = await axios.get(database + "books.json");
