@@ -10,7 +10,7 @@ import Inpute from "./Inpute";
 import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
 import validateLoginStudent from "../Utlity/InputValidation/validateLoginStudent";
-import { getStudents } from "../Utlity/http";
+import { getStudentID, getStudents } from "../Utlity/http";
 
 function LoginForm() {
   // -----------------Navigation stuff------------------------
@@ -27,7 +27,7 @@ function LoginForm() {
   };
   const [error, setError] = useState(initialError);
   async function onPress() {
-    // if inpute is not valid, we put a new error component
+    // if input is not valid, we put a new error component
     if (!error.isValid) {
       let newRrrorComponent = (
         <ErrorComponent>{error.errorMassage}</ErrorComponent>
@@ -41,6 +41,8 @@ function LoginForm() {
         (student) => student.Email === loginStudent.Email
       );
       loginStudentInfomation = studens[indexOfStudent];
+      const studentID = await getStudentID(loginStudentInfomation.Email);
+      studentContext.setID(studentID);
       // -----------------------------This needs some changes ------------------------
       studentContext.registerStudent({
         FName: loginStudentInfomation.FName,
