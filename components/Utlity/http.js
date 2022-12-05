@@ -14,7 +14,8 @@ export async function updateProfile(ID, student) {
   let studentID = null;
   for (const key in response.data) {
     const studentData = response.data[key];
-
+  }
+}
 // -------------------------------------------Books Stuff----------------------------------------------------
 // getting books from the database
 export async function fetchBooks() {
