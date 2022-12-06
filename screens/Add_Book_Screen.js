@@ -11,6 +11,7 @@ import ErrorComponent from "../components/RegisterAndLogin/ErrorComponent";
 import Title from "../components/Title";
 import DropDownMenu from "../components/AddBookComponents/Drop_Down_Menu";
 import { AppContext } from "../store/AppContext";
+import { requestBook } from "../components/Utlity/http";
 
 function AddBookScreen({ navigation }) {
   const appCtx = useContext(AppContext);
@@ -97,13 +98,17 @@ function AddBookScreen({ navigation }) {
         };
       });
 
-      console.log(inputs);
       return;
     }
 
-    console.log(inputs);
-    // if input is valid..
-    // onSubmit(bookData); //imp
+    //inouts are valid -> create data object and call the onsubmit function
+    const requestData = {isbn : inputs.isbn.value, title: inputs.title.value, category: inputs.category.value, author: inputs.author.value, date: inputs.date.value, summary: inputs.summary.value}
+    onSubmit(requestData);
+  }
+
+  //call the requestBook function from the http and pass the data object to it
+  async function onSubmit(requestedData) {
+    await requestBook(requestedData);
   }
 
   //helper variable to display form error text if some input is invalid
@@ -118,7 +123,7 @@ function AddBookScreen({ navigation }) {
   return (
     <View style={styles.rootContainer}>
       <ScrollView>
-        <Title>Add Book</Title>
+        <Title>Request Book</Title>
 
         {/* Using the Input component to create input fields */}
         <Input //ISBN

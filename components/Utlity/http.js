@@ -137,6 +137,11 @@ export async function postRating(studentID, bookID, isItRated, update, rating) {
   }
   return databaseCategories;
 }
+// ------------------------------------------Book Request----------------------------------------------------
+//Send book request info to database -> so admin can view it from the admin panel
+export async function requestBook(requestData) {
+  axios.post(database + "book_requests.json", requestData);
+}
 // ------------------------------------------Announcement----------------------------------------------------
 export async function fetchAnnouncements() {
   // basically await waits for the promise to happen. ---> returns a promise ....
