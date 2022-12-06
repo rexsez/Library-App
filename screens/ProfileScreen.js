@@ -19,6 +19,8 @@ function ProfileScreen() {
   //  "!" the third one is just so if it is empty --> false
   //  it will become !false --> true
   useFocusEffect(() => {
+    console.log("here ");
+    console.log(studentContext.student.Email);
     if (!!!studentContext.student.Email) {
       navigation.navigate("DrawerRegister");
     }
@@ -28,7 +30,7 @@ function ProfileScreen() {
       <View>
         <Title> Profile </Title>
         <View>
-        <Text>{"ID: " + studentContext.ID}</Text>
+          <Text>{"ID: " + studentContext.ID}</Text>
           <Text>{"First name: " + studentContext.student.FName}</Text>
           <Text>{"Last name: " + studentContext.student.LName}</Text>
           <Text>{"Email: " + studentContext.student.Email}</Text>

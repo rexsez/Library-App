@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
-import { View, Text, StyleSheet, Modal, Button } from "react-native";
+import { View, StyleSheet, Modal, Button } from "react-native";
 import { StudentContext } from "../../store/StudentContext";
-import MyButton from "../MyButton";
 import { postRating } from "../Utlity/http";
 
 import SliderExample from "../Utlity/SliderExample";

@@ -1,14 +1,25 @@
-import { async } from "@firebase/util";
 import axios from "axios";
-
+import Student from "../../models/Student";
 import Announcement from "../../models/Announcement";
 import Book from "../../models/Book";
-import Student from "../../models/Student";
 import { toFixed } from "./UtilityFunctions";
 
 const database =
   "https://psu-library-app-default-rtdb.europe-west1.firebasedatabase.app/";
+// ----------------------------------------- Edit profile stuff -------------------------------------------
 
+export async function updateProfile(ID, student) {
+  axios.delete(database + `students/${ID}.json`);
+  axios.post(database + "students.json", student);
+  let studentID = null;
+  for (const key in response.data) {
+    const studentData = response.data[key];
+
+    if (studentData.Email === student.Email) {
+      studentID = key;
+    }
+  }
+}
 // ------------------------------------------Books Stuff----------------------------------------------------
 // getting books from the database
 export async function fetchBooks() {
@@ -105,7 +116,6 @@ export async function getImage(imageName) {
   const final = finalUrl + header;
   return final;
 }
-
 // if a student does have a rating it will be edited, otherwise a new rating will be added
 export async function postRating(studentID, bookID, rating) {
   const link = database + "books/" + bookID + "/ratings.json";
@@ -122,7 +132,6 @@ export async function postRating(studentID, bookID, rating) {
   // res["key2"] = "test";
   // console.log(res);
 }
-
 // ------------------------------------------Announcement----------------------------------------------------
 export async function fetchAnnouncements() {
   // basically await waits for the promise to happen. ---> returns a promise ....
@@ -183,6 +192,7 @@ export async function getStudentID(email) {
   let studentID = null;
   for (const key in response.data) {
     const studentData = response.data[key];
+
     if (studentData.Email === email) {
       studentID = key;
     }
