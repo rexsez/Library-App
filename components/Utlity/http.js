@@ -9,16 +9,17 @@ const database =
 // ----------------------------------------- Edit profile stuff -------------------------------------------
 
 export async function updateProfile(ID, student) {
-  axios.delete(database + `students/${ID}.json`);
-  axios.post(database + "students.json", student);
-  let studentID = null;
-  for (const key in response.data) {
-    const studentData = response.data[key];
+  // axios.delete(database + `students/${ID}.json`);
+  // axios.post(database + "students.json", student);
+  // let studentID = null;
+  // for (const key in response.data) {
+  //   const studentData = response.data[key];
 
-    if (studentData.Email === student.Email) {
-      studentID = key;
-    }
-  }
+  //   if (studentData.Email === student.Email) {
+  //     studentID = key;
+  //   }
+  // }
+  axios.put(database+`students/${ID}.json`,student);
 }
 // ------------------------------------------Books Stuff----------------------------------------------------
 // getting books from the database
