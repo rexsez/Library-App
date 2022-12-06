@@ -5,6 +5,7 @@ import {
   Modal,
   Text,
   View,
+  ImageBackground,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useLayoutEffect, useEffect, useContext, useState } from "react";
@@ -137,34 +138,40 @@ function BookInformationScreen({ navigation }) {
   return (
     //Scrollview for the entire screen
     <>
-      <ScrollView style={styles.rootContainer}>
-        <BookRatingModal
-          visible={visible}
-          rate={defaultRating}
-          changeVisibility={changeVisibility}
-          studentID={studentCtx.ID}
-          bookID={selectedBook.id}
-        />
+      <ImageBackground
+        style={styles.ImageBackground}
+        source={require("../assets/logoNew2.png")}
+        resizeMode="cover"
+      >
+        <ScrollView style={styles.rootContainer}>
+          <BookRatingModal
+            visible={visible}
+            rate={defaultRating}
+            changeVisibility={changeVisibility}
+            studentID={studentCtx.ID}
+            bookID={selectedBook.id}
+          />
 
-        <BookDetails
-          isbn={isbn}
-          author={selectedBook.author}
-          date={selectedBook.date}
-          genre={selectedBook.genre}
-          bookImage={bookImage}
-        />
+          <BookDetails
+            isbn={isbn}
+            author={selectedBook.author}
+            date={selectedBook.date}
+            genre={selectedBook.genre}
+            bookImage={bookImage}
+          />
 
-        {/* using the items bar to add icon buttons */}
-        <ItemsBar
-          style={styles.itemsBar}
-          items={
-            //buttons to be added to the IconsBar
-            iconBarButtons
-          }
-        />
+          {/* using the items bar to add icon buttons */}
+          <ItemsBar
+            style={styles.itemsBar}
+            items={
+              //buttons to be added to the IconsBar
+              iconBarButtons
+            }
+          />
 
-        <BookSummary>{selectedBook.summary}</BookSummary>
-      </ScrollView>
+          <BookSummary>{selectedBook.summary}</BookSummary>
+        </ScrollView>
+      </ImageBackground>
     </>
   );
 }
@@ -190,5 +197,8 @@ const styles = StyleSheet.create({
   rating: {
     fontSize: 18,
     color: "black",
+  },
+  ImageBackground: {
+    flex: 1,
   },
 });
