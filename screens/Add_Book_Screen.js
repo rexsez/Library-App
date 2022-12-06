@@ -151,7 +151,7 @@ function AddBookScreen({ navigation }) {
     //   requestedData.image.value = filename;
     // }
     await requestBook(requestedData);
-    navigation.navigate({ name: "TabSearch" });
+    navigation.navigate("TabSearch", { request: true });
   }
 
   //helper variable to display form error text if some input is invalid

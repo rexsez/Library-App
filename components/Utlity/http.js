@@ -9,17 +9,7 @@ const database =
 // ----------------------------------------- Edit profile stuff -------------------------------------------
 
 export async function updateProfile(ID, student) {
-  // axios.delete(database + `students/${ID}.json`);
-  // axios.post(database + "students.json", student);
-  // let studentID = null;
-  // for (const key in response.data) {
-  //   const studentData = response.data[key];
-
-  //   if (studentData.Email === student.Email) {
-  //     studentID = key;
-  //   }
-  // }
-  axios.put(database+`students/${ID}.json`,student);
+  axios.put(database + `students/${ID}.json`, student);
 }
 // ------------------------------------------Books Stuff----------------------------------------------------
 // getting books from the database
@@ -34,20 +24,26 @@ export async function fetchBooks() {
     let date = new Date(bookData.date);
     // if a book doesn't have a rating it will be -1 by default, otherwise it will compute its average rating
     let rating = -1;
+    let ratedBy = [];
     // !!bookData.ratings is basically asking does a rating exist?
     if (!!bookData.ratings) {
       let ratings = [];
       let sum = 0.0;
       for (const rate in bookData.ratings) {
         const currentRating = bookData.ratings[rate];
+        ratedBy.push({ key: rate, rating: currentRating });
         // rates are stored as string in database for accuracy purposes, so here we are converting it
         // to float
         currentRating = parseFloat(currentRating);
-        ratings.push(currentRating);
-        sum += currentRating;
+        if (currentRating != -1) {
+          ratings.push(currentRating);
+          sum += currentRating;
+        }
       }
       // getting average
-      rating = sum / ratings.length;
+      // console.log(ratings.length);
+      if (ratings.length != 0) rating = sum / ratings.length;
+      else rating = -1;
       // toFixed take two arguments, the first one being the number, and the second one being the
       // number of the desired decimal points without any rounding
       // Note: toFixed is implemented locally not the one implemented by javascript itself; because that
@@ -71,7 +67,8 @@ export async function fetchBooks() {
         summary,
         rating,
         false,
-        null
+        null,
+        ratedBy
       )
     );
   }
@@ -110,34 +107,34 @@ export async function getImage(imageName) {
   const final = finalUrl + header;
   return final;
 }
-/* 
-IsItRated is boolean to check if the book is rated or not (Create new rating object or no)
-update is boolean to check if the student is updating their existing rating or no
-rating is the new rating which will be treated as a string for rating accuracy, otherwise firebase
-will round it automatically      
-*/
-export async function postRating(studentID, bookID, isItRated, update, rating) {
-  // if book has at least one rating, it will go inside this condition
-  if (isItRated) {
-    // if the student is updating their existing rating, it will go inside this condition
-    if (update) {
-    }
-    // if the student is adding their rating to the book, it will go inside this condition
-    else {
-    }
-  }
-  // if the book has no rating yet, it will go inside this condition
-  else {
-  }
-  const response = await axios.get(database + "categories.json");
-  let databaseCategories = [];
-  for (const key in response.data) {
-    let category = response.data[key].category;
-    // console.log(category);
-    databaseCategories.push({ label: category, value: category });
-  }
-  return databaseCategories;
+// if a student does have a rating it will be edited, otherwise a new rating will be added
+
+
+
+
+
+
+export async function postRating(studentID, bookID, rating) {
+  const link = database + "books/" + bookID + "/ratings.json";
+
+  // var sendData = {};
+  // sendData[studentID] = rating;
+  // var data=studentID+":"+rating
+
+  // axios.post(link, { [studentID]: rating });
+  const result = await axios.get(link);
+  let res = result.data;
+  res[studentID] = rating;
+  axios.put(link, res);
 }
+
+
+
+
+
+
+
+
 // ------------------------------------------Book Request----------------------------------------------------
 //Send book request info to database -> so admin can view it from the admin panel
 export async function requestBook(requestData) {

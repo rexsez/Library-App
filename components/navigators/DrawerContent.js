@@ -4,11 +4,12 @@ import { View, StyleSheet, Text } from "react-native";
 import { Avatar, Drawer, Switch, TouchableRipple } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import Student from "../../models/Student";
 
 import { StudentContext } from "../../store/StudentContext";
+import Student from "../../models/Student";
 
 export function DrawerContent(props) {
+
   // used to get dark mode option from student context, I am storing it in
   // a context because later on, we will decide the coloring scheme based on it
   const studentContext = useContext(StudentContext);
@@ -132,28 +133,6 @@ export function DrawerContent(props) {
                 </View>
               </View>
             </TouchableRipple>
-            <DrawerItem
-              icon={({ size }) => (
-                <MaterialCommunityIcons
-                  name="account-edit-outline"
-                  size={size}
-                  color={currentScreen === "DrawerEdit" ? "white" : undefined}
-                />
-              )}
-              label="Edit Profile"
-              onPress={() => {
-                props.navigation.navigate("DrawerEdit");
-                changeScreenHandler("DrawerEdit");
-              }}
-              style={{
-                backgroundColor:
-                  currentScreen === "DrawerEdit" ? "#1b7ce4" : undefined,
-              }}
-              labelStyle={{
-                marginLeft: -15,
-                color: currentScreen === "DrawerEdit" ? "white" : undefined,
-              }}
-            />
           </Drawer.Section>
         </View>
       </DrawerContentScrollView>
@@ -208,38 +187,52 @@ export function DrawerContent(props) {
             />
           </>
         ) : (
-          <DrawerItem
-            icon={({ size }) => (
-              <Ionicons
-                name="log-out-outline"
-                color={currentScreen === "DrawerLogout" ? "white" : undefined}
-                size={size}
-              />
-            )}
-            label="Sign out"
-            onPress={() => {
-              
-                
-                  const initialNewStudent1 = new Student(
-                    "",
-                    "",
-                    "",
-                    "",
-                  );
-                  console.log("clicked");
-                  studentContext.registerStudent(initialNewStudent1);
-                
-              
-            }}
-            style={{
-              backgroundColor:
-                currentScreen === "DrawerLogout" ? "#1b7ce4" : undefined,
-            }}
-            labelStyle={{
-              marginLeft: -15,
-              color: currentScreen === "DrawerLogout" ? "white" : undefined,
-            }}
-          />
+          <>
+            <DrawerItem
+              icon={({ size }) => (
+                <Ionicons
+                  name="log-out-outline"
+                  color={currentScreen === "DrawerLogout" ? "white" : undefined}
+                  size={size}
+                />
+              )}
+              label="Sign out"
+              onPress={() => {
+                const initialNewStudent1 = new Student("", "", "", "", [], []);
+                studentContext.registerStudent(initialNewStudent1);
+              }}
+              style={{
+                backgroundColor:
+                  currentScreen === "DrawerLogout" ? "#1b7ce4" : undefined,
+              }}
+              labelStyle={{
+                marginLeft: -15,
+                color: currentScreen === "DrawerLogout" ? "white" : undefined,
+              }}
+            />
+            <DrawerItem
+              icon={({ size }) => (
+                <MaterialCommunityIcons
+                  name="account-edit-outline"
+                  size={size}
+                  color={currentScreen === "DrawerEdit" ? "white" : undefined}
+                />
+              )}
+              label="Edit Profile"
+              onPress={() => {
+                props.navigation.navigate("DrawerEdit");
+                changeScreenHandler("DrawerEdit");
+              }}
+              style={{
+                backgroundColor:
+                  currentScreen === "DrawerEdit" ? "#1b7ce4" : undefined,
+              }}
+              labelStyle={{
+                marginLeft: -15,
+                color: currentScreen === "DrawerEdit" ? "white" : undefined,
+              }}
+            />
+          </>
         )}
       </Drawer.Section>
     </View>
