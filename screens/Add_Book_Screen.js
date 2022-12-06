@@ -73,7 +73,9 @@ function AddBookScreen({ navigation }) {
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
     if (inputs.date.value !== "") {
       //JS returns 'Invalid Date' if invalid date is passed when creating a new date object
-      dateIsValid = (bookData.date.toString() !== "Invalid Date") && (inputs.date.value.match(dateRegex) !== null);
+      dateIsValid =
+        bookData.date.toString() !== "Invalid Date" &&
+        inputs.date.value.match(dateRegex) !== null;
     }
     // const categoryIsValid = bookData.category.trim().length > 0;
 
@@ -102,7 +104,14 @@ function AddBookScreen({ navigation }) {
     }
 
     //inouts are valid -> create data object and call the onsubmit function
-    const requestData = {isbn : inputs.isbn.value, title: inputs.title.value, category: inputs.category.value, author: inputs.author.value, date: inputs.date.value, summary: inputs.summary.value}
+    const requestData = {
+      isbn: inputs.isbn.value,
+      title: inputs.title.value,
+      category: inputs.category.value,
+      author: inputs.author.value,
+      date: inputs.date.value,
+      summary: inputs.summary.value,
+    };
     onSubmit(requestData);
   }
 
@@ -190,7 +199,14 @@ function AddBookScreen({ navigation }) {
           </ErrorComponent>
         )}
 
-        <MyButton onPress={submitHandler} Flate={true} style={styles.buttonStyles} textStyle={styles.buttonText}>Submit</MyButton>
+        <MyButton
+          onPress={submitHandler}
+          Flate={true}
+          style={styles.buttonStyles}
+          textStyle={styles.buttonText}
+        >
+          Submit
+        </MyButton>
       </ScrollView>
     </View>
   );
@@ -200,7 +216,7 @@ export default AddBookScreen;
 
 const styles = StyleSheet.create({
   rootContainer: {
-    marginBottom: 4
+    marginBottom: 4,
   },
   errorText: {
     textAlign: "center",
@@ -212,9 +228,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderRadius: 8,
-    width: "50%", 
+    width: "50%",
   },
   buttonText: {
-    fontSize: 24
-  }
+    fontSize: 24,
+  },
 });
