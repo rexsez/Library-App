@@ -95,7 +95,7 @@ function BookInformationScreen({ navigation }) {
   const bookIsFavorite = true; // ### test  ###
 
   //List of buttons to be added to the IconButtonBar
-  const iconBarButtons = [
+  const buttonsBar = [
     //favorite button
     <MyButton style={styles.iconButton} Flate={true}>
       {
@@ -123,7 +123,7 @@ function BookInformationScreen({ navigation }) {
   // });
   if (isScanned) {
       //add the borrow option if the book is scanned
-    iconBarButtons.push(
+    buttonsBar.push(
       <MyButton style={styles.iconButton} Flate={true}>
         {<FontAwesome name="hand-grab-o" {...iconStyles} />}
       </MyButton>
@@ -146,7 +146,7 @@ function BookInformationScreen({ navigation }) {
         style={styles.itemsBar}
         items={
           //buttons to be added to the IconsBar
-          iconBarButtons
+          buttonsBar
         }
       />
 
