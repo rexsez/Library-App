@@ -18,7 +18,7 @@ import {
 export const BOOKS = [
   new Book(
     1,
-    9780076577040, //isbn
+    9780273766599, //isbn
     "book title", //title
     "../assets/icon.png", //imageUrl
     "This is some dummy author name", //author

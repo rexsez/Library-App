@@ -4,6 +4,7 @@ import { useLayoutEffect, useEffect, useContext } from "react";
 import { HeaderBackButton } from "react-navigation-stack";
 import { FontAwesome } from "@expo/vector-icons";
 import { StackActions } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 
 import BookDetails from "../components/BookInfoComponents/Book_Details";
 import BookSummary from "../components/BookInfoComponents/Book_Summary";
@@ -115,9 +116,13 @@ function BookInformationScreen({ navigation }) {
       {selectedBook.rating != -1 ? selectedBook.rating + " / 5" : "N/A"}
     </MyButton>,
   ];
-
+  // useFocusEffect(() => {
+  //   if (!!studentCtx.student.Email && isScanned) {
+  //     navigation.navigate("StackBook", { bookId: isbn, isScanned: isScanned });
+  //   }
+  // });
   if (isScanned) {
-    //add the borrow option if the book is scanned
+      //add the borrow option if the book is scanned
     iconBarButtons.push(
       <MyButton style={styles.iconButton} Flate={true}>
         {<FontAwesome name="hand-grab-o" {...iconStyles} />}

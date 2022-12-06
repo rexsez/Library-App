@@ -4,6 +4,7 @@ import { View, StyleSheet, Text } from "react-native";
 import { Avatar, Drawer, Switch, TouchableRipple } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Student from "../../models/Student";
 
 import { StudentContext } from "../../store/StudentContext";
 
@@ -217,19 +218,18 @@ export function DrawerContent(props) {
             )}
             label="Sign out"
             onPress={() => {
-              {
-                () => {
+              
+                
                   const initialNewStudent1 = new Student(
                     "",
                     "",
                     "",
                     "",
-                    [],
-                    []
                   );
-                  studentContext.editStudent();
-                };
-              }
+                  console.log("clicked");
+                  studentContext.registerStudent(initialNewStudent1);
+                
+              
             }}
             style={{
               backgroundColor:

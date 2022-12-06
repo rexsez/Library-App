@@ -67,7 +67,7 @@ function AddBookScreen({ navigation }) {
 
     //checking if the inputs are valid
     const titleIsValid = bookData.title.trim().length > 0;
-    const authorIsValid = bookData.author.trim().length > 0;
+    // const authorIsValid = bookData.author.trim().length > 0;
     //checking if date matches the regex "YYYY-MM-DD" and it's valid
     let dateIsValid = true;
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
@@ -80,7 +80,7 @@ function AddBookScreen({ navigation }) {
     //if one of the inputs is invalid..
     if (
       !titleIsValid ||
-      !authorIsValid ||
+      // !authorIsValid ||
       !dateIsValid /*|| !categoryIsValid*/
     ) {
       setInputs((curInputs) => {
