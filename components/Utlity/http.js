@@ -14,9 +14,13 @@ export async function updateProfile(ID, student) {
   let studentID = null;
   for (const key in response.data) {
     const studentData = response.data[key];
+
+    if (studentData.Email === student.Email) {
+      studentID = key;
+    }
   }
 }
-// -------------------------------------------Books Stuff----------------------------------------------------
+// ------------------------------------------Books Stuff----------------------------------------------------
 // getting books from the database
 export async function fetchBooks() {
   const response = await axios.get(database + "books.json");
