@@ -27,7 +27,15 @@ function SearchScreen() {
 
 
   const route = useRoute();
+  const [render, setRender] = useState(false);
+
+  function toggle () {
+    setRender(!render);
+  }
+
   if (!!route.params) {
+    toggle();
+    
     // Alert.alert("Your book request is recorded",[{}]);
     Alert.alert("Book request", "Your books request is added", [
  
