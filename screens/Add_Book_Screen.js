@@ -67,8 +67,13 @@ function AddBookScreen({ navigation }) {
     //checking if the inputs are valid
     const titleIsValid = bookData.title.trim().length > 0;
     const authorIsValid = bookData.author.trim().length > 0;
-    //JS returns 'Invalid Date' if invalid date is passed when creating a new date object
-    const dateIsValid = bookData.date.toString() !== "Invalid Date";
+    //checking if date matches the regex "YYYY-MM-DD" and it's valid
+    let dateIsValid = true;
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (inputs.date.value !== "") {
+      //JS returns 'Invalid Date' if invalid date is passed when creating a new date object
+      dateIsValid = (bookData.date.toString() !== "Invalid Date") && (inputs.date.value.match(dateRegex) !== null);
+    }
     // const categoryIsValid = bookData.category.trim().length > 0;
 
     //if one of the inputs is invalid..
@@ -81,7 +86,7 @@ function AddBookScreen({ navigation }) {
         return {
           isbn: { value: curInputs.isbn.value, isValid: true },
           title: { value: curInputs.title.value, isValid: titleIsValid },
-          author: { value: curInputs.author.value, isValid: authorIsValid },
+          author: { value: curInputs.author.value, isValid: true },
           date: { value: curInputs.date.value, isValid: dateIsValid },
           category: {
             value: curInputs.category.value,
@@ -92,11 +97,11 @@ function AddBookScreen({ navigation }) {
         };
       });
 
-      // console.log(inputs);
+      console.log(inputs);
       return;
     }
 
-    // console.log(inputs);
+    console.log(inputs);
     // if input is valid..
     // onSubmit(bookData); //imp
   }
@@ -111,7 +116,7 @@ function AddBookScreen({ navigation }) {
     !inputs.summary.isValid;
 
   return (
-    <View>
+    <View style={styles.rootContainer}>
       <ScrollView>
         <Title>Add Book</Title>
 
@@ -180,7 +185,7 @@ function AddBookScreen({ navigation }) {
           </ErrorComponent>
         )}
 
-        <MyButton onPress={submitHandler}>Submit</MyButton>
+        <MyButton onPress={submitHandler} Flate={true} style={styles.buttonStyles} textStyle={styles.buttonText}>Submit</MyButton>
       </ScrollView>
     </View>
   );
@@ -189,9 +194,22 @@ function AddBookScreen({ navigation }) {
 export default AddBookScreen;
 
 const styles = StyleSheet.create({
+  rootContainer: {
+    marginBottom: 4
+  },
   errorText: {
     textAlign: "center",
     margin: 8,
     color: "red",
   },
+  buttonStyles: {
+    alignSelf: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderRadius: 8,
+    width: "50%", 
+  },
+  buttonText: {
+    fontSize: 24
+  }
 });
