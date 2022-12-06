@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { View, StyleSheet, /*Image*/ } from "react-native";
+import { View, StyleSheet /*Image*/ } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useRoute } from "@react-navigation/native";
 import { HeaderBackButton } from "react-navigation-stack";
@@ -12,7 +12,7 @@ import ErrorComponent from "../components/RegisterAndLogin/ErrorComponent";
 import Title from "../components/Title";
 import DropDownMenu from "../components/AddBookComponents/Drop_Down_Menu";
 import { AppContext } from "../store/AppContext";
-import { requestBook, /*uploadImage*/ } from "../components/Utlity/http";
+import { requestBook /*uploadImage*/ } from "../components/Utlity/http";
 
 function AddBookScreen({ navigation }) {
   const appCtx = useContext(AppContext);
@@ -93,11 +93,10 @@ function AddBookScreen({ navigation }) {
     let dateIsValid = true;
     if (inputs.date.value !== "") {
       //checking if date matches the regex "YYYY-MM-DD" and it's valid
-      const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
       //JS returns 'Invalid Date' if invalid date is passed when creating a new date object
       dateIsValid =
         bookData.date.toString() !== "Invalid Date" &&
-        inputs.date.value.match(dateRegex) !== null;
+        inputs.date.value.match(/^\d{4}-\d{2}-\d{2}$/) !== null;
     }
     // const categoryIsValid = bookData.category.trim().length > 0;
 
