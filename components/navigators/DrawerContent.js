@@ -131,28 +131,6 @@ export function DrawerContent(props) {
                 </View>
               </View>
             </TouchableRipple>
-            <DrawerItem
-              icon={({ size }) => (
-                <MaterialCommunityIcons
-                  name="account-edit-outline"
-                  size={size}
-                  color={currentScreen === "DrawerEdit" ? "white" : undefined}
-                />
-              )}
-              label="Edit Profile"
-              onPress={() => {
-                props.navigation.navigate("DrawerEdit");
-                changeScreenHandler("DrawerEdit");
-              }}
-              style={{
-                backgroundColor:
-                  currentScreen === "DrawerEdit" ? "#1b7ce4" : undefined,
-              }}
-              labelStyle={{
-                marginLeft: -15,
-                color: currentScreen === "DrawerEdit" ? "white" : undefined,
-              }}
-            />
           </Drawer.Section>
         </View>
       </DrawerContentScrollView>
@@ -207,28 +185,52 @@ export function DrawerContent(props) {
             />
           </>
         ) : (
-          <DrawerItem
-            icon={({ size }) => (
-              <Ionicons
-                name="log-out-outline"
-                color={currentScreen === "DrawerLogout" ? "white" : undefined}
-                size={size}
-              />
-            )}
-            label="Sign out"
-            onPress={() => {
-              props.navigation.navigate("DrawerLogout");
-              changeScreenHandler("DrawerLogout");
-            }}
-            style={{
-              backgroundColor:
-                currentScreen === "DrawerLogout" ? "#1b7ce4" : undefined,
-            }}
-            labelStyle={{
-              marginLeft: -15,
-              color: currentScreen === "DrawerLogout" ? "white" : undefined,
-            }}
-          />
+          <>
+            <DrawerItem
+              icon={({ size }) => (
+                <Ionicons
+                  name="log-out-outline"
+                  color={currentScreen === "DrawerLogout" ? "white" : undefined}
+                  size={size}
+                />
+              )}
+              label="Sign out"
+              onPress={() => {
+                props.navigation.navigate("DrawerLogout");
+                changeScreenHandler("DrawerLogout");
+              }}
+              style={{
+                backgroundColor:
+                  currentScreen === "DrawerLogout" ? "#1b7ce4" : undefined,
+              }}
+              labelStyle={{
+                marginLeft: -15,
+                color: currentScreen === "DrawerLogout" ? "white" : undefined,
+              }}
+            />
+            <DrawerItem
+              icon={({ size }) => (
+                <MaterialCommunityIcons
+                  name="account-edit-outline"
+                  size={size}
+                  color={currentScreen === "DrawerEdit" ? "white" : undefined}
+                />
+              )}
+              label="Edit Profile"
+              onPress={() => {
+                props.navigation.navigate("DrawerEdit");
+                changeScreenHandler("DrawerEdit");
+              }}
+              style={{
+                backgroundColor:
+                  currentScreen === "DrawerEdit" ? "#1b7ce4" : undefined,
+              }}
+              labelStyle={{
+                marginLeft: -15,
+                color: currentScreen === "DrawerEdit" ? "white" : undefined,
+              }}
+            />
+          </>
         )}
       </Drawer.Section>
     </View>

@@ -15,6 +15,7 @@ function ListOfBooks() {
   //   This state will be used to keep track of the search item
   const [currentSearch, setSearch] = useState("");
   const [currentBooks, setBooks] = useState([]);
+  // console.log(JSON.stringify(currentBooks));
   const iconSize = 24;
   // This will be used to filter search results, in specific to show the modal which contains the options
   // available to be used as a filter

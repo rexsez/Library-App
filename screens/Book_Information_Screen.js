@@ -1,6 +1,13 @@
-import { StyleSheet, ScrollView, Platform } from "react-native";
+import {
+  StyleSheet,
+  ScrollView,
+  Platform,
+  Modal,
+  Text,
+  View,
+} from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { useLayoutEffect, useEffect, useContext } from "react";
+import { useLayoutEffect, useEffect, useContext, useState } from "react";
 import { HeaderBackButton } from "react-navigation-stack";
 import { FontAwesome } from "@expo/vector-icons";
 import { StackActions } from "@react-navigation/native";
@@ -11,6 +18,8 @@ import ItemsBar from "../components/ItemsBar";
 import MyButton from "../components/MyButton";
 import { AppContext } from "../store/AppContext";
 import { StudentContext } from "../store/StudentContext";
+import BookRatingModal from "../components/BookInfoComponents/Book_Rating";
+import FilterModal from "../components/SearchScreenComponents/FilterModal";
 
 function BookInformationScreen({ navigation }) {
   // to get the list of books
@@ -41,13 +50,18 @@ function BookInformationScreen({ navigation }) {
   //const isbn = route.params.isbn;
   const Route = useRoute();
   const isbn = Route.params.bookId;
-  const isScanned = Route.params.isScanned; // ### test  ###
+  const isScanned = Route.params.isScanned;
+  const [visible, changeVisibility] = useState(false);
 
   // console.log(JSON.stringify(appCtx.books));
 
   //using the isbn to find the selected book object
   const selectedBook = appCtx.books.find((book) => book.isbn === isbn);
-
+  let defaultRating = 0;
+  if (selectedBook.ratedBy.some((e) => e.key == studentCtx.ID)) {
+    let obj = selectedBook.ratedBy.find((o) => o.key === studentCtx.ID);
+    defaultRating = obj.rating;
+  }
   // setting the tilte of the page to the name of book
   const Navigation = useNavigation();
   useLayoutEffect(() => {
@@ -74,14 +88,9 @@ function BookInformationScreen({ navigation }) {
   }
  */
 
-  function rateBook() {
+  function toggleModal() {
     if (!!studentCtx.student.Email) {
-      if (selectedBook.rating == -1) {
-        
-        console.log("New Rating");
-      } else {
-        console.log("Already Rated");
-      }
+      changeVisibility(!visible);
     }
   }
 
@@ -110,7 +119,7 @@ function BookInformationScreen({ navigation }) {
       style={styles.iconButton}
       Flate={true}
       textStyle={styles.rating}
-      onPress={rateBook}
+      onPress={toggleModal}
     >
       {selectedBook.rating != -1 ? selectedBook.rating + " / 5" : "N/A"}
     </MyButton>,
@@ -127,26 +136,36 @@ function BookInformationScreen({ navigation }) {
 
   return (
     //Scrollview for the entire screen
-    <ScrollView style={styles.rootContainer}>
-      <BookDetails
-        isbn={isbn}
-        author={selectedBook.author}
-        date={selectedBook.date}
-        genre={selectedBook.genre}
-        bookImage={bookImage}
-      />
+    <>
+      <ScrollView style={styles.rootContainer}>
+        <BookRatingModal
+          visible={visible}
+          rate={defaultRating}
+          changeVisibility={changeVisibility}
+          studentID={studentCtx.ID}
+          bookID={selectedBook.id}
+        />
 
-      {/* using the items bar to add icon buttons */}
-      <ItemsBar
-        style={styles.itemsBar}
-        items={
-          //buttons to be added to the IconsBar
-          iconBarButtons
-        }
-      />
+        <BookDetails
+          isbn={isbn}
+          author={selectedBook.author}
+          date={selectedBook.date}
+          genre={selectedBook.genre}
+          bookImage={bookImage}
+        />
 
-      <BookSummary>{selectedBook.summary}</BookSummary>
-    </ScrollView>
+        {/* using the items bar to add icon buttons */}
+        <ItemsBar
+          style={styles.itemsBar}
+          items={
+            //buttons to be added to the IconsBar
+            iconBarButtons
+          }
+        />
+
+        <BookSummary>{selectedBook.summary}</BookSummary>
+      </ScrollView>
+    </>
   );
 }
 
