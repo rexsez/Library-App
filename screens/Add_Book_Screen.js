@@ -1,9 +1,10 @@
 import { useState, useEffect, useContext } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, /*Image*/ } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useRoute } from "@react-navigation/native";
 import { HeaderBackButton } from "react-navigation-stack";
 import { StackActions } from "@react-navigation/native";
+// import * as imagePicker from "expo-image-picker";
 
 import Input from "../components/AddBookComponents/Input";
 import MyButton from "../components/MyButton";
@@ -11,7 +12,7 @@ import ErrorComponent from "../components/RegisterAndLogin/ErrorComponent";
 import Title from "../components/Title";
 import DropDownMenu from "../components/AddBookComponents/Drop_Down_Menu";
 import { AppContext } from "../store/AppContext";
-import { requestBook } from "../components/Utlity/http";
+import { requestBook, /*uploadImage*/ } from "../components/Utlity/http";
 
 function AddBookScreen({ navigation }) {
   const appCtx = useContext(AppContext);
@@ -39,6 +40,7 @@ function AddBookScreen({ navigation }) {
     isbn: { value: isbn.toString(), isValid: true },
     title: { value: "", isValid: true },
     author: { value: "", isValid: true },
+    image: { value: "", isValid: true },
     date: { value: "", isValid: true },
     category: { value: "", isValid: true },
     summary: { value: "", isValid: true },
@@ -54,12 +56,32 @@ function AddBookScreen({ navigation }) {
     });
   }
 
+  // const pickImage = async () => {
+  //   let result = await imagePicker.launchImageLibraryAsync({
+  //     mediaTypes: imagePicker.MediaTypeOptions.All,
+  //     allowsEditing: true,
+  //     aspect: [4, 6],
+  //     quality: 1,
+  //   });
+
+  //   const titleIsValid = titleIsValid == null ? true : titleIsValid;
+  //   const dateIsValid = dateIsValid == null ? true : dateIsValid;
+  //   const source = { uri: result.uri };
+  //   setInputs((curInputs) => {
+  //     return {
+  //       ...curInputs,
+  //       ["image"]: { value: source, isValid: true },
+  //     };
+  //   });
+  // };
+
   function submitHandler() {
     //taking the inputs
     const bookData = {
       isbn: inputs.isbn.value,
       title: inputs.title.value,
       author: inputs.author.value,
+      image: inputs.image.value,
       date: new Date(inputs.date.value),
       category: inputs.category.value,
       summary: inputs.summary.value,
@@ -68,10 +90,10 @@ function AddBookScreen({ navigation }) {
     //checking if the inputs are valid
     const titleIsValid = bookData.title.trim().length > 0;
     // const authorIsValid = bookData.author.trim().length > 0;
-    //checking if date matches the regex "YYYY-MM-DD" and it's valid
     let dateIsValid = true;
-    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
     if (inputs.date.value !== "") {
+      //checking if date matches the regex "YYYY-MM-DD" and it's valid
+      const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
       //JS returns 'Invalid Date' if invalid date is passed when creating a new date object
       dateIsValid =
         bookData.date.toString() !== "Invalid Date" &&
@@ -90,10 +112,10 @@ function AddBookScreen({ navigation }) {
           isbn: { value: curInputs.isbn.value, isValid: true },
           title: { value: curInputs.title.value, isValid: titleIsValid },
           author: { value: curInputs.author.value, isValid: true },
+          image: { value: curInputs.image.value, isValid: true },
           date: { value: curInputs.date.value, isValid: dateIsValid },
           category: {
             value: curInputs.category.value,
-            // isValid: categoryIsValid,
             isValid: true,
           },
           summary: { value: curInputs.summary.value, isValid: true },
@@ -103,11 +125,12 @@ function AddBookScreen({ navigation }) {
       return;
     }
 
-    //inouts are valid -> create data object and call the onsubmit function
+    //inputs are valid -> create data object and call the onsubmit function
     const requestData = {
       isbn: inputs.isbn.value,
       title: inputs.title.value,
       category: inputs.category.value,
+      image: inputs.image.value,
       author: inputs.author.value,
       date: inputs.date.value,
       summary: inputs.summary.value,
@@ -117,6 +140,17 @@ function AddBookScreen({ navigation }) {
 
   //call the requestBook function from the http and pass the data object to it
   async function onSubmit(requestedData) {
+    // if (requestedData.image.value != "") {
+    //   // const img = await fetch(inputs.image.value.uri);
+    //   // const bytes = await img.blob();
+    //   const filename =
+    //     // isbn.toString() +
+    //     inputs.image.value.uri.substring(
+    //       inputs.image.value.uri.lastIndexOf("/") + 1
+    //     );
+    //   await uploadImage(inputs.image.value.uri);
+    //   requestedData.image.value = filename;
+    // }
     await requestBook(requestedData);
   }
 
@@ -151,6 +185,23 @@ function AddBookScreen({ navigation }) {
             onChangeText: inputChangedHandler.bind(this, "title"),
           }}
         />
+
+        {/* <View style={styles.pickImageContainer}>
+          <MyButton
+            onPress={pickImage}
+            Flate={true}
+            style={styles.buttonStyles}
+            textStyle={styles.buttonText}
+          >
+            Pick Image
+          </MyButton>
+          {inputs.image.value != "" && (
+            <Image
+              source={{ uri: inputs.image.value.uri }}
+              style={styles.bookImage}
+            />
+          )}
+        </View> */}
 
         <DropDownMenu //Category
           label={"Category"}
@@ -217,6 +268,13 @@ export default AddBookScreen;
 const styles = StyleSheet.create({
   rootContainer: {
     marginBottom: 4,
+  },
+  pickImageContainer: {
+    flexDirection: "row",
+  },
+  bookImage: {
+    width: 100,
+    height: 150,
   },
   errorText: {
     textAlign: "center",
