@@ -152,6 +152,7 @@ function AddBookScreen({ navigation }) {
     //   requestedData.image.value = filename;
     // }
     await requestBook(requestedData);
+    navigation.navigate({ name: "TabSearch" });
   }
 
   //helper variable to display form error text if some input is invalid
@@ -269,13 +270,13 @@ const styles = StyleSheet.create({
   rootContainer: {
     marginBottom: 4,
   },
-  pickImageContainer: {
-    flexDirection: "row",
-  },
-  bookImage: {
-    width: 100,
-    height: 150,
-  },
+  // pickImageContainer: {
+  //   flexDirection: "row",
+  // },
+  // bookImage: {
+  //   width: 100,
+  //   height: 150,
+  // },
   errorText: {
     textAlign: "center",
     margin: 8,
