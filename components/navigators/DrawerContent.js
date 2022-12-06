@@ -6,8 +6,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { StudentContext } from "../../store/StudentContext";
+import Student from "../../models/Student";
 
 export function DrawerContent(props) {
+
   // used to get dark mode option from student context, I am storing it in
   // a context because later on, we will decide the coloring scheme based on it
   const studentContext = useContext(StudentContext);
@@ -196,19 +198,8 @@ export function DrawerContent(props) {
               )}
               label="Sign out"
               onPress={() => {
-                {
-                  () => {
-                    const initialNewStudent1 = new Student(
-                      "",
-                      "",
-                      "",
-                      "",
-                      [],
-                      []
-                    );
-                    studentContext.editStudent();
-                  };
-                }
+                const initialNewStudent1 = new Student("", "", "", "", [], []);
+                studentContext.registerStudent(initialNewStudent1);
               }}
               style={{
                 backgroundColor:
