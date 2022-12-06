@@ -73,7 +73,7 @@ function Announcements() {
           ]}
           onPress={onPressAnnouncement}
         >
-          <Text style={[styles.textStyleAnnouncements]}>Announcements</Text>
+          <Text style={styles.textStyleAnnouncements}>Announcements</Text>
         </Pressable>
       </View>
     </View>
@@ -82,8 +82,8 @@ function Announcements() {
 
 const styles = StyleSheet.create({
   centeredView: {
-    flex: 1,
-    marginTop: 20,
+    // flex: 1,
+    margin: 12
   },
   modalView: {
     margin: 20,
@@ -108,12 +108,13 @@ const styles = StyleSheet.create({
     padding: 15,
     elevation: 5,
     paddingHorizontal: 31,
+    marginTop: 15
   },
   textStyleAnnouncements: {
     color: "white",
-    fontWeight: "900",
+    // fontWeight: "900",
     textAlign: "center",
-    letterSpacing: 1.5,
+    // letterSpacing: 1.5,
   },
   textStyleClose: {
     color: "white",
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   announcementMainText: {
-    fontFamily: "monospace",
+    // fontFamily: "monospace",
     fontSize: 24,
     fontWeight: "bold",
     color: "#366EA0",

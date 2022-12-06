@@ -3,6 +3,8 @@ import Student from "../../models/Student";
 import Announcement from "../../models/Announcement";
 import Book from "../../models/Book";
 import { toFixed } from "./UtilityFunctions";
+import { AppContext } from "../../store/AppContext";
+import { useContext } from "react";
 
 const database =
   "https://psu-library-app-default-rtdb.europe-west1.firebasedatabase.app/";
@@ -54,7 +56,13 @@ export async function fetchBooks() {
     let summary = bookData.summary;
     let title = bookData.title;
     // getting image path from firebase, check getImage for details
-    let img = await getImage(bookData.image);
+    let img;
+    if (bookData.image !== "") {
+      img = await getImage(bookData.image);
+    } else {
+      img =
+        "https://firebasestorage.googleapis.com/v0/b/psu-library-app.appspot.com/o/images%2Fno_book.png?alt=media&token=4ddb2db7-9924-4f52-9041-11e0d6cf5c63";
+    }
     databaseBooks.push(
       new Book(
         id,
@@ -109,11 +117,6 @@ export async function getImage(imageName) {
 }
 // if a student does have a rating it will be edited, otherwise a new rating will be added
 
-
-
-
-
-
 export async function postRating(studentID, bookID, rating) {
   const link = database + "books/" + bookID + "/ratings.json";
 
@@ -128,12 +131,15 @@ export async function postRating(studentID, bookID, rating) {
   axios.put(link, res);
 }
 
+// ------------------------------------------get books----------------------------------------------------
+export async function getBooks() {
+  const appCtx = useContext(AppContext);
 
-
-
-
-
-
+  const books = await fetchBooks();
+  const categories = await fetchCategories();
+  appCtx.changeBooks(books);
+  appCtx.changeCategories(categories);
+}
 
 // ------------------------------------------Book Request----------------------------------------------------
 //Send book request info to database -> so admin can view it from the admin panel

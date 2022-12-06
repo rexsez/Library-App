@@ -253,7 +253,6 @@ function FilterModal({
         width: "100%",
         alignSelf: "center",
         marginTop: 100,
-        borderRadius: 30,
       }}
     >
       <View>
@@ -338,6 +337,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flex: 1,
     justifyContent: "center",
+    marginTop: 6,
+    marginBottom: 12
   },
   btnContainer: {
     flexDirection: "row",

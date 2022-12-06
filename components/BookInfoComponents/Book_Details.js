@@ -4,6 +4,7 @@ import { FontAwesome5, Fontisto, Entypo, Ionicons } from "@expo/vector-icons";
 
 import BookSubdetail from "./Book_Subdetail";
 import { getFotmattedDate } from "../../util/date";
+import Colors from "../Utlity/Colors";
 
 function BookDetails({ isbn, author, date, genre, bookImage }) {
   return (
@@ -61,6 +62,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 4,
     elevation: 4,
+    backgroundColor: "whitesmoke"
   },
   bookDeatilsContainer: {
     marginLeft: 8,

@@ -1,6 +1,6 @@
 import { View, StyleSheet, TextInput, FlatList, Platform } from "react-native";
-import { useContext, useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import React, { useContext, useEffect, useState } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import BookCard from "./BookCard";
@@ -14,7 +14,7 @@ function ListOfBooks() {
   const navigation = useNavigation();
   //   This state will be used to keep track of the search item
   const [currentSearch, setSearch] = useState("");
-  const [currentBooks, setBooks] = useState([]);
+  const [currentBooks, setBooks] = useState(appCtx.books);
   const iconSize = 24;
   // This will be used to filter search results, in specific to show the modal which contains the options
   // available to be used as a filter
@@ -22,16 +22,42 @@ function ListOfBooks() {
   const [chosenFilter, setChosenFilter] = useState(1);
   const [chosenOrder, setChosenOrder] = useState(1);
 
-  useEffect(() => {
-    async function getBooks() {
-      const books = await fetchBooks();
-      const categories = await fetchCategories();
-      appCtx.changeBooks(books);
-      appCtx.changeCategories(categories);
-      setBooks(books);
-    }
-    getBooks();
-  }, []);
+  const [render, setRender] = useState(false);
+  function toggle() {
+    setRender(!render);
+  }
+  const [time, setTime] = useState();
+  // useFocusEffect(() => {
+  //   if (Math.abs(new Date().getSeconds() - time) > 10 || !time) {
+  //     async function getBooks() {
+  //       const books = await fetchBooks();
+  //       const categories = await fetchCategories();
+  //       appCtx.changeBooks(books);
+  //       appCtx.changeCategories(categories);
+  //       setBooks(books);
+  //       setTime(new Date().getSeconds());
+  //     }
+  //     getBooks();
+
+  //   }
+  // }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something when the screen is focused.
+      async function getBooks() {
+        const books = await fetchBooks();
+        const categories = await fetchCategories();
+        appCtx.changeBooks(books);
+        appCtx.changeCategories(categories);
+        setBooks(books);
+      }
+      getBooks();
+      return () => {
+      };
+    }, [])
+  );
+
 
   function toggleModal() {
     setModalVisible(!isModalVisible);

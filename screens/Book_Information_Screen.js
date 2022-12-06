@@ -5,6 +5,7 @@ import {
   Modal,
   Text,
   View,
+  ImageBackground,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useLayoutEffect, useEffect, useContext, useState } from "react";
@@ -20,6 +21,7 @@ import { AppContext } from "../store/AppContext";
 import { StudentContext } from "../store/StudentContext";
 import BookRatingModal from "../components/BookInfoComponents/Book_Rating";
 import FilterModal from "../components/SearchScreenComponents/FilterModal";
+import { fetchBooks, fetchCategories, getBooks } from "../components/Utlity/http";
 
 function BookInformationScreen({ navigation }) {
   // to get the list of books
@@ -32,7 +34,13 @@ function BookInformationScreen({ navigation }) {
         Platform.OS === "android"
           ? () => (
               <HeaderBackButton
-                onPress={() => {
+                onPress={async () => {
+
+                  const books = await fetchBooks();
+                  const categories = await fetchCategories();
+                  // console.log(books);
+                  appCtx.changeBooks(books);
+                  appCtx.changeCategories(categories);
                   // This will remove The previous screen (Barcode scanner screen)
                   navigation.dispatch(StackActions.popToTop());
                 }}
@@ -137,34 +145,40 @@ function BookInformationScreen({ navigation }) {
   return (
     //Scrollview for the entire screen
     <>
-      <ScrollView style={styles.rootContainer}>
-        <BookRatingModal
-          visible={visible}
-          rate={defaultRating}
-          changeVisibility={changeVisibility}
-          studentID={studentCtx.ID}
-          bookID={selectedBook.id}
-        />
+      <ImageBackground
+        style={styles.ImageBackground}
+        source={require("../assets/logoNew2.png")}
+        resizeMode="cover"
+      >
+        <ScrollView style={styles.rootContainer}>
+          <BookRatingModal
+            visible={visible}
+            rate={defaultRating}
+            changeVisibility={changeVisibility}
+            studentID={studentCtx.ID}
+            bookID={selectedBook.id}
+          />
 
-        <BookDetails
-          isbn={isbn}
-          author={selectedBook.author}
-          date={selectedBook.date}
-          genre={selectedBook.genre}
-          bookImage={bookImage}
-        />
+          <BookDetails
+            isbn={isbn}
+            author={selectedBook.author}
+            date={selectedBook.date}
+            genre={selectedBook.genre}
+            bookImage={bookImage}
+          />
 
-        {/* using the items bar to add icon buttons */}
-        <ItemsBar
-          style={styles.itemsBar}
-          items={
-            //buttons to be added to the IconsBar
-            iconBarButtons
-          }
-        />
+          {/* using the items bar to add icon buttons */}
+          <ItemsBar
+            style={styles.itemsBar}
+            items={
+              //buttons to be added to the IconsBar
+              iconBarButtons
+            }
+          />
 
-        <BookSummary>{selectedBook.summary}</BookSummary>
-      </ScrollView>
+          <BookSummary>{selectedBook.summary}</BookSummary>
+        </ScrollView>
+      </ImageBackground>
     </>
   );
 }
@@ -190,5 +204,8 @@ const styles = StyleSheet.create({
   rating: {
     fontSize: 18,
     color: "black",
+  },
+  ImageBackground: {
+    flex: 1,
   },
 });
