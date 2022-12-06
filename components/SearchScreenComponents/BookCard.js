@@ -46,7 +46,7 @@ function BookCard({ bookData }) {
       {/* --------------------------------------------------------- */}
       {/* ----------------------Share icon container ------------------- */}
       <View style={styles.ShareIconContainer}>
-        <Ionicons name="share-social-outline" size={24} color="blue"></Ionicons>
+        {/* <Ionicons name="share-social-outline" size={24} color="blue"></Ionicons> */}
         <Text style={styles.ratingStyle}>
           {bookData.rating != -1 ? bookData.rating : "N/A"}
         </Text>

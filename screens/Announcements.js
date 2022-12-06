@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
     padding: 15,
     elevation: 5,
     paddingHorizontal: 31,
+    marginTop: 15
   },
   textStyleAnnouncements: {
     color: "white",

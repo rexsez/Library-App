@@ -9,6 +9,7 @@ import LoginScreen from "../../screens/LoginScreen";
 import LogoutScreen from "../../screens/LogoutScreen";
 import RegisterScreen from "../../screens/RegisterScreen";
 import EditProfileScreen from "../../screens/EditProfileScreen";
+import TabNavigator from "./TabNavigator";
 
 function DrawerNavigator() {
   const Drawer = createDrawerNavigator();
@@ -21,6 +22,7 @@ function DrawerNavigator() {
           headerShown: true,
           headerTitle: "",
           headerTransparent: false,
+          gestureEnabled: false
         }}
       >
         {/* these screens are only needed as a reference, so I can navigation.navigate(Screen Name)*/}

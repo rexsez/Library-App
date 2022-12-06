@@ -10,12 +10,13 @@ import AddBookScreen from "../../screens/Add_Book_Screen";
 import BarcodeScanner from "../SearchScreenComponents/BarcodeScanner";
 import Contact_Us_Screen from "../../screens/Contact_Us_Screen";
 import EditProfileScreen from "../../screens/EditProfileScreen";
+import HomeScreen from "../../screens/HomeScreen";
 
 function StackNavigator() {
   const Stack = createStackNavigator();
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator /*screenOptions={{swipeEnabled: false, gestureEnabled: false}}*/>
       <Stack.Screen
         component={TabNavigator}
         name="StackTabNavigator"

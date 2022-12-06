@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../../screens/HomeScreen";
 import ProfileScreen from "../../screens/ProfileScreen";
 import SearchScreen from "../../screens/SearchScreen";
+import StackNavigator from "./StackNavigator";
 // import SearchScreenStack from "../screens/SearchScreenStack";
 
 function TabNavigator() {
@@ -13,7 +14,7 @@ function TabNavigator() {
     <SafeAreaView style={styles.container}>
       <Tab.Navigator
         style={styles.container}
-        screenOptions={{ headerShown: false }}
+        screenOptions={{ headerShown: false, /*swipeEnabled: false, gestureEnabled: false*/ }}
       >
         <Tab.Screen
           name="TabHome"

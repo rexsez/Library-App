@@ -1,6 +1,6 @@
 import { View, StyleSheet, TextInput, FlatList, Platform } from "react-native";
 import { useContext, useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import BookCard from "./BookCard";
@@ -14,13 +14,18 @@ function ListOfBooks() {
   const navigation = useNavigation();
   //   This state will be used to keep track of the search item
   const [currentSearch, setSearch] = useState("");
-  const [currentBooks, setBooks] = useState([]);
+  const [currentBooks, setBooks] = useState(appCtx.books);
   const iconSize = 24;
   // This will be used to filter search results, in specific to show the modal which contains the options
   // available to be used as a filter
   const [isModalVisible, setModalVisible] = useState(false);
   const [chosenFilter, setChosenFilter] = useState(1);
   const [chosenOrder, setChosenOrder] = useState(1);
+
+  const [render, setRender] = useState(false);
+  function toggle () {
+    setRender(!render);
+  }
 
   useEffect(() => {
     async function getBooks() {
@@ -32,6 +37,12 @@ function ListOfBooks() {
     }
     getBooks();
   }, []);
+
+  // useEffect(() => {
+  //   if (navigation.isFocused()) {
+  //     console.log("ff");// replace with your function
+  //   }
+  // }, [navigation.isFocused()]);
 
   function toggleModal() {
     setModalVisible(!isModalVisible);

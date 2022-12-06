@@ -11,7 +11,7 @@ function AppContextProvider({ children }) {
   const [books, setBooks] = useState([]);
   const [categories, setCategories] = useState([]);
   function changeBooks(newBooks) {
-    setBooks(newBooks);
+      setBooks(newBooks);
   }
   function changeCategories(newCategory) {
     setCategories(newCategory);
