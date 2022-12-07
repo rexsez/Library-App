@@ -11,7 +11,7 @@ import Modal from "react-native-modal";
 import RadioButtonRN from "radio-buttons-react-native";
 
 import DropDownMenu from "../AddBookComponents/Drop_Down_Menu";
-import SliderExample from "../Utlity/SliderExample";
+import SliderExample from "../Utility/SliderExample";
 import {
   AscendingTitle,
   DescendingTitle,
@@ -21,7 +21,7 @@ import {
   DescendingDate,
   AscendingRating,
   DescendingRating,
-} from "../Utlity/UtilityFunctions";
+} from "../Utility/UtilityFunctions";
 import { AppContext } from "../../store/AppContext";
 
 // This is going to be used to show filter options as a radio button
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     marginTop: 6,
-    marginBottom: 12
+    marginBottom: 12,
   },
   btnContainer: {
     flexDirection: "row",

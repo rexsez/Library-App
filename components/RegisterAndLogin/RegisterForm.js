@@ -6,11 +6,11 @@ import Student from "../../models/Student";
 import MyButton from "../MyButton";
 import CheckBox from "./CheckBox";
 import ErrorComponent from "./ErrorComponent";
-import validateNewStudent from "../Utlity/InputValidation/ValidateNewStudent";
+import validateNewStudent from "../Utility/InputValidation/ValidateNewStudent";
 import Inpute from "./Inpute";
 import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
-import { registerStudent } from "../Utlity/http";
+import { registerStudent } from "../Utility/http";
 import AddIcon from "../AddIcon";
 import { useFocusEffect } from "@react-navigation/native";
 

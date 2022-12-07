@@ -21,7 +21,11 @@ import { AppContext } from "../store/AppContext";
 import { StudentContext } from "../store/StudentContext";
 import BookRatingModal from "../components/BookInfoComponents/Book_Rating";
 import FilterModal from "../components/SearchScreenComponents/FilterModal";
-import { fetchBooks, fetchCategories, getBooks } from "../components/Utlity/http";
+import {
+  fetchBooks,
+  fetchCategories,
+  getBooks,
+} from "../components/Utility/http";
 
 function BookInformationScreen({ navigation }) {
   // to get the list of books
@@ -35,7 +39,6 @@ function BookInformationScreen({ navigation }) {
           ? () => (
               <HeaderBackButton
                 onPress={async () => {
-
                   const books = await fetchBooks();
                   const categories = await fetchCategories();
                   // console.log(books);

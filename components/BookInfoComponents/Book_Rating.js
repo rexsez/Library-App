@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
 import { View, StyleSheet, Modal, Button } from "react-native";
 import { StudentContext } from "../../store/StudentContext";
-import { postRating } from "../Utlity/http";
+import { postRating } from "../Utility/http";
 
-import SliderExample from "../Utlity/SliderExample";
+import SliderExample from "../Utility/SliderExample";
 
 function BookRatingModal({
   visible,

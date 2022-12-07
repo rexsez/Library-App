@@ -4,7 +4,7 @@ import {
   generateSummary,
   generateName,
   generateTitle,
-} from "../components/Utlity/Testing/RandomGenerators";
+} from "../components/Utility/Testing/RandomGenerators";
 
 // export const BADGES = [
 //can decide the badges here

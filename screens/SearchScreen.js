@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, Alert } from "react-native";
 
 import ListOfBooks from "../components/SearchScreenComponents/ListOfBooks";
-import { fetchBooks, fetchCategories } from "../components/Utlity/http";
+import { fetchBooks, fetchCategories } from "../components/Utility/http";
 import { AppContext } from "../store/AppContext";
 
 function SearchScreen() {
@@ -24,8 +24,6 @@ function SearchScreen() {
   //   }
   //   getBooks();
   // }, []);
-
-
 
   const route = useRoute();
   if (!!route.params) {

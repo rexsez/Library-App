@@ -6,7 +6,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import BookCard from "./BookCard";
 import MyButton from "../MyButton";
 import FilterModal from "./FilterModal";
-import { fetchBooks, fetchCategories } from "../Utlity/http";
+import { fetchBooks, fetchCategories } from "../Utility/http";
 import { AppContext } from "../../store/AppContext";
 
 function ListOfBooks() {
@@ -53,11 +53,11 @@ function ListOfBooks() {
         setBooks(books);
       }
       getBooks();
-      return () => {
-      };
+      return () => {};
     }, [])
   );
 
+  console.log(appCtx.books);
 
   function toggleModal() {
     setModalVisible(!isModalVisible);

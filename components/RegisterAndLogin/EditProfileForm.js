@@ -1,15 +1,15 @@
 import { useState, useContext, useLayoutEffect } from "react";
 import { View, StyleSheet, KeyboardAvoidingView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { getStudentID } from "../Utlity/http";
+import { getStudentID } from "../Utility/http";
 import Student from "../../models/Student";
 import ErrorComponent from "./ErrorComponent";
 
 import Inpute from "./Inpute";
 import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
-import validateEditStudent from "../Utlity/InputValidation/ValidateEditStudent";
-import { updateProfile } from "../Utlity/http";
+import validateEditStudent from "../Utility/InputValidation/ValidateEditStudent";
+import { updateProfile } from "../Utility/http";
 function EditProfileForm() {
   // ----------------- Navigation stuff --------------
   const navigation = useNavigation();

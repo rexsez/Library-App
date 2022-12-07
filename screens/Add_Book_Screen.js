@@ -12,7 +12,7 @@ import ErrorComponent from "../components/RegisterAndLogin/ErrorComponent";
 import Title from "../components/Title";
 import DropDownMenu from "../components/AddBookComponents/Drop_Down_Menu";
 import { AppContext } from "../store/AppContext";
-import { requestBook /*uploadImage*/ } from "../components/Utlity/http";
+import { requestBook /*uploadImage*/ } from "../components/Utility/http";
 
 function AddBookScreen({ navigation }) {
   const appCtx = useContext(AppContext);
