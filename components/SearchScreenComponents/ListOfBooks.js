@@ -1,12 +1,12 @@
 import { View, StyleSheet, TextInput, FlatList, Platform } from "react-native";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import BookCard from "./BookCard";
 import MyButton from "../MyButton";
 import FilterModal from "./FilterModal";
-import { fetchBooks, fetchCategories } from "../Utlity/http";
+import { fetchBooks, fetchCategories } from "../Utility/http";
 import { AppContext } from "../../store/AppContext";
 
 function ListOfBooks() {
@@ -23,26 +23,41 @@ function ListOfBooks() {
   const [chosenOrder, setChosenOrder] = useState(1);
 
   const [render, setRender] = useState(false);
-  function toggle () {
+  function toggle() {
     setRender(!render);
   }
+  const [time, setTime] = useState();
+  // useFocusEffect(() => {
+  //   if (Math.abs(new Date().getSeconds() - time) > 10 || !time) {
+  //     async function getBooks() {
+  //       const books = await fetchBooks();
+  //       const categories = await fetchCategories();
+  //       appCtx.changeBooks(books);
+  //       appCtx.changeCategories(categories);
+  //       setBooks(books);
+  //       setTime(new Date().getSeconds());
+  //     }
+  //     getBooks();
 
-  useEffect(() => {
-    async function getBooks() {
-      const books = await fetchBooks();
-      const categories = await fetchCategories();
-      appCtx.changeBooks(books);
-      appCtx.changeCategories(categories);
-      setBooks(books);
-    }
-    getBooks();
-  }, []);
-
-  // useEffect(() => {
-  //   if (navigation.isFocused()) {
-  //     console.log("ff");// replace with your function
   //   }
-  // }, [navigation.isFocused()]);
+  // }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something when the screen is focused.
+      async function getBooks() {
+        const books = await fetchBooks();
+        const categories = await fetchCategories();
+        appCtx.changeBooks(books);
+        appCtx.changeCategories(categories);
+        setBooks(books);
+      }
+      getBooks();
+      return () => {};
+    }, [])
+  );
+
+  console.log(appCtx.books);
 
   function toggleModal() {
     setModalVisible(!isModalVisible);

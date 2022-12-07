@@ -21,7 +21,11 @@ import { AppContext } from "../store/AppContext";
 import { StudentContext } from "../store/StudentContext";
 import BookRatingModal from "../components/BookInfoComponents/Book_Rating";
 import FilterModal from "../components/SearchScreenComponents/FilterModal";
-import { fetchBooks, fetchCategories, getBooks } from "../components/Utlity/http";
+import {
+  fetchBooks,
+  fetchCategories,
+  getBooks,
+} from "../components/Utility/http";
 
 function BookInformationScreen({ navigation }) {
   // to get the list of books
@@ -34,16 +38,14 @@ function BookInformationScreen({ navigation }) {
         Platform.OS === "android"
           ? () => (
               <HeaderBackButton
-                onPress={ () => {
-
-                  // const books = await fetchBooks();
-                  // const categories = await fetchCategories();
-                  // // console.log(books);
-                  // appCtx.changeBooks(books);
-                  // appCtx.changeCategories(categories);
+                onPress={async () => {
+                  const books = await fetchBooks();
+                  const categories = await fetchCategories();
+                  // console.log(books);
+                  appCtx.changeBooks(books);
+                  appCtx.changeCategories(categories);
                   // This will remove The previous screen (Barcode scanner screen)
                   navigation.dispatch(StackActions.popToTop());
-                  // Navigation.navigate("StackSearch", {update: true});
                 }}
               />
             )

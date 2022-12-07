@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { Modal, StyleSheet, Text, Pressable, View } from "react-native";
-import { fetchAnnouncements } from "../components/Utlity/http";
+import { fetchAnnouncements } from "../components/Utility/http";
 import { StudentContext } from "../store/StudentContext";
 
 function Announcements() {
@@ -83,7 +83,7 @@ function Announcements() {
 const styles = StyleSheet.create({
   centeredView: {
     // flex: 1,
-    margin: 12
+    margin: 12,
   },
   modalView: {
     margin: 20,
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     padding: 15,
     elevation: 5,
     paddingHorizontal: 31,
-    marginTop: 15
+    marginTop: 15,
   },
   textStyleAnnouncements: {
     color: "white",

@@ -9,8 +9,8 @@ import ErrorComponent from "./ErrorComponent";
 import Inpute from "./Inpute";
 import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
-import validateLoginStudent from "../Utlity/InputValidation/validateLoginStudent";
-import { getStudentID, getStudents } from "../Utlity/http";
+import validateLoginStudent from "../Utility/InputValidation/validateLoginStudent";
+import { getStudentID, getStudents } from "../Utility/http";
 
 function LoginForm() {
   // -----------------Navigation stuff------------------------

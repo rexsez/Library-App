@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import MyButton from "../MyButton";
-import { formateDate } from "../Utlity/UtilityFunctions";
+import { formateDate } from "../Utility/UtilityFunctions";
 
 function BookCard({ bookData }) {
   const navigation = useNavigation();
@@ -14,6 +14,14 @@ function BookCard({ bookData }) {
     navigation.navigate("StackBook", { bookId: bookData.isbn });
   }
 
+  let bookIcon = null;
+  if (!!bookData.badge) {
+    bookIcon = (
+      <>
+        <MaterialCommunityIcons name="new-box" size={34} />
+      </>
+    );
+  }
   return (
     <View style={styles.Container}>
       {/* ----------------------Image container ------------------- */}
@@ -47,6 +55,7 @@ function BookCard({ bookData }) {
       {/* ----------------------Share icon container ------------------- */}
       <View style={styles.ShareIconContainer}>
         {/* <Ionicons name="share-social-outline" size={24} color="blue"></Ionicons> */}
+        {bookIcon}
         <Text style={styles.ratingStyle}>
           {bookData.rating != -1 ? bookData.rating : "N/A"}
         </Text>
