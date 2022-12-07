@@ -52,9 +52,10 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 45,
-    borderWidth: 1,
-    borderRadius: 4,
+    borderWidth: 2,
+    borderRadius: 8,
     paddingHorizontal: 8,
+    backgroundColor: "whitesmoke",
   },
   label: {
     fontSize: 8,

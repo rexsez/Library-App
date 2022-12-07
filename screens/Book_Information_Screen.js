@@ -2,9 +2,6 @@ import {
   StyleSheet,
   ScrollView,
   Platform,
-  Modal,
-  Text,
-  View,
   ImageBackground,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -20,12 +17,6 @@ import MyButton from "../components/MyButton";
 import { AppContext } from "../store/AppContext";
 import { StudentContext } from "../store/StudentContext";
 import BookRatingModal from "../components/BookInfoComponents/Book_Rating";
-import FilterModal from "../components/SearchScreenComponents/FilterModal";
-import {
-  fetchBooks,
-  fetchCategories,
-  getBooks,
-} from "../components/Utility/http";
 
 function BookInformationScreen({ navigation }) {
   // to get the list of books
@@ -38,12 +29,7 @@ function BookInformationScreen({ navigation }) {
         Platform.OS === "android"
           ? () => (
               <HeaderBackButton
-                onPress={async () => {
-                  const books = await fetchBooks();
-                  const categories = await fetchCategories();
-                  // console.log(books);
-                  appCtx.changeBooks(books);
-                  appCtx.changeCategories(categories);
+                onPress={() => {
                   // This will remove The previous screen (Barcode scanner screen)
                   navigation.dispatch(StackActions.popToTop());
                 }}
@@ -53,12 +39,13 @@ function BookInformationScreen({ navigation }) {
     }); // if platform is IOS don't do anything
   }, []);
 
-  //  Getting isbn of the book that the user
-  // has clicked on
-  //  This information is sent from bookCard where each
-  // BookCard contains information about the book
-  //getting the book isbn using the passed route params
-  //const isbn = route.params.isbn;
+  /*
+  Getting isbn of the book that the user
+  has clicked on
+  This information is sent from bookCard where each
+  BookCard contains information about the book
+  getting the book isbn using the passed route params
+  */
   const Route = useRoute();
   const isbn = Route.params.bookId;
   const isScanned = Route.params.isScanned;

@@ -57,7 +57,7 @@ function ListOfBooks() {
     }, [])
   );
 
-  console.log(appCtx.books);
+  // console.log(appCtx.books);
 
   function toggleModal() {
     setModalVisible(!isModalVisible);

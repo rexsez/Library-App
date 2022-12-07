@@ -35,7 +35,8 @@
     "react-native-table-component": "1.2.2",
     "react-navigation": "4.4.4",
     "react-navigation-stack": "2.10.4",
-    "firebase": "9.6.11"
+    "firebase": "9.6.11",
+    "expo-linear-gradient": "~11.4.0"
   },
   "devDependencies": {
     "@babel/core": "7.19.3"
