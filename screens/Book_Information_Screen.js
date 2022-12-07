@@ -38,12 +38,12 @@ function BookInformationScreen({ navigation }) {
         Platform.OS === "android"
           ? () => (
               <HeaderBackButton
-                onPress={async () => {
-                  const books = await fetchBooks();
-                  const categories = await fetchCategories();
+                onPress={/*async*/ () => {
+                  // const books = await fetchBooks();
+                  // const categories = await fetchCategories();
                   // console.log(books);
-                  appCtx.changeBooks(books);
-                  appCtx.changeCategories(categories);
+                  // appCtx.changeBooks(books);
+                  // appCtx.changeCategories(categories);
                   // This will remove The previous screen (Barcode scanner screen)
                   navigation.dispatch(StackActions.popToTop());
                 }}

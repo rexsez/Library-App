@@ -46,10 +46,11 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   input: {
-    borderWidth: 1,
+    borderWidth: 2,
     padding: 6,
     borderRadius: 6,
     fontSize: 18,
+    backgroundColor: "whitesmoke"
   },
   inputMultiline: {
     minHeight: 100,
