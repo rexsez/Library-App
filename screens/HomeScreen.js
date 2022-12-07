@@ -1,16 +1,21 @@
 import { View, StyleSheet, ImageBackground } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import Card from "../components/Utility/Cards/Card";
 import Announcements from "./Announcements";
 import { AppContext } from "../store/AppContext";
-import { fetchBooks, fetchCategories } from "../components/Utility/http";
+import {
+  fetchAnnouncements,
+  fetchBooks,
+  fetchCategories,
+} from "../components/Utility/http";
 
 function HomeScreen() {
   const navigation = useNavigation();
   const appCtx = useContext(AppContext);
+  const [modalAnnouncement,setModal]=useState()
 
   function GoTo(stackName) {
     return navigation.navigate({ name: stackName });
@@ -24,6 +29,12 @@ function HomeScreen() {
     }
     getBooks();
   }, []);
+
+  async function AnnouncementModal() {
+    const response = await fetchAnnouncements();
+  }
+  
+  if()
   return (
     <View style={styles.container}>
       <ScrollView>

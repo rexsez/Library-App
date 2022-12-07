@@ -19,8 +19,8 @@ function ProfileScreen() {
   //  "!" the third one is just so if it is empty --> false
   //  it will become !false --> true
   useFocusEffect(() => {
-    console.log("here ");
-    console.log(studentContext.student.Email);
+    // console.log("here ");
+    // console.log(studentContext.student.Email);
     if (!!!studentContext.student.Email) {
       navigation.navigate("DrawerRegister");
     }

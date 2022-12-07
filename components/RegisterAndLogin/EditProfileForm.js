@@ -128,9 +128,9 @@ function EditProfileForm() {
     }
   }
   async function lastTouch() {
-    console.log(studentContext.Email);
+    // console.log(studentContext.Email);
     const id = await getStudentID(studentContext.student.Email);
-    console.log(id);
+    // console.log(id);
     studentContext.setID(id);
   }
 

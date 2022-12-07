@@ -3,6 +3,7 @@ import {
   ScrollView,
   Platform,
   ImageBackground,
+  View,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useLayoutEffect, useEffect, useContext, useState } from "react";
@@ -17,6 +18,8 @@ import MyButton from "../components/MyButton";
 import { AppContext } from "../store/AppContext";
 import { StudentContext } from "../store/StudentContext";
 import BookRatingModal from "../components/BookInfoComponents/Book_Rating";
+import { LinearGradient } from "expo-linear-gradient";
+import Colors from "../components/Utility/Colors";
 
 function BookInformationScreen({ navigation }) {
   // to get the list of books
@@ -133,14 +136,20 @@ function BookInformationScreen({ navigation }) {
   }
 
   return (
-    //Scrollview for the entire screen
-    <>
-      <ImageBackground
-        style={styles.ImageBackground}
-        source={require("../assets/logoNew2.png")}
-        resizeMode="cover"
-      >
-        <ScrollView style={styles.rootContainer}>
+    <LinearGradient
+      start={{ x: 0.1, y: 0.25 }}
+      end={{ x: 0.5, y: 1.0 }}
+      locations={[0, 0.5, 0.6]}
+      // Background Linear Gradient
+      colors={["#2596be", "whitesmoke", "#2596be"]}
+      style={styles.linearGradient}
+    >
+      {/* Scrollview for the entire screen */}
+      <View style={styles.rootContainer}>
+        <ScrollView
+          style={styles.rootContainer}
+          showsVerticalScrollIndicator={false}
+        >
           <BookRatingModal
             visible={visible}
             rate={defaultRating}
@@ -168,8 +177,8 @@ function BookInformationScreen({ navigation }) {
 
           <BookSummary>{selectedBook.summary}</BookSummary>
         </ScrollView>
-      </ImageBackground>
-    </>
+      </View>
+    </LinearGradient>
   );
 }
 
@@ -178,14 +187,14 @@ export default BookInformationScreen;
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    padding: 16,
     margin: 16,
+    backgroundColor: "whitesmoke",
   },
   itemsBar: {
     marginTop: 8,
     paddingVertical: 4,
-    borderWidth: 1,
-    borderRadius: 4,
+    // borderWidth: 1,
+    // borderRadius: 4,
     alignItems: "center",
   },
   iconButton: {
@@ -197,5 +206,11 @@ const styles = StyleSheet.create({
   },
   ImageBackground: {
     flex: 1,
+  },
+  linearGradient: {
+    flex: 1,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 5,
   },
 });
