@@ -23,7 +23,12 @@ export async function fetchBooks() {
     let id = key;
     let author = bookData.author;
     let category = bookData.category;
-    let date = new Date(bookData.date);
+    let date;
+    if (bookData.date) {
+      date = new Date(bookData.date);
+    } else {
+      date = new Date();
+    }
     // if a book doesn't have a rating it will be -1 by default, otherwise it will compute its average rating
     let rating = -1;
     let ratedBy = [];
@@ -63,6 +68,16 @@ export async function fetchBooks() {
       img =
         "https://firebasestorage.googleapis.com/v0/b/psu-library-app.appspot.com/o/images%2Fno_book.png?alt=media&token=4ddb2db7-9924-4f52-9041-11e0d6cf5c63";
     }
+
+    let badge = null;
+    const date1 = new Date();
+    const date2 = new Date(bookData.dateRegistered);
+    const diffTime = Math.abs(date1 - date2);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDays <= 7) {
+      badge = "new-box";
+    }
+
     databaseBooks.push(
       new Book(
         id,
@@ -75,7 +90,7 @@ export async function fetchBooks() {
         summary,
         rating,
         false,
-        null,
+        badge,
         ratedBy
       )
     );

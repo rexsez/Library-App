@@ -1,14 +1,29 @@
 import { View, StyleSheet, ImageBackground } from "react-native";
-import Card from "../components/Utlity/Cards/Card";
 import { useNavigation } from "@react-navigation/native";
-import Announcements from "./Announcements";
 import { ScrollView } from "react-native-gesture-handler";
+import { useContext, useEffect } from "react";
+
+import Card from "../components/Utility/Cards/Card";
+import Announcements from "./Announcements";
+import { AppContext } from "../store/AppContext";
+import { fetchBooks, fetchCategories } from "../components/Utility/http";
 
 function HomeScreen() {
   const navigation = useNavigation();
+  const appCtx = useContext(AppContext);
+
   function GoTo(stackName) {
     return navigation.navigate({ name: stackName });
   }
+  useEffect(() => {
+    async function getBooks() {
+      const books = await fetchBooks();
+      const categories = await fetchCategories();
+      appCtx.changeBooks(books);
+      appCtx.changeCategories(categories);
+    }
+    getBooks();
+  }, []);
   return (
     <View style={styles.container}>
       <ScrollView>
