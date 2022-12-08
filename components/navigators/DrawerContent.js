@@ -5,11 +5,11 @@ import { Avatar, Drawer, Switch, TouchableRipple } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+import { updateFavList } from "../Utility/http";
 import { StudentContext } from "../../store/StudentContext";
 import Student from "../../models/Student";
 
 export function DrawerContent(props) {
-
   // used to get dark mode option from student context, I am storing it in
   // a context because later on, we will decide the coloring scheme based on it
   const studentContext = useContext(StudentContext);
@@ -198,6 +198,9 @@ export function DrawerContent(props) {
               )}
               label="Sign out"
               onPress={() => {
+                // First, we upload the changes made to student context to the database
+                updateFavList(studentContext.ID, studentContext.student);
+                console.log(studentContext.student);
                 const initialNewStudent1 = new Student("", "", "", "", [], []);
                 studentContext.registerStudent(initialNewStudent1);
               }}

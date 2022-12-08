@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  ScrollView,
-  Platform,
-  ImageBackground,
-  View,
-} from "react-native";
+import { StyleSheet, ScrollView, Platform, View } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useLayoutEffect, useEffect, useContext, useState } from "react";
 import { HeaderBackButton } from "react-navigation-stack";
@@ -19,7 +13,8 @@ import { AppContext } from "../store/AppContext";
 import { StudentContext } from "../store/StudentContext";
 import BookRatingModal from "../components/BookInfoComponents/Book_Rating";
 import { LinearGradient } from "expo-linear-gradient";
-import { postBorrowRequest } from "../components/Utility/http";
+import { postBorrowRequest, updateFavList } from "../components/Utility/http";
+import Student from "../models/Student";
 
 function BookInformationScreen({ navigation }) {
   // to get the list of books
@@ -35,6 +30,8 @@ function BookInformationScreen({ navigation }) {
           ? () => (
               <HeaderBackButton
                 onPress={() => {
+                  // First, we upload the changes made to student context to the database
+                  updateFavList(studentCtx.ID, studentCtx.student);
                   // This will remove The previous screen (Barcode scanner screen)
                   navigation.dispatch(StackActions.popToTop());
                 }}
@@ -110,12 +107,70 @@ function BookInformationScreen({ navigation }) {
     color: "black",
   };
 
-  const bookIsFavorite = true; // ### test  ###
+  // Supporting function needed to change list of fav from student context
+  // This method receives by defualt the values (in this case: ISBN) in the array
+  const student = studentCtx.student;
+  const isInFavList = (currentItemISBN) => {
+    // checks if the current element of the array has the same isbn
+
+    if (currentItemISBN == isbn) {
+      // if the item has the isbn, then it return false (This item is needs to be filtered out)
+      return false;
+    }
+    // Else if the item doesnt match, it returns true (Dont filter the item)
+    return true;
+  };
+  // In the begging, we check if the book is faviroute already or not
+  // This will be used as the intial value of isvaforite state.
+  let isFavoriteIntial = !!student?.favBooks && student.favBooks.includes(isbn);
+  console.log(isFavoriteIntial);
+  //This state variable keeps track of wether a book has been added to faviroute or not
+  const [bookIsFavorite, setBookIsFavorite] = useState(isFavoriteIntial);
+  // This will be used everywhere for fav list changes
+  let currentStudentContext = studentCtx.student;
+  //Function to execute if the users clicks on faviroute
+  const onPressFav = () => {
+    // First we change book from faviroute to not faviroute or vise-versa
+    if (bookIsFavorite) {
+      // If the book was in fav list:
+      // 1- We change the state of the current page, from fav to not fav, so button shows empty star
+      setBookIsFavorite(false);
+      // 2- then we delete it from fav list in the app wide context
+      currentStudentContext = {
+        ...studentCtx.student,
+        favBooks: studentCtx.student.favBooks.filter(isInFavList),
+      };
+      studentCtx.registerStudent(currentStudentContext);
+      console.log(studentCtx.student);
+    } else {
+      // If the book was not in fav list:
+      // 1- We change the state of the current page, from not fav to fav, so button shows filled star
+      setBookIsFavorite(true);
+      // // 2- then we add it to fav list in the app wide context
+      currentStudentContext = studentCtx.student;
+      // If there is no fav in the context
+      if (!!!currentStudentContext?.favBooks) {
+        currentStudentContext = new Student(
+          currentStudentContext.FName,
+          currentStudentContext.LName,
+          currentStudentContext.Email,
+          currentStudentContext.psw,
+          currentStudentContext.borrowedBooks,
+          [isbn]
+        );
+      } else {
+        currentStudentContext.favBooks.push(isbn);
+      }
+
+      studentCtx.registerStudent(currentStudentContext);
+      console.log(studentCtx.student);
+    }
+  };
 
   //List of buttons to be added to the IconButtonBar
   const iconBarButtons = [
     //favorite button
-    <MyButton style={styles.iconButton}>
+    <MyButton style={styles.iconButton} onPress={onPressFav}>
       {
         <FontAwesome
           name={bookIsFavorite ? "star" : "star-o"}

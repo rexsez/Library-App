@@ -277,3 +277,7 @@ export async function postBorrowRequestToStudent(isbn, userKey) {
     axios.put(link, res);
   }
 }
+// -------------------------------------adding book to fav list---------------------------------------------
+export async function updateFavList(ID, student) {
+  axios.put(database + `students/${ID}.json`, student);
+}
