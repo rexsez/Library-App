@@ -116,8 +116,8 @@ function StatisticsScreen() {
         backgroundGradientTo: Colors.color7,
         backgroundGradientToOpacity: 1,
         color: () => Colors.color6,
-        strokeWidth: 2, // optional, default 3
-        barPercentage: 1,
+        // strokeWidth: 5, // optional, default 3
+        barPercentage: 0.8,
         backgroundGradientToOpacity: 1,
         fillShadowGradientFromOpacity: 0.8,
         fillShadowGradientFromOffset: 0.6,
@@ -153,7 +153,7 @@ function StatisticsScreen() {
     ];
 
     const screenWidth = (Dimensions.get("window").width) * 1.001;
-    const screenheight = (Dimensions.get("window").height) * 0.8;
+    const screenheight = (Dimensions.get("window").height) * 0.9;
     return (
         //root container
         <View style={styles.rootContainer}>
@@ -172,7 +172,7 @@ function StatisticsScreen() {
                 chartConfig={chartConfig}
                 verticalLabelRotation={30}
                 showValuesOnTopOfBars={true}
-            //withInnerLines={false}
+                // withInnerLines={false}
             />
 
         </View>
