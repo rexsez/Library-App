@@ -29,7 +29,9 @@ function ProfileScreen({ defaultScreen }) {
       const borrowedBook = appCtx.books.find(
         (bookss) => bookss.isbn === book.item
       );
+      if(!!borrowedBook)
       return <BookCard bookData={borrowedBook}></BookCard>;
+      else return; 
     }
   }
   function keyExtractor(book) {
@@ -39,7 +41,10 @@ function ProfileScreen({ defaultScreen }) {
     if (currentList === "fav") {
       return studentContext.student.favBooks;
     } else {
+      if (!!studentContext.student?.borrowedBooks)
       return Object.keys(studentContext.student.borrowedBooks);
+      else
+      return []; 
     }
   }
   const [currentList, setList] = useState("fav");
