@@ -23,6 +23,7 @@ import {
   DescendingRating,
 } from "../Utility/UtilityFunctions";
 import { AppContext } from "../../store/AppContext";
+import MyButton from "../MyButton";
 
 // This is going to be used to show filter options as a radio button
 // label is needed for radio button to work
@@ -250,16 +251,33 @@ function FilterModal({
       isVisible={isModalVisible}
       style={{
         backgroundColor: "white",
-        width: "100%",
+        width: "95%",
         alignSelf: "center",
         marginTop: 100,
+        marginBottom:3,
+        paddingBottom:4,
+
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 10,
+
+        borderStyle: "solid",
+        borderWidth: 4,
+        borderColor: "black",
+        borderRadius: 15,
       }}
     >
       <View>
         <ScrollView>
           <View style={styles.Container}>
-            <Text style={styles.Text}>Filter By</Text>
+            <Text style={[styles.Text, {marginTop:20}]}>Filter By</Text>
             <DropDownMenu //Category
+              style={{marginBottom:20, borderRadius:55}}
               label={category}
               elements={appCtx.categories}
               dropDownConfig={{
@@ -271,7 +289,7 @@ function FilterModal({
             <Text style={[styles.Text, { borderBottomWidth: 0 }]}>
               Minimum Rating
             </Text>
-            <SliderExample rating={rating} setRating={setRating} />
+            <SliderExample  rating={rating} setRating={setRating} />
             <Text style={styles.Text}>Sort By</Text>
             {/* This component is taken from npm library, check the following link for info: */}
             {/* https://github.com/sramezani/radio-buttons-react-native#readme*/}
@@ -280,6 +298,7 @@ function FilterModal({
               selectedBtn={(e) => handleRadioSortBy(e)}
               initial={chosenFilter}
               activeColor="#1b7ce4"
+              style={{marginBottom:20}}
             />
             <Text style={styles.Text}>Order By</Text>
             {/* This component is taken from npm library, check the following link for info: */}
@@ -289,6 +308,8 @@ function FilterModal({
               selectedBtn={(e) => handleRadioOrderBy(e)}
               initial={chosenOrder}
               activeColor="#1b7ce4"
+              style={{marginBottom:20}}
+
             />
 
             <View style={styles.btnsContainer}>
@@ -300,10 +321,15 @@ function FilterModal({
                 Cancel
               </MButton> */}
               <View style={styles.btnContainer}>
-                <Button title="Cancel" onPress={cancel} color="tomato" />
+                <MyButton textStyle={styles.buttonText} style={[styles.buttonClose, {marginLeft:30}]} onPress={cancel}>
+                  Cancel
+                </MyButton>
+
               </View>
               <View style={styles.btnContainer}>
-                <Button title="Done" onPress={filterBooks} color="#1b7ce4" />
+                <MyButton textStyle={styles.buttonText} style={[styles.buttonDone, {marginRight:30}]} onPress={filterBooks}>
+                  Done
+                </MyButton>
               </View>
               {/* <MyButton
                 onPress={filterBooks}
@@ -325,28 +351,47 @@ export default FilterModal;
 const styles = StyleSheet.create({
   Container: {
     flex: 1,
+    marginHorizontal:20,
   },
   headerText: {
     textAlign: "center",
     justifyContent: "center",
     alignContent: "center",
-    fontSize: 26,
+    fontSize: 30,
     borderBottomWidth: 0.5,
   },
   btnsContainer: {
     flexDirection: "row",
     flex: 1,
-    justifyContent: "center",
     marginTop: 6,
     marginBottom: 12,
   },
+
   btnContainer: {
     flexDirection: "row",
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'space-evenly',
+  },
+  buttonDone:{
+    backgroundColor: '#1b7ce4',
+    borderRadius: 15,
+    padding: 10,
+    paddingHorizontal: 22,
+  },
+  buttonClose:{
+    backgroundColor: 'tomato',
+    borderRadius: 15,
+    padding: 10,
+    paddingHorizontal: 15,
+  },
+  buttonText:{
+    fontSize: 18,
+    color: "white",
+    fontWeight: '400',
   },
   Text: {
-    fontSize: 20,
-    color: "gray",
+    fontSize: 18,
+    color: "black",
+    fontWeight: 'bold',
   },
 });

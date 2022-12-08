@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 4,
     elevation: 4,
-    backgroundColor: "whitesmoke",
+    backgroundColor: "whitesmoke"
   },
   bookDeatilsContainer: {
     marginLeft: 8,

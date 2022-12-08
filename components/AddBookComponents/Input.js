@@ -18,13 +18,13 @@ function Input({ label, style, textInputConfig, invalid }) {
 
   return (
     <View style={[styles.inputContainer, style]}>
-      {/* the container is more configurable this way (takes additional styles from style parameter) */}
+      {/* the container is more configurable this way (takes additional styles from style parameter) /}
 
       <Text style={[styles.label, invalid && styles.invalidLabel]}>
         {label}
       </Text>
-      
-        {/* 
+
+        {/ 
             TextInputConfig is taken from the parameter to control how this input field behaves
             E.g. Keyboard Type, AutoCorrect, etc...
             check: https://reactnative.dev/docs/textinput for the available TextInput props
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     padding: 6,
     borderRadius: 6,
     fontSize: 18,
-    backgroundColor: "whitesmoke"
+    backgroundColor: "whitesmoke",
   },
   inputMultiline: {
     minHeight: 100,

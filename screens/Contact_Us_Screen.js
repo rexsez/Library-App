@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginVertical: 20,
         padding: 5,
+        borderRadius: 10,
 
     },
     bannerText: {
@@ -164,11 +165,12 @@ const styles = StyleSheet.create({
     headText: {
         fontSize: 13,
         fontWeight: "bold",
-        color: '#105EEA',
+        color: '#1b7ce4',
     },
     text: {
         fontSize: 12,
         fontWeight: "bold",
+        color: 'black',
     },
     devidor: {
         borderWidth: 0.5,
@@ -176,7 +178,7 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     hyperlinkStyle: {
-        color: 'blue',
+        color: '#063663',
     },
 
 

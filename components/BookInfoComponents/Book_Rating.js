@@ -1,8 +1,9 @@
 import { useContext, useState } from "react";
-import { View, StyleSheet, Modal, Button } from "react-native";
+import { View, StyleSheet, Modal } from "react-native";
 import { StudentContext } from "../../store/StudentContext";
-import { postRating } from "../Utility/http";
+import MyButton from "../MyButton";
 
+import { postRating } from "../Utility/http";
 import SliderExample from "../Utility/SliderExample";
 
 function BookRatingModal({
@@ -39,8 +40,12 @@ function BookRatingModal({
           <View style={styles.modalView}>
             <SliderExample rating={rating} setRating={setRating} />
             <View style={styles.row}>
-              <Button title="Cancel" color={"tomato"} onPress={closeModal} />
-              <Button title="Rate" onPress={rateBook.bind(this, rating)} />
+              <MyButton textStyle={styles.buttonText} style={[styles.buttonClose, { marginRight: 30 }]} onPress={closeModal}>
+                Cancel
+              </MyButton>
+              <MyButton textStyle={styles.buttonText} style={[styles.buttonRate, { marginRight: 30 }]} onPress={rateBook.bind(this, rating)}>
+                Rate
+              </MyButton>
             </View>
           </View>
         </View>
@@ -58,7 +63,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: 330,
-    flex: 0.15,
+    flex: 0.18,
     backgroundColor: "white",
     borderRadius: 20,
     shadowColor: "#000",
@@ -76,6 +81,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  buttonRate:{
+    backgroundColor: '#1b7ce4',
+    borderRadius: 15,
+    padding: 10,
+    paddingHorizontal: 22,
+  },
+  buttonClose:{
+    backgroundColor: 'tomato',
+    borderRadius: 15,
+    padding: 10,
+    paddingHorizontal: 15,
+  },
+  buttonText:{
+    fontSize: 18,
+    color: "white",
+    fontWeight: '400',
+  },
+
 });
 
 export default BookRatingModal;

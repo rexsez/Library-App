@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { View, StyleSheet, Text /*Image*/ } from "react-native";
+import { View, StyleSheet, Text /*Image*/, Platform } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useRoute } from "@react-navigation/native";
 import { HeaderBackButton } from "react-navigation-stack";
@@ -10,7 +10,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import Input from "../components/AddBookComponents/Input";
 import MyButton from "../components/MyButton";
 import ErrorComponent from "../components/RegisterAndLogin/ErrorComponent";
-import Title from "../components/Title";
 import DropDownMenu from "../components/AddBookComponents/Drop_Down_Menu";
 import { AppContext } from "../store/AppContext";
 import { requestBook /*uploadImage*/ } from "../components/Utility/http";
@@ -164,7 +163,6 @@ function AddBookScreen({ navigation }) {
     !inputs.date.isValid ||
     !inputs.category.isValid ||
     !inputs.summary.isValid;
-
   return (
     <LinearGradient
       start={{ x: 0.0, y: 0.25 }}
@@ -179,6 +177,8 @@ function AddBookScreen({ navigation }) {
           {/* <Title>Request Book</Title> */}
           {/* <Text style={styles.title}>Add Book</Text> */}
           {/* Using the Input component to create input fields */}
+
+          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>ISBN</Text>
           <Input //ISBN
             label="ISBN"
             invalid={!inputs.isbn.isValid}
@@ -188,6 +188,7 @@ function AddBookScreen({ navigation }) {
             }}
           />
 
+          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Title</Text>
           <Input //Book Title
             label="Title"
             invalid={!inputs.title.isValid}
@@ -212,7 +213,7 @@ function AddBookScreen({ navigation }) {
             />
             )}
           </View> */}
-
+          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Author</Text>
           <Input //Author
             label="Author"
             invalid={!inputs.author.isValid}
@@ -220,7 +221,7 @@ function AddBookScreen({ navigation }) {
               onChangeText: inputChangedHandler.bind(this, "author"),
             }}
           />
-
+          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Date</Text>
           <Input //Date
             label="Publish Date"
             invalid={!inputs.date.isValid}
@@ -246,6 +247,7 @@ function AddBookScreen({ navigation }) {
             }}
           />
 
+          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Summary</Text>
           <Input //Summary
             label="Summary"
             invalid={!inputs.summary.isValid}
@@ -291,7 +293,7 @@ const styles = StyleSheet.create({
     color: "whitesmoke",
   },
   dropdown: {
-    marginTop: 20
+    marginTop: 20,
   },
   // pickImageContainer: {
   //   flexDirection: "row",
@@ -317,5 +319,6 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 5,
+    opacity: 0.75,
   },
 });

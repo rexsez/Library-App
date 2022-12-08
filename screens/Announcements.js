@@ -83,7 +83,7 @@ function Announcements() {
 const styles = StyleSheet.create({
   centeredView: {
     // flex: 1,
-    margin: 12,
+    margin: 25
   },
   modalView: {
     margin: 20,
@@ -108,13 +108,14 @@ const styles = StyleSheet.create({
     padding: 15,
     elevation: 5,
     paddingHorizontal: 31,
-    marginTop: 15,
+    borderWidth: 2,
+    borderColor: '#eddfb4',
   },
   textStyleAnnouncements: {
     color: "white",
-    // fontWeight: "900",
+    fontWeight: "900",
     textAlign: "center",
-    // letterSpacing: 1.5,
+    letterSpacing: 1.5,
   },
   textStyleClose: {
     color: "white",

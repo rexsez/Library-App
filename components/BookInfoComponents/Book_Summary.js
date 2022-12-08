@@ -16,6 +16,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 12,
     padding: 6,
+    overflow:'scroll',
+    
   },
   text: {
     fontSize: 16,

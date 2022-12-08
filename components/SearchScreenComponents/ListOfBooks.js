@@ -23,24 +23,6 @@ function ListOfBooks() {
   const [chosenOrder, setChosenOrder] = useState(1);
 
   const [render, setRender] = useState(false);
-  function toggle() {
-    setRender(!render);
-  }
-  const [time, setTime] = useState();
-  // useFocusEffect(() => {
-  //   if (Math.abs(new Date().getSeconds() - time) > 10 || !time) {
-  //     async function getBooks() {
-  //       const books = await fetchBooks();
-  //       const categories = await fetchCategories();
-  //       appCtx.changeBooks(books);
-  //       appCtx.changeCategories(categories);
-  //       setBooks(books);
-  //       setTime(new Date().getSeconds());
-  //     }
-  //     getBooks();
-
-  //   }
-  // }, []);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -57,7 +39,7 @@ function ListOfBooks() {
     }, [])
   );
 
-  console.log(appCtx.books);
+  // console.log(appCtx.books);
 
   function toggleModal() {
     setModalVisible(!isModalVisible);
@@ -104,7 +86,7 @@ function ListOfBooks() {
   if (currentSearch) {
     loadedButton = (
       <>
-        <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
+        <MyButton style={styles.icon}>
           <Ionicons
             name="options-sharp"
             size={iconSize}
@@ -118,7 +100,7 @@ function ListOfBooks() {
   } else {
     loadedButton = (
       <>
-        <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
+        <MyButton style={[styles.searchContainer,{marginHorizontal:4}]}>
           <Ionicons
             name="barcode-outline"
             size={iconSize}
@@ -127,7 +109,7 @@ function ListOfBooks() {
             onPress={() => navigation.navigate("StackBarcode")}
           />
         </MyButton>
-        <MyButton style={styles.barcodeScanner} Flate={"Flate"}>
+        <MyButton style={[styles.searchContainer,{marginHorizontal:4}]}>
           <Ionicons
             name="options-sharp"
             size={iconSize}
@@ -143,7 +125,7 @@ function ListOfBooks() {
   return (
     <View style={styles.Container}>
       {/* Here is the Search Bar Container */}
-      <View style={styles.seacrhContainer}>
+      <View style={styles.searchContainer}>
         {/* Search Bar Icon */}
         <Ionicons
           name="search"
@@ -194,7 +176,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
-  seacrhContainer: {
+  searchContainer: {
     backgroundColor: "#1b7ce4",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -216,6 +198,10 @@ const styles = StyleSheet.create({
   },
   barcodeScanner: {
     alignSelf: "center",
-    marginHorizontal: 8,
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    textAlignVertical: "center",
   },
 });

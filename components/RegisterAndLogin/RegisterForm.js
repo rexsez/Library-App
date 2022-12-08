@@ -1,4 +1,4 @@
-import { useState, useContext, useLayoutEffect } from "react";
+import { useState, useContext } from "react";
 import { View, StyleSheet, KeyboardAvoidingView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -10,9 +10,7 @@ import validateNewStudent from "../Utility/InputValidation/ValidateNewStudent";
 import Inpute from "./Inpute";
 import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
-import { registerStudent } from "../Utility/http";
-import AddIcon from "../AddIcon";
-import { useFocusEffect } from "@react-navigation/native";
+import { getStudentID, registerStudent } from "../Utility/http";
 
 function RegisterForm() {
   // ----------------- Navigation stuff --------------
@@ -64,9 +62,9 @@ function RegisterForm() {
     });
   }
   const [error, setError] = useState(initialError);
-  function onPress() {
-    //  we check if the inpute wasnt valid,
-    // if inpute not valid we put error component with
+  async function onPress() {
+    //  we check if the input wasn't valid,
+    // if input not valid we put error component with
     // appropriate message
     if (!error.isValid) {
       let newRrrorComponent = (
@@ -75,14 +73,16 @@ function RegisterForm() {
       setError((currentState) => {
         return { ...currentState, errorComponent: newRrrorComponent };
       });
-      // else we just pass student infomation (fav list, barrowed list)
+      // else we just pass student information (fav list, borrowed list)
       //  to the app wide context
       //  so it can be used every where else
     } else {
       // putting new student data in context to be used locally
       studentContext.registerStudent(newStudent);
       // adding the new student data to the database using post
-      registerStudent(newStudent);
+      await registerStudent(newStudent);
+      const ID = await getStudentID(newStudent.Email);
+      studentContext.setID(ID);
       navigation.navigate({ name: "DrawerProfile" });
     }
   }

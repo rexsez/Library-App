@@ -26,6 +26,8 @@ function SliderExample({ rating, setRating }) {
         maximumValue={5}
         onSlidingComplete={(value) => changeValue(value)}
         step={0.5}
+        thumbTintColor="#1b7ce4"
+        minimumTrackTintColor="#1b7ce4"
       />
       <Text style={styles.Text}>Value: {rating}</Text>
     </View>
@@ -40,9 +42,10 @@ const styles = StyleSheet.create({
     marginRight: 10,
     alignItems: "stretch",
     justifyContent: "center",
+    marginBottom: 20,
   },
   Text: {
     fontSize: 18,
-    color: "gray",
+    color: "#ec9c2d",
   },
 });

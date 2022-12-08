@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 8,
     paddingHorizontal: 8,
-    backgroundColor: "whitesmoke"
+    backgroundColor: "whitesmoke",
   },
   label: {
     fontSize: 8,

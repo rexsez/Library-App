@@ -28,7 +28,7 @@ function SearchScreen() {
   const route = useRoute();
   if (!!route.params) {
     // Alert.alert("Your book request is recorded",[{}]);
-    Alert.alert("Book request", "Your books request is added", [
+    Alert.alert(" Submitted", "Your request has been submitted", [
       { text: "OK", onPress: () => console.log("OK Pressed") },
     ]);
   }
