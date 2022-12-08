@@ -178,9 +178,8 @@ function AddBookScreen({ navigation }) {
           {/* <Title>Request Book</Title> */}
           {/* <Text style={styles.title}>Add Book</Text> */}
           {/* Using the Input component to create input fields */}
-          {Platform.OS === "ios" ? (
-            <Text style={{ fontWeight: "bold", marginLeft: 5 }}>ISBN</Text>
-          ) : undefined}
+
+          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>ISBN</Text>
           <Input //ISBN
             label="ISBN"
             invalid={!inputs.isbn.isValid}
@@ -190,9 +189,7 @@ function AddBookScreen({ navigation }) {
             }}
           />
 
-          {Platform.OS === "ios" ? (
-            <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Title</Text>
-          ) : undefined}
+          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Title</Text>
           <Input //Book Title
             label="Title"
             invalid={!inputs.title.isValid}
@@ -217,9 +214,7 @@ function AddBookScreen({ navigation }) {
             />
             )}
           </View> */}
-          {Platform.OS === "ios" ? (
-            <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Author</Text>
-          ) : undefined}
+          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Author</Text>
           <Input //Author
             label="Author"
             invalid={!inputs.author.isValid}
@@ -227,10 +222,7 @@ function AddBookScreen({ navigation }) {
               onChangeText: inputChangedHandler.bind(this, "author"),
             }}
           />
-
-          {Platform.OS === "ios" ? (
-            <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Date</Text>
-          ) : undefined}
+          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Date</Text>
           <Input //Date
             label="Publish Date"
             invalid={!inputs.date.isValid}
@@ -255,9 +247,8 @@ function AddBookScreen({ navigation }) {
               },
             }}
           />
-          {Platform.OS === "ios" ? (
-            <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Summary</Text>
-          ) : undefined}
+
+          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Summary</Text>
           <Input //Summary
             label="Summary"
             invalid={!inputs.summary.isValid}

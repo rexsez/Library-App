@@ -174,8 +174,6 @@ export async function requestBook(requestData) {
 // }
 // ------------------------------------------Announcement----------------------------------------------------
 export async function fetchAnnouncements() {
-  const checkAnnouncements = await axios.get(database);
-  
   // basically await waits for the promise to happen. ---> returns a promise ....
   const response = await axios.get(database + "announcements.json");
   //.get returns the students object, which we will turn into an array.
