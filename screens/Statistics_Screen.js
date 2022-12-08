@@ -24,21 +24,13 @@ function StatisticsScreen() {
         {
             //bottom labels as book titles
             labels: [
-                books[0]["title"],
-                books[1]["title"],
-                books[2]["title"],
-                books[3]["title"],
-                books[4]["title"],
+                ...getFirstTitles(books)
             ],
             //data -> for example times borrowed, rating etc...
             datasets: [
                 {
                     data: [
-                        books[0]["timesBorrowed"],
-                        books[1]["timesBorrowed"],
-                        books[2]["timesBorrowed"],
-                        books[3]["timesBorrowed"],
-                        books[4]["timesBorrowed"],
+                        ...getFirstTimesBorrowed(books)
                     ],
                 },
             ],
@@ -52,21 +44,13 @@ function StatisticsScreen() {
         setBarChartData({
             //bottom labels as book titles
             labels: [
-                books[0]["title"],
-                books[1]["title"],
-                books[2]["title"],
-                books[3]["title"],
-                books[4]["title"],
+                ...getFirstTitles(books)
             ],
             //data -> for example times borrowed, rating etc...
             datasets: [
                 {
                     data: [
-                        books[0]["timesBorrowed"],
-                        books[1]["timesBorrowed"],
-                        books[2]["timesBorrowed"],
-                        books[3]["timesBorrowed"],
-                        books[4]["timesBorrowed"],
+                        ...getFirstTimesBorrowed(books)
                     ],
                 },
             ],
@@ -77,35 +61,55 @@ function StatisticsScreen() {
     function highestRatings(books) {
         books.sort(DescendingRating);
 
-        //if book is rated -> get its rating, otherwise give it 0
-        const book1 = (books[0]["rating"] > 0) ? books[0]["rating"] : 0;
-        const book2 = (books[1]["rating"] > 0) ? books[1]["rating"] : 0;
-        const book3 = (books[2]["rating"] > 0) ? books[2]["rating"] : 0;
-        const book4 = (books[3]["rating"] > 0) ? books[3]["rating"] : 0;
-        const book5 = (books[4]["rating"] > 0) ? books[4]["rating"] : 0;
-
         setBarChartData({
             //bottom labels as book titles
             labels: [
-                books[0]["title"],
-                books[1]["title"],
-                books[2]["title"],
-                books[3]["title"],
-                books[4]["title"],
+                ...getFirstTitles(books)
             ],
             //data -> for example times borrowed, rating etc...
             datasets: [
                 {
                     data: [
-                        book1,
-                        book2,
-                        book3,
-                        book4,
-                        book5,
+                        ...getFirstRatings(books)
                     ],
                 },
             ],
         })
+    }
+
+    //function to get ratings of the first five or less indices
+    //sort before using it!
+    function getFirstRatings(books) {
+        const result = [];
+        const length = books.length < 5 ? books.length : 5;
+        let rating;
+        for (let index = 0; index < length; index++) {
+            rating = (books[index]['rating'] < 0) ? 0 : books[index]['rating'];
+            result.push(rating);
+        }
+        return result;
+    }
+
+    //function to get times borrowed of the first five or less indices
+    //sort before using it!
+    function getFirstTimesBorrowed(books) {
+        const result = [];
+        const length = books.length < 5 ? books.length : 5;
+        for (let index = 0; index < length; index++) {
+            result.push(books[index]['timesBorrowed']);
+        }
+        return result;
+    }
+
+    //function to get titles of the first five or less indices
+    //sort before using it!
+    function getFirstTitles(books) {
+        const result = [];
+        const length = books.length < 5 ? books.length : 5;
+        for (let index = 0; index < length; index++) {
+            result.push(books[index]['title']);
+        }
+        return result;
     }
 
     //chart cofiguration (colors, opacity, etc...)
