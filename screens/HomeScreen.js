@@ -24,7 +24,7 @@ function HomeScreen() {
     }
     getBooks();
   }, []);
-
+  
   return (
     <View style={styles.container}>
       {/* <LinearGradient

@@ -87,11 +87,22 @@ export function DescendingRating(book1, book2) {
   }
   return 0;
 }
+
 export function AscendingRating(book1, book2) {
   if (book2.rating > book1.rating) {
     return -1;
   }
   if (book2.rating < book1.rating) {
+    return 1;
+  }
+  return 0;
+}
+
+export function DescendingTimesBorrowed(book1, book2) {
+  if (book1.timesBorrowed > book2.timesBorrowed) {
+    return -1;
+  }
+  if (book1.timesBorrowed < book2.timesBorrowed) {
     return 1;
   }
   return 0;
