@@ -11,6 +11,7 @@ import BarcodeScanner from "../SearchScreenComponents/BarcodeScanner";
 import Contact_Us_Screen from "../../screens/Contact_Us_Screen";
 import EditProfileScreen from "../../screens/EditProfileScreen";
 import HomeScreen from "../../screens/HomeScreen";
+import StatisticsScreen from "../../screens/Statistics_Screen";
 
 function StackNavigator() {
   const Stack = createStackNavigator();
@@ -76,6 +77,13 @@ function StackNavigator() {
         component={Contact_Us_Screen}
         options={{
           title: "About Us",
+        }}
+      />
+      <Stack.Screen
+        name="Statistics"
+        component={StatisticsScreen}
+        options={{
+          title: "Statistics",
         }}
       />
     </Stack.Navigator>
