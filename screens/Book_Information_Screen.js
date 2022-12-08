@@ -19,15 +19,15 @@ import { AppContext } from "../store/AppContext";
 import { StudentContext } from "../store/StudentContext";
 import BookRatingModal from "../components/BookInfoComponents/Book_Rating";
 import { LinearGradient } from "expo-linear-gradient";
-
-
-
+import { postBorrowRequest } from "../components/Utility/http";
 
 function BookInformationScreen({ navigation }) {
   // to get the list of books
   const appCtx = useContext(AppContext);
   // to get student info and use it to rate a book
   const studentCtx = useContext(StudentContext);
+
+  //using the isbn to find the selected book object
   useEffect(() => {
     navigation.setOptions({
       headerLeft:
@@ -57,13 +57,20 @@ function BookInformationScreen({ navigation }) {
   const [visible, changeVisibility] = useState(false);
 
   // console.log(JSON.stringify(appCtx.books));
-
-  //using the isbn to find the selected book object
   const selectedBook = appCtx.books.find((book) => book.isbn === isbn);
   let defaultRating = 0;
   if (selectedBook.ratedBy.some((e) => e.key == studentCtx.ID)) {
     let obj = selectedBook.ratedBy.find((o) => o.key === studentCtx.ID);
     defaultRating = obj.rating;
+  }
+
+  async function borrowBook() {
+    const isbn = selectedBook.isbn;
+    const title = selectedBook.title;
+    const userEmail = studentCtx.student.Email;
+    const userKey = studentCtx.ID;
+    await postBorrowRequest(isbn, title, userEmail, userKey);
+    navigation.navigate("TabSearch", { request: true });
   }
   // setting the title of the page to the name of book
   const Navigation = useNavigation();
@@ -108,7 +115,7 @@ function BookInformationScreen({ navigation }) {
   //List of buttons to be added to the IconButtonBar
   const iconBarButtons = [
     //favorite button
-    <MyButton style={styles.iconButton} >
+    <MyButton style={styles.iconButton}>
       {
         <FontAwesome
           name={bookIsFavorite ? "star" : "star-o"}
@@ -127,10 +134,10 @@ function BookInformationScreen({ navigation }) {
     </MyButton>,
   ];
 
-  if (isScanned) {
+  if (isScanned && !!studentCtx.student.Email) {
     //add the borrow option if the book is scanned
     iconBarButtons.push(
-      <MyButton style={styles.iconButton} Flate={true}>
+      <MyButton style={styles.iconButton} onPress={borrowBook}>
         {<FontAwesome name="hand-grab-o" {...iconStyles} />}
       </MyButton>
     );

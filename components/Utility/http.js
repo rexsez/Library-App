@@ -240,3 +240,40 @@ export async function getStudentID(email) {
   }
   return studentID;
 }
+
+export async function postBorrowRequest(isbn, title, userEmail, userKey) {
+  const data = {
+    isbn: isbn,
+    title: title,
+    userEmail: userEmail,
+    userKey: userKey,
+  };
+  await axios.post(database + "borrow_requests.json", data);
+  await postBorrowRequestToStudent(isbn, userKey);
+}
+
+export async function postBorrowRequestToStudent(isbn, userKey) {
+  let link = database + "students/" + userKey + ".json";
+  let result = await axios.get(link);
+  let res = result.data;
+  if (!!!res?.borrowedBooks) {
+    // console.log(JSON.stringify(res))
+    const temp = new Student(
+      res.FName,
+      res.LName,
+      res.Email,
+      res.psw,
+      { [isbn]: "pending" },
+      res.favBooks
+    );
+    console.log(JSON.stringify(temp));
+    // res[isbn] = "pending";
+    axios.put(link, temp);
+  } else {
+    link = database + "students/" + userKey + "/borrowedBooks.json";
+    result = await axios.get(link);
+    res = result.data;
+    res[isbn] = "pending";
+    axios.put(link, res);
+  }
+}

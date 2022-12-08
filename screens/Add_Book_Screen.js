@@ -10,7 +10,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import Input from "../components/AddBookComponents/Input";
 import MyButton from "../components/MyButton";
 import ErrorComponent from "../components/RegisterAndLogin/ErrorComponent";
-import Title from "../components/Title";
 import DropDownMenu from "../components/AddBookComponents/Drop_Down_Menu";
 import { AppContext } from "../store/AppContext";
 import { requestBook /*uploadImage*/ } from "../components/Utility/http";
