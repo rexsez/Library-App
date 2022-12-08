@@ -15,7 +15,7 @@ import {
 function HomeScreen() {
   const navigation = useNavigation();
   const appCtx = useContext(AppContext);
-  const [modalAnnouncement,setModal]=useState()
+  const [modalAnnouncement, setModal] = useState();
 
   function GoTo(stackName) {
     return navigation.navigate({ name: stackName });
@@ -30,19 +30,16 @@ function HomeScreen() {
     getBooks();
   }, []);
 
-  async function AnnouncementModal() {
-    const response = await fetchAnnouncements();
-  }
-  
-  if()
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <ImageBackground
-          style={styles.ImageBackground}
-          source={require("../assets/logoNew2.png")}
-          resizeMode="cover"
-        >
+      {/* <LinearGradient
+      colors={['#2596be', '#76b5c5', '#154c79']}> */}
+      <ImageBackground
+        style={styles.ImageBackground}
+        source={require("../assets/logoNew2.png")}
+        resizeMode="cover"
+      >
+        <ScrollView>
           <View style={styles.cardContainer}>
             <Announcements />
             <View style={styles.rowContainer}>
@@ -50,32 +47,33 @@ function HomeScreen() {
                 text="Search"
                 onPressed={GoTo.bind(this, "TabSearch")}
                 path="search"
-                color="rgb(130, 196, 217)"
+                color="#366EA0"
               ></Card>
               <Card
-                text="Profile"
+                text="Account"
                 onPressed={GoTo.bind(this, "TabProfile")}
                 path="ios-person"
-                color="rgb(130, 196, 217)"
+                color="#366EA0"
               ></Card>
             </View>
-            <View style={styles.rowContainer}>
+            <View style={[styles.rowContainer, { marginTop: -20 }]}>
               <Card
                 text="Contact Us"
                 onPressed={GoTo.bind(this, "StackContact")}
                 path="md-call-sharp"
-                color="rgb(130, 196, 217)"
+                color="#366EA0"
               ></Card>
               <Card
                 text="Statistics"
                 onPressed={GoTo.bind(this, "Statistics")}
                 path="ios-stats-chart"
-                color="rgb(130, 196, 217)"
+                color="#366EA0"
               ></Card>
             </View>
           </View>
-        </ImageBackground>
-      </ScrollView>
+        </ScrollView>
+      </ImageBackground>
+      {/* </LinearGradient> */}
     </View>
   );
 }
@@ -95,10 +93,11 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     padding: 30,
+    // paddingTop: 150,
     margin: 10,
-    marginTop: 120,
-    borderWidth: 1,
-    borderColor: "white",
+    marginTop: 155,
+    borderWidth: 3,
+    borderColor: "black",
     borderRadius: 10,
     backgroundColor: "white",
     shadowColor: "#000",
@@ -108,7 +107,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.58,
     shadowRadius: 16.0,
-
     elevation: 24,
   },
   rowContainer: {

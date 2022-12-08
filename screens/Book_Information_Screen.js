@@ -19,7 +19,9 @@ import { AppContext } from "../store/AppContext";
 import { StudentContext } from "../store/StudentContext";
 import BookRatingModal from "../components/BookInfoComponents/Book_Rating";
 import { LinearGradient } from "expo-linear-gradient";
-import Colors from "../components/Utility/Colors";
+
+
+
 
 function BookInformationScreen({ navigation }) {
   // to get the list of books
@@ -63,7 +65,7 @@ function BookInformationScreen({ navigation }) {
     let obj = selectedBook.ratedBy.find((o) => o.key === studentCtx.ID);
     defaultRating = obj.rating;
   }
-  // setting the tilte of the page to the name of book
+  // setting the title of the page to the name of book
   const Navigation = useNavigation();
   useLayoutEffect(() => {
     Navigation.setOptions({ title: selectedBook.title });
@@ -106,7 +108,7 @@ function BookInformationScreen({ navigation }) {
   //List of buttons to be added to the IconButtonBar
   const iconBarButtons = [
     //favorite button
-    <MyButton style={styles.iconButton} Flate={true}>
+    <MyButton style={styles.iconButton} >
       {
         <FontAwesome
           name={bookIsFavorite ? "star" : "star-o"}
@@ -118,7 +120,6 @@ function BookInformationScreen({ navigation }) {
     //rating
     <MyButton
       style={styles.iconButton}
-      Flate={true}
       textStyle={styles.rating}
       onPress={toggleModal}
     >
@@ -186,7 +187,6 @@ export default BookInformationScreen;
 
 const styles = StyleSheet.create({
   rootContainer: {
-    flex: 1,
     margin: 16,
     backgroundColor: "whitesmoke",
   },

@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { View, StyleSheet, Text /*Image*/ } from "react-native";
+import { View, StyleSheet, Text /*Image*/, Platform } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useRoute } from "@react-navigation/native";
 import { HeaderBackButton } from "react-navigation-stack";
@@ -164,7 +164,6 @@ function AddBookScreen({ navigation }) {
     !inputs.date.isValid ||
     !inputs.category.isValid ||
     !inputs.summary.isValid;
-
   return (
     <LinearGradient
       start={{ x: 0.0, y: 0.25 }}
@@ -179,6 +178,9 @@ function AddBookScreen({ navigation }) {
           {/* <Title>Request Book</Title> */}
           {/* <Text style={styles.title}>Add Book</Text> */}
           {/* Using the Input component to create input fields */}
+          {Platform.OS === "ios" ? (
+            <Text style={{ fontWeight: "bold", marginLeft: 5 }}>ISBN</Text>
+          ) : undefined}
           <Input //ISBN
             label="ISBN"
             invalid={!inputs.isbn.isValid}
@@ -188,6 +190,9 @@ function AddBookScreen({ navigation }) {
             }}
           />
 
+          {Platform.OS === "ios" ? (
+            <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Title</Text>
+          ) : undefined}
           <Input //Book Title
             label="Title"
             invalid={!inputs.title.isValid}
@@ -212,7 +217,9 @@ function AddBookScreen({ navigation }) {
             />
             )}
           </View> */}
-
+          {Platform.OS === "ios" ? (
+            <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Author</Text>
+          ) : undefined}
           <Input //Author
             label="Author"
             invalid={!inputs.author.isValid}
@@ -221,6 +228,9 @@ function AddBookScreen({ navigation }) {
             }}
           />
 
+          {Platform.OS === "ios" ? (
+            <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Date</Text>
+          ) : undefined}
           <Input //Date
             label="Publish Date"
             invalid={!inputs.date.isValid}
@@ -245,7 +255,9 @@ function AddBookScreen({ navigation }) {
               },
             }}
           />
-
+          {Platform.OS === "ios" ? (
+            <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Summary</Text>
+          ) : undefined}
           <Input //Summary
             label="Summary"
             invalid={!inputs.summary.isValid}
@@ -291,7 +303,7 @@ const styles = StyleSheet.create({
     color: "whitesmoke",
   },
   dropdown: {
-    marginTop: 20
+    marginTop: 20,
   },
   // pickImageContainer: {
   //   flexDirection: "row",
@@ -317,5 +329,6 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 5,
+    opacity: 0.75,
   },
 });

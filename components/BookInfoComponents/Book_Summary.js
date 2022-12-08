@@ -12,11 +12,12 @@ export default BookSummary;
 
 const styles = StyleSheet.create({
   rootContainer: {
-    // borderWidth: 1,
-    // borderRadius: 8,
+    borderWidth: 1,
+    borderRadius: 8,
     marginTop: 12,
     padding: 6,
-    // backgroundColor:'white'
+    overflow:'scroll',
+    
   },
   text: {
     fontSize: 16,

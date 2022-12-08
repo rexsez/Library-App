@@ -19,7 +19,7 @@ function DrawerNavigator() {
         drawerContent={(props) => <DrawerContent {...props} />}
         initialRouteName="StackNavigator"
         screenOptions={{
-          headerShown: true,
+          headerShown: false,
           headerTitle: "",
           headerTransparent: false,
           gestureEnabled: false
