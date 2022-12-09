@@ -81,7 +81,7 @@ function StatisticsScreen() {
     }
 
     //function to get ratings of the first five or less indices
-    //sort before using it!
+    //Unsorted!
     function getFirstRatings(books) {
         const result = [];
         const length = books.length < 5 ? books.length : 5;
@@ -94,7 +94,7 @@ function StatisticsScreen() {
     }
 
     //function to get times borrowed of the first five or less indices
-    //sort before using it!
+    //Unsorted!
     function getFirstTimesBorrowed(books) {
         const result = [];
         const length = books.length < 5 ? books.length : 5;
@@ -105,7 +105,7 @@ function StatisticsScreen() {
     }
 
     //function to get titles of the first five or less indices
-    //sort before using it!
+    //Unsorted!
     function getFirstTitles(books) {
         const result = [];
         const length = books.length < 5 ? books.length : 5;

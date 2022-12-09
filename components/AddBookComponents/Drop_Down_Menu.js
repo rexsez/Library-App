@@ -16,12 +16,12 @@ Example:
 More dropdown configurations can be found in the following link:
 https://www.npmjs.com/package/react-native-element-dropdown
 */
-function DropDownMenu({ label, style, elements, dropDownConfig }) {
+function DropDownMenu({ label, labelStyle, style, elements, dropDownConfig }) {
   const data = elements;
 
   const renderLabel = () => {
     if (dropDownConfig && dropDownConfig.value) {
-      return <Text style={styles.label}>{label}</Text>;
+      return <Text style={[styles.label, labelStyle]}>{label}</Text>;
     }
     return null;
   };
@@ -63,5 +63,6 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 12,
+    fontWeight: "bold"
   },
 });

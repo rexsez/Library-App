@@ -172,110 +172,121 @@ function AddBookScreen({ navigation }) {
       colors={[Colors.color7, "whitesmoke", Colors.color7]}
       style={styles.linearGradient}
     >
-      <View style={styles.rootContainer}>
-        <ScrollView>
-          {/* <Title>Request Book</Title> */}
-          {/* <Text style={styles.title}>Add Book</Text> */}
-          {/* Using the Input component to create input fields */}
 
-          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>ISBN</Text>
-          <Input //ISBN
-            label="ISBN"
-            invalid={!inputs.isbn.isValid}
-            textInputConfig={{
-              editable: false,
-              value: inputs.isbn.value,
-            }}
-          />
+      <View style={styles.titleContainer}>
+          <Text style={styles.titleText}>
+              Request Book
+          </Text>
+      </View>
 
-          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Title</Text>
-          <Input //Book Title
-            label="Title"
-            invalid={!inputs.title.isValid}
-            textInputConfig={{
-              onChangeText: inputChangedHandler.bind(this, "title"),
-            }}
-          />
+      <ScrollView>
+        <View style={styles.rootContainer}>
+            {/* <Title>Request Book</Title> */}
+            {/* <Text style={styles.title}>Add Book</Text> */}
+            {/* Using the Input component to create input fields */}
 
-          {/* <View style={styles.pickImageContainer}>
-          <MyButton
-          onPress={pickImage}
-          Flate={true}
-          style={styles.buttonStyles}
-          textStyle={styles.buttonText}
-          >
-          Pick Image
-          </MyButton>
-          {inputs.image.value != "" && (
-            <Image
-            source={{ uri: inputs.image.value.uri }}
-            style={styles.bookImage}
+            <Input //ISBN
+              label="ISBN"
+              labelStyle={styles.label}
+              invalid={!inputs.isbn.isValid}
+              textInputConfig={{
+                editable: false,
+                value: inputs.isbn.value,
+              }}
             />
-            )}
-          </View> */}
-          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Author</Text>
-          <Input //Author
-            label="Author"
-            invalid={!inputs.author.isValid}
-            textInputConfig={{
-              onChangeText: inputChangedHandler.bind(this, "author"),
-            }}
-          />
-          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Date</Text>
-          <Input //Date
-            label="Publish Date"
-            invalid={!inputs.date.isValid}
-            textInputConfig={{
-              placeholder: "YYYY-MM-DD",
-              maxLength: 10,
-              onChangeText: inputChangedHandler.bind(this, "date"),
-            }}
-          />
 
-          <DropDownMenu //Category
-            style={styles.dropdown}
-            label={"Category"}
-            elements={appCtx.categories}
-            dropDownConfig={{
-              dropdownPosition: "bottom",
-              search: true,
-              searchPlaceholder: "Search...",
-              value: inputs.category.value,
-              onChange: (item) => {
-                inputChangedHandler("category", item.value);
-              },
-            }}
-          />
+            <Input //Book Title
+              label="Title"
+              labelStyle={styles.label}
+              invalid={!inputs.title.isValid}
+              textInputConfig={{
+                onChangeText: inputChangedHandler.bind(this, "title"),
+              }}
+            />
 
-          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Summary</Text>
-          <Input //Summary
-            label="Summary"
-            invalid={!inputs.summary.isValid}
-            textInputConfig={{
-              multiline: true,
-              onChangeText: inputChangedHandler.bind(this, "summary"),
-            }}
-          />
-
-          {/* if the some input is invalid, display an error text */}
-          {formIsInvalid && (
-            <ErrorComponent>
-              Invalid input. Please make sure there's a title and the date
-              format is YYYY-MM-DD
-            </ErrorComponent>
-          )}
-
-          <MyButton
-            onPress={submitHandler}
+            {/* <View style={styles.pickImageContainer}>
+            <MyButton
+            onPress={pickImage}
             Flate={true}
             style={styles.buttonStyles}
             textStyle={styles.buttonText}
-          >
-            Submit
-          </MyButton>
-        </ScrollView>
-        {/* </LinearGradient> */}
-      </View>
+            >
+            Pick Image
+            </MyButton>
+            {inputs.image.value != "" && (
+              <Image
+              source={{ uri: inputs.image.value.uri }}
+              style={styles.bookImage}
+              />
+              )}
+            </View> */}
+            {/* <Text style={styles.label}>Author</Text> */}
+            <Input //Author
+              label="Author"
+              labelStyle={styles.label}
+              invalid={!inputs.author.isValid}
+              textInputConfig={{
+                onChangeText: inputChangedHandler.bind(this, "author"),
+              }}
+            />
+
+            <DropDownMenu //Category
+              style={styles.dropdown}
+              label={"Category"}
+              labelStyle={styles.label}
+              elements={appCtx.categories}
+              dropDownConfig={{
+                dropdownPosition: "bottom",
+                search: true,
+                searchPlaceholder: "Search...",
+                value: inputs.category.value,
+                onChange: (item) => {
+                  inputChangedHandler("category", item.value);
+                },
+              }}
+            />
+
+            <Input //Date
+              label="Publish Date"
+              labelStyle={styles.label}
+              invalid={!inputs.date.isValid}
+              textInputConfig={{
+                placeholder: "YYYY-MM-DD",
+                maxLength: 10,
+                onChangeText: inputChangedHandler.bind(this, "date"),
+              }}
+            />
+
+            <Input //Summary
+              label="Summary"
+              labelStyle={styles.label}
+              invalid={!inputs.summary.isValid}
+              textInputConfig={{
+                multiline: true,
+                onChangeText: inputChangedHandler.bind(this, "summary"),
+              }}
+            />
+
+            {formIsInvalid && (
+              <View style={styles.errorContainer}>
+                <ErrorComponent errorColor={"red"}>
+                  Invalid input. Please make sure there's a title and the date
+                  format is YYYY-MM-DD
+                </ErrorComponent>
+              </View>
+            )}
+
+            <MyButton
+              onPress={submitHandler}
+              Flate={true}
+              style={styles.buttonStyles}
+              textStyle={styles.buttonText}
+            >
+              Submit
+            </MyButton>
+          {/* </LinearGradient> */}
+        </View>
+      </ScrollView>
     </LinearGradient>
   );
 }
@@ -284,16 +295,32 @@ export default AddBookScreen;
 
 const styles = StyleSheet.create({
   rootContainer: {
-    marginTop: 45,
-    marginBottom: 4,
+    marginTop: 30,
+    marginBottom: 30,
+    paddingHorizontal: 15
   },
-  title: {
-    fontSize: 36,
+  titleContainer: {
+    padding: 15,
+    backgroundColor: "#366EA0",
+    borderBottomWidth: 1,
+    borderBottomColor: "black",
+    height: 70,
+    justifyContent: "center"
+  },
+  titleText: {
+    color: "white",
+    fontWeight: "900",
     textAlign: "center",
-    color: "whitesmoke",
+    letterSpacing: 1.5,
+    fontSize: 24
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "bold", 
+    marginLeft: 5
   },
   dropdown: {
-    marginTop: 20,
+    marginTop: 12,
   },
   // pickImageContainer: {
   //   flexDirection: "row",
@@ -303,12 +330,14 @@ const styles = StyleSheet.create({
   //   height: 150,
   // },
   buttonStyles: {
+    marginTop: 8,
     alignSelf: "center",
     alignItems: "center",
+    justifyContent: "center",
     backgroundColor: "whitesmoke",
-    borderWidth: 1,
-    borderRadius: 8,
-    width: "50%",
+    borderWidth: 2,
+    borderRadius: 6,
+    width: "40%",
   },
   buttonText: {
     fontSize: 24,
@@ -316,9 +345,16 @@ const styles = StyleSheet.create({
   },
   linearGradient: {
     flex: 1,
-    paddingLeft: 15,
-    paddingRight: 15,
+    // paddingLeft: 15,
+    // paddingRight: 15,
     borderRadius: 5,
     opacity: 0.75,
   },
+  errorContainer: {
+    borderWidth: 2,
+    borderRadius: 6,
+    borderColor: "red",
+    marginHorizontal: 24,
+    backgroundColor: "whitesmoke"
+  }
 });
