@@ -36,7 +36,7 @@ function TabNavigator() {
             ),
           }}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="TabProfile"
           component={ProfileScreen}
           options={{
@@ -45,7 +45,7 @@ function TabNavigator() {
               <Ionicons name="person" color={color} size={size} />
             ),
           }}
-        />
+        /> */}
       </Tab.Navigator>
     </SafeAreaView>
   );

@@ -12,6 +12,7 @@ import Contact_Us_Screen from "../../screens/Contact_Us_Screen";
 import EditProfileScreen from "../../screens/EditProfileScreen";
 import HomeScreen from "../../screens/HomeScreen";
 import StatisticsScreen from "../../screens/Statistics_Screen";
+import LoginScreen from "../../screens/LoginScreen";
 
 function StackNavigator() {
   const Stack = createStackNavigator();
@@ -80,10 +81,17 @@ function StackNavigator() {
         }}
       />
       <Stack.Screen
-        name="Statistics"
+        name="StackStatistics"
         component={StatisticsScreen}
         options={{
           title: "Statistics",
+        }}
+      />
+      <Stack.Screen
+        name="StackLogin"
+        component={LoginScreen}
+        options={{
+          title: "Login",
         }}
       />
     </Stack.Navigator>

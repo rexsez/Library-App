@@ -46,7 +46,7 @@ function HomeScreen() {
               ></Card>
               <Card
                 text="Account"
-                onPressed={GoTo.bind(this, "TabProfile")}
+                onPressed={GoTo.bind(this, "StackLogin")}
                 path="ios-person"
                 color="#366EA0"
               ></Card>
@@ -60,7 +60,7 @@ function HomeScreen() {
               ></Card>
               <Card
                 text="Statistics"
-                onPressed={GoTo.bind(this, "Statistics")}
+                onPressed={GoTo.bind(this, "StackStatistics")}
                 path="ios-stats-chart"
                 color="#366EA0"
               ></Card>

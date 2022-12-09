@@ -20,7 +20,7 @@ function RegisterForm() {
     rerender();
   }
   function onPressLoginHandler() {
-    navigation.navigate("DrawerLogin");
+    navigation.navigate("StackLogin");
   }
   function onPressGoBackhandler() {
     navigation.navigate("TabHome");

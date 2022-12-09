@@ -149,7 +149,7 @@ export function DrawerContent(props) {
               )}
               label="Sign in"
               onPress={() => {
-                props.navigation.navigate("DrawerLogin");
+                props.navigation.navigate("StackLogin");
                 changeScreenHandler("DrawerLogin");
               }}
               style={{
@@ -173,7 +173,7 @@ export function DrawerContent(props) {
               )}
               label="Sign up"
               onPress={() => {
-                props.navigation.navigate("DrawerRegister");
+                props.navigation.navigate("StackRegister");
                 changeScreenHandler("DrawerRegister");
               }}
               style={{
