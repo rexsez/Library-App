@@ -8,6 +8,7 @@ import MyButton from "../MyButton";
 import FilterModal from "./FilterModal";
 import { fetchBooks, fetchCategories } from "../Utility/http";
 import { AppContext } from "../../store/AppContext";
+import Colors from "../Utility/Colors";
 
 function ListOfBooks() {
   const appCtx = useContext(AppContext);
@@ -99,26 +100,29 @@ function ListOfBooks() {
     );
   } else {
     loadedButton = (
-      <>
-        <MyButton style={[styles.searchContainer,{marginHorizontal:4}]}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <MyButton style={[styles.searchContainer, { marginHorizontal: 4 }]}>
           <Ionicons
             name="barcode-outline"
             size={iconSize}
             color="white"
             style={styles.icon}
-            onPress={() => navigation.navigate("StackBarcode")}
+            onPress={() => {
+              appCtx.changeScreenHandler("Barcode");
+              navigation.navigate("StackBarcode");
+            }}
           />
         </MyButton>
-        <MyButton style={[styles.searchContainer,{marginHorizontal:4}]}>
+        <MyButton style={[styles.searchContainer, { marginHorizontal: 4 }]}>
           <Ionicons
             name="options-sharp"
             size={iconSize}
             color="white"
-            style={styles.icon}
+            style={[styles.icon]}
             onPress={toggleModal}
           />
         </MyButton>
-      </>
+      </View>
     );
   }
 
@@ -177,10 +181,10 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   searchContainer: {
-    backgroundColor: "#1b7ce4",
+    paddingTop: 4,
+    backgroundColor: Colors.primary500,
     flexDirection: "row",
     justifyContent: "space-between",
-    marginVertical: 16,
   },
 
   icon: {
@@ -191,7 +195,7 @@ const styles = StyleSheet.create({
   search: {
     flex: 1,
     fontSize: 16,
-    paddingVertical: 8,
+    paddingVertical: 12,
     paddingHorizontal: 0,
     margin: 0,
     color: "white",

@@ -152,6 +152,7 @@ function AddBookScreen({ navigation }) {
     //   requestedData.image.value = filename;
     // }
     await requestBook(requestedData);
+    appCtx.changeScreenHandler("Home");
     navigation.navigate("TabSearch", { request: true });
   }
 

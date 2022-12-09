@@ -24,6 +24,8 @@ import {
 } from "../Utility/UtilityFunctions";
 import { AppContext } from "../../store/AppContext";
 import MyButton from "../MyButton";
+import Colors from "../Utility/Colors";
+import { Ionicons } from "@expo/vector-icons";
 
 // This is going to be used to show filter options as a radio button
 // label is needed for radio button to work
@@ -253,9 +255,9 @@ function FilterModal({
         backgroundColor: "white",
         width: "95%",
         alignSelf: "center",
-        marginTop: 100,
-        marginBottom:3,
-        paddingBottom:4,
+
+        marginBottom: 3,
+        paddingBottom: 4,
 
         shadowColor: "#000",
         shadowOffset: {
@@ -272,12 +274,20 @@ function FilterModal({
         borderRadius: 15,
       }}
     >
+
       <View>
         <ScrollView>
+        <View style={{ alignItems: "flex-end" }}>
+        <View >
+          <MyButton onPress={toggleModal}>
+            <Ionicons name="close" size={35} color="black" />
+          </MyButton>
+        </View>
+      </View>
           <View style={styles.Container}>
-            <Text style={[styles.Text, {marginTop:20}]}>Filter By</Text>
+            <Text style={[styles.Text, { marginTop: 20 }]}>Filter By</Text>
             <DropDownMenu //Category
-              style={{marginBottom:20, borderRadius:55}}
+              style={{ marginBottom: 20, borderRadius: 55 }}
               label={category}
               elements={appCtx.categories}
               dropDownConfig={{
@@ -289,7 +299,7 @@ function FilterModal({
             <Text style={[styles.Text, { borderBottomWidth: 0 }]}>
               Minimum Rating
             </Text>
-            <SliderExample  rating={rating} setRating={setRating} />
+            <SliderExample rating={rating} setRating={setRating} />
             <Text style={styles.Text}>Sort By</Text>
             {/* This component is taken from npm library, check the following link for info: */}
             {/* https://github.com/sramezani/radio-buttons-react-native#readme*/}
@@ -297,8 +307,8 @@ function FilterModal({
               data={filterationOptions}
               selectedBtn={(e) => handleRadioSortBy(e)}
               initial={chosenFilter}
-              activeColor="#1b7ce4"
-              style={{marginBottom:20}}
+              activeColor={Colors.primary500}
+              style={{ marginBottom: 20 }}
             />
             <Text style={styles.Text}>Order By</Text>
             {/* This component is taken from npm library, check the following link for info: */}
@@ -307,9 +317,8 @@ function FilterModal({
               data={orderOptions}
               selectedBtn={(e) => handleRadioOrderBy(e)}
               initial={chosenOrder}
-              activeColor="#1b7ce4"
-              style={{marginBottom:20}}
-
+              activeColor={Colors.primary500}
+              style={{ marginBottom: 20 }}
             />
 
             <View style={styles.btnsContainer}>
@@ -321,13 +330,20 @@ function FilterModal({
                 Cancel
               </MButton> */}
               <View style={styles.btnContainer}>
-                <MyButton textStyle={styles.buttonText} style={[styles.buttonClose, {marginLeft:30}]} onPress={cancel}>
+                <MyButton
+                  textStyle={styles.buttonText}
+                  style={[styles.buttonClose, { marginLeft: 30 }]}
+                  onPress={cancel}
+                >
                   Cancel
                 </MyButton>
-
               </View>
               <View style={styles.btnContainer}>
-                <MyButton textStyle={styles.buttonText} style={[styles.buttonDone, {marginRight:30}]} onPress={filterBooks}>
+                <MyButton
+                  textStyle={styles.buttonText}
+                  style={[styles.buttonDone, { marginRight: 30 }]}
+                  onPress={filterBooks}
+                >
                   Done
                 </MyButton>
               </View>
@@ -351,7 +367,7 @@ export default FilterModal;
 const styles = StyleSheet.create({
   Container: {
     flex: 1,
-    marginHorizontal:20,
+    marginHorizontal: 20,
   },
   headerText: {
     textAlign: "center",
@@ -370,28 +386,28 @@ const styles = StyleSheet.create({
   btnContainer: {
     flexDirection: "row",
     flex: 1,
-    justifyContent: 'space-evenly',
+    justifyContent: "space-evenly",
   },
-  buttonDone:{
-    backgroundColor: '#1b7ce4',
+  buttonDone: {
+    backgroundColor: Colors.primary500,
     borderRadius: 15,
     padding: 10,
     paddingHorizontal: 22,
   },
-  buttonClose:{
-    backgroundColor: 'tomato',
+  buttonClose: {
+    backgroundColor: "tomato",
     borderRadius: 15,
     padding: 10,
     paddingHorizontal: 15,
   },
-  buttonText:{
+  buttonText: {
     fontSize: 18,
     color: "white",
-    fontWeight: '400',
+    fontWeight: "400",
   },
   Text: {
     fontSize: 18,
     color: "black",
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

@@ -11,7 +11,8 @@ class Book {
     rating,
     borrowed,
     badge,
-    ratedBy
+    ratedBy,
+    timesBorrowed
   ) {
     this.id = id;
     this.isbn = isbn;
@@ -25,6 +26,7 @@ class Book {
     this.borrowed = borrowed;
     this.badge = badge;
     this.ratedBy = ratedBy;
+    this.timesBorrowed = timesBorrowed;
   }
 }
 

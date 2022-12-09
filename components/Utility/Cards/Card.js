@@ -1,11 +1,12 @@
 import { View, StyleSheet, Pressable, Image, Text } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import Colors from "../Colors";
 function Card({ text, onPressed, path, color }) {
   return (
     <View>
       <Pressable style={({ pressed }) => [
         {
-          backgroundColor: pressed ? "#8aabdd" : "#366EA0",
+          backgroundColor: pressed ? "#8aabdd" : Colors.primary500,
         },
         styles.cardImage,
       ]} onPress={onPressed}>

@@ -3,6 +3,7 @@ import { ImageBackground, View, StyleSheet, SafeAreaView } from "react-native";
 import RegisterForm from "../components/RegisterAndLogin/RegisterForm";
 
 function RegisterScreen() {
+  
   return (
     <SafeAreaView style={styles.Container}>
       <View style={styles.Container}>

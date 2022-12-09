@@ -11,12 +11,14 @@ import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
 import validateLoginStudent from "../Utility/InputValidation/validateLoginStudent";
 import { getStudentID, getStudents } from "../Utility/http";
+import { AppContext } from "../../store/AppContext";
 
 function LoginForm() {
   // -----------------Navigation stuff------------------------
   const navigation = useNavigation();
+  const appCtx = useContext(AppContext);
   function onPressCreateAccHandler() {
-    navigation.navigate("DrawerRegister");
+    navigation.navigate("StackRegister");
   }
   const studentContext = useContext(StudentContext);
   const initialError = {
@@ -52,6 +54,7 @@ function LoginForm() {
         borrowedBooks: loginStudentInfomation.borrowedBooks,
         favBooks: loginStudentInfomation.favBooks,
       });
+      appCtx.changeScreenHandler("Profile");
       navigation.navigate({ name: "DrawerProfile" });
     }
   }

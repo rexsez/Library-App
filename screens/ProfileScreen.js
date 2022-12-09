@@ -9,12 +9,15 @@ import {
 import BookCard from "../components/SearchScreenComponents/BookCard";
 import Card from "../components/Utility/Cards/Card";
 import { AppContext } from "../store/AppContext";
+import { Text } from "react-native-paper";
+
 function ProfileScreen({ defaultScreen }) {
   const appCtx = useContext(AppContext);
   const route = useRoute();
   useFocusEffect(() => {
     if (!!route.params?.defaultScreen) {
       setList("fav");
+      appCtx.changeScreenHandler("Profile");
       navigation.navigate("DrawerProfile");
     }
   });
@@ -35,11 +38,17 @@ function ProfileScreen({ defaultScreen }) {
   function keyExtractor(book) {
     return book.item;
   }
+  // changed_abdullah
+  const [description, setDescription] = useState("Your favorite List");
+  // end changed
   function whichList() {
     if (currentList === "fav") {
       return studentContext.student.favBooks;
     } else {
-      return Object.keys(studentContext.student.borrowedBooks);
+      // changed_abdullah
+      // setDescription("Your list of borrowed books");
+      return Object.keys(studentContext.student?.borrowedBooks || []);
+      // end changed
     }
   }
   const [currentList, setList] = useState("fav");
@@ -58,30 +67,58 @@ function ProfileScreen({ defaultScreen }) {
   //  it will become !false --> true
   useFocusEffect(() => {
     if (!!!studentContext.student.Email) {
-      navigation.navigate("StackRegister");
+      alert("You have to sign in first");
+      appCtx.changeScreenHandler("Login");
+      navigation.navigate("DrawerLogin");
     }
   });
-  // change continue
+  const onPressIcon = (type) => {
+    if (type == "fav") {
+      if (!!studentContext.student?.favBooks) {
+        setDescription("Your Favorite List of Books");
+      } else {
+        setDescription("Your Favorite List is Empty!");
+      }
+      setList("fav");
+    } else {
+      if (!!studentContext.student?.borrowedBooks) {
+        setDescription("Books You Have Borrowed");
+      } else {
+        setDescription("You Haven't Borrowed Any Books Yet!");
+      }
+
+      setList("bor");
+    }
+  };
 
   if (!!studentContext.student.Email) {
     return (
       <View style={styles.container}>
         <View style={styles.outerListContainer}>
+          <Text style={styles.greetings}>Welcome</Text>
+          <Text style={styles.name}>
+            {studentContext.student.FName + " " + studentContext.student.LName}
+          </Text>
           <View style={styles.iconContainer}>
-            <Pressable style={({ pressed }) => [pressed && styles.pressed]}>
+            <Pressable style={[currentList == "fav" && styles.pressed]}>
               <Card
-                onPressed={setList.bind(this, "fav")}
+                onPressed={onPressIcon.bind(this, "fav")}
                 path="star"
                 color="rgb(130, 196, 217)"
               ></Card>
             </Pressable>
-            <Pressable style={({ pressed }) => [pressed && styles.pressed]}>
+            {/* changed_abdullah */}
+            <Pressable style={[currentList == "bor" && styles.pressed]}>
+              {/* end changed */}
               <Card
-                onPressed={setList.bind(this, "bor")}
+                onPressed={onPressIcon.bind(this, "bor")}
                 path="book"
                 color="rgb(130, 196, 217)"
               ></Card>
             </Pressable>
+          </View>
+          <View>
+            <Text style={styles.description}>{description}</Text>
           </View>
 
           <View style={styles.flatListContainer}>
@@ -134,7 +171,26 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   pressed: {
-    opacity: 0.2,
+    opacity: 0.5,
+  },
+  greetings: {
+    fontSize: 24,
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    marginTop: 30,
+  },
+  name: {
+    fontSize: 24,
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    marginTop: 10,
+    fontWeight: "bold",
+  },
+  description: {
+    fontSize: 22,
+    textAlign: "center",
   },
 });
 export default ProfileScreen;

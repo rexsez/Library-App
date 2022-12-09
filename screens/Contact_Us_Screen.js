@@ -1,5 +1,6 @@
 import React from "react";
 import { ImageBackground, View, StyleSheet, SafeAreaView, ScrollView, Text, Image, Linking } from "react-native";
+import Colors from "../components/Utility/Colors";
 
 import My_Table from "./My_Table_Contact_Us";
 
@@ -160,12 +161,12 @@ const styles = StyleSheet.create({
     bannerText: {
         fontSize: 16,
         fontWeight: "bold",
-        color: '#366EA0',
+        color: Colors.primary500,
     },
     headText: {
         fontSize: 13,
         fontWeight: "bold",
-        color: '#1b7ce4',
+        color: Colors.primary500,
     },
     text: {
         fontSize: 12,

@@ -48,9 +48,15 @@ function BarcodeScanner({ navigation }) {
       // be loaded to give the option to user to add the new book
       const selectedBook = appCtx.books.find((book) => book.isbn === data);
       //  If selectedBook is set (not null),it means that there is a book and we should go to book information
-      if (selectedBook)
+      if (selectedBook){
+        appCtx.changeScreenHandler("Book");
         navigation.navigate("StackBook", { bookId: data, isScanned: true });
-      else navigation.navigate("StackAdd", { bookId: data, isScanned: true });
+      }
+      else 
+      
+      {
+        appCtx.changeScreenHandler("Add");
+        navigation.navigate("StackAdd", { bookId: data, isScanned: true })};
       // selectedBook not set means there is no book with the scanned ISBN, so we should load Add book screen
     } else {
       setText("Not yet scanned");

@@ -11,21 +11,25 @@ import Inpute from "./Inpute";
 import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
 import { getStudentID, registerStudent } from "../Utility/http";
+import { AppContext } from "../../store/AppContext";
 
 function RegisterForm() {
   // ----------------- Navigation stuff --------------
 
   const navigation = useNavigation();
+  const appCtx = useContext(AppContext);
   function forceRerender(rerender) {
     rerender();
   }
   function onPressLoginHandler() {
-    navigation.navigate("DrawerLogin");
+    navigation.navigate("StackLogin");
   }
   function onPressGoBackhandler() {
+    appCtx.changeScreenHandler("Home");
     navigation.navigate("TabHome");
   }
   function onPressTermshandler() {
+    appCtx.changeScreenHandler("Terms");
     navigation.navigate("StackTerms");
   }
   // ------------------------------------------------------
@@ -83,6 +87,7 @@ function RegisterForm() {
       await registerStudent(newStudent);
       const ID = await getStudentID(newStudent.Email);
       studentContext.setID(ID);
+      appCtx.changeScreenHandler("Profile");
       navigation.navigate({ name: "DrawerProfile" });
     }
   }

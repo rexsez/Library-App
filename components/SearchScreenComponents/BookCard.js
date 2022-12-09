@@ -4,13 +4,17 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import MyButton from "../MyButton";
 import { formateDate } from "../Utility/UtilityFunctions";
+import { useContext } from "react";
+import { AppContext } from "../../store/AppContext";
 
 function BookCard({ bookData }) {
   const navigation = useNavigation();
+  const appCtx = useContext(AppContext);
   function onPress() {
     // Note: here im just getting bookData and spreading it varabiles into
     // new object, so if this object is change, the original one doesnt change
     // Avoiding coupling them togather
+    appCtx.changeScreenHandler("Book");
     navigation.navigate("StackBook", { bookId: bookData.isbn });
   }
 

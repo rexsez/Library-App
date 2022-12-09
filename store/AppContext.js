@@ -5,16 +5,24 @@ export const AppContext = createContext({
   changeBooks: () => {},
   categories: [],
   changeCategories: () => {},
+  currentScreen: "",
+  changeScreenHandler: () => {},
 });
 
 function AppContextProvider({ children }) {
   const [books, setBooks] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [currentScreen, setScreenHandler] = useState("Home");
+
   function changeBooks(newBooks) {
-      setBooks(newBooks);
+    setBooks(newBooks);
   }
   function changeCategories(newCategory) {
     setCategories(newCategory);
+  }
+
+  function changeScreenHandler(newScreen) {
+    setScreenHandler(newScreen);
   }
 
   const value = {
@@ -22,6 +30,8 @@ function AppContextProvider({ children }) {
     changeBooks: changeBooks,
     categories: categories,
     changeCategories: changeCategories,
+    currentScreen: currentScreen,
+    changeScreenHandler: changeScreenHandler,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

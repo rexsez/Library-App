@@ -24,6 +24,7 @@ export async function fetchBooks() {
     let author = bookData.author;
     let category = bookData.category;
     let date;
+    let timesBorrowed = bookData.timesBorrowed;
     if (bookData.date) {
       date = new Date(bookData.date);
     } else {
@@ -91,7 +92,8 @@ export async function fetchBooks() {
         rating,
         false,
         badge,
-        ratedBy
+        ratedBy,
+        timesBorrowed
       )
     );
   }

@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { Modal, StyleSheet, Text, Pressable, View } from "react-native";
+import Colors from "../components/Utility/Colors";
 import { fetchAnnouncements } from "../components/Utility/http";
 import { StudentContext } from "../store/StudentContext";
 
@@ -50,7 +51,7 @@ function Announcements() {
             <Pressable
               style={({ pressed }) => [
                 {
-                  backgroundColor: pressed ? "#8aabdd" : "#366EA0",
+                  backgroundColor: pressed ? "#8aabdd" : Colors.primary500,
                 },
                 styles.button,
               ]}
@@ -67,7 +68,7 @@ function Announcements() {
         <Pressable
           style={({ pressed }) => [
             {
-              backgroundColor: pressed ? "#8aabdd" : "#366EA0",
+              backgroundColor: pressed ? "#8aabdd" : Colors.primary500,
             },
             styles.button,
           ]}
@@ -83,7 +84,7 @@ function Announcements() {
 const styles = StyleSheet.create({
   centeredView: {
     // flex: 1,
-    margin: 25
+    margin: 25,
   },
   modalView: {
     margin: 20,
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     paddingHorizontal: 31,
     borderWidth: 2,
-    borderColor: '#eddfb4',
+    borderColor: "#eddfb4",
   },
   textStyleAnnouncements: {
     color: "white",
@@ -132,7 +133,7 @@ const styles = StyleSheet.create({
     // fontFamily: "monospace",
     fontSize: 24,
     fontWeight: "bold",
-    color: "#366EA0",
+    color: Colors.primary500,
     paddingBottom: 30,
   },
 });

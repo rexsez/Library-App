@@ -67,6 +67,7 @@ function BookInformationScreen({ navigation }) {
     const userEmail = studentCtx.student.Email;
     const userKey = studentCtx.ID;
     await postBorrowRequest(isbn, title, userEmail, userKey);
+    appCtx.changeScreenHandler("Home");
     navigation.navigate("TabSearch", { request: true });
   }
   // setting the title of the page to the name of book
