@@ -176,6 +176,7 @@ function StatisticsScreen() {
                 chartConfig={chartConfig}
                 verticalLabelRotation={30}
                 showValuesOnTopOfBars={true}
+                fromZero={true}
                 // withInnerLines={false}
             />
 
