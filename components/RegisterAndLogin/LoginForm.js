@@ -10,7 +10,7 @@ import Inpute from "./Inpute";
 import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
 import validateLoginStudent from "../Utility/InputValidation/validateLoginStudent";
-import { getStudentID, getStudents } from "../Utility/http";
+import { getStudentID, getStudents, getVerification } from "../Utility/http";
 import { AppContext } from "../../store/AppContext";
 
 function LoginForm() {
@@ -43,7 +43,11 @@ function LoginForm() {
         (student) => student.Email === loginStudent.Email
       );
       loginStudentInfomation = studens[indexOfStudent];
+      // console.log(loginStudentInfomation.Email);
       const studentID = await getStudentID(loginStudentInfomation.Email);
+      console.log(studentID);
+      const verification = await getVerification(studentID);
+      console.log(verification);
       studentContext.setID(studentID);
       // -----------------------------This needs some changes ------------------------
       studentContext.registerStudent({

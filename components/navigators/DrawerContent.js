@@ -201,7 +201,7 @@ export function DrawerContent(props) {
               onPress={() => {
                 // First, we upload the changes made to student context to the database
                 updateFavList(studentContext.ID, studentContext.student);
-                console.log(studentContext.student);
+                // console.log(studentContext.student);
                 const initialNewStudent1 = new Student("", "", "", "", [], []);
                 studentContext.registerStudent(initialNewStudent1);
               }}

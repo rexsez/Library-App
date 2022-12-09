@@ -12,6 +12,7 @@ import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
 import { getStudentID, registerStudent } from "../Utility/http";
 import { AppContext } from "../../store/AppContext";
+import { generateRandomNumber } from "../Utility/UtilityFunctions";
 
 function RegisterForm() {
   // ----------------- Navigation stuff --------------
@@ -81,14 +82,11 @@ function RegisterForm() {
       //  to the app wide context
       //  so it can be used every where else
     } else {
-      // putting new student data in context to be used locally
-      studentContext.registerStudent(newStudent);
-      // adding the new student data to the database using post
-      await registerStudent(newStudent);
-      const ID = await getStudentID(newStudent.Email);
-      studentContext.setID(ID);
+      registerStudent(newStudent);
+      const token = newStudent["verification"];
+      // studentContext.setID(ID);
       appCtx.changeScreenHandler("Profile");
-      navigation.navigate({ name: "DrawerProfile" });
+      navigation.navigate("StackVerification", { token: token,student:newStudent });
     }
   }
 

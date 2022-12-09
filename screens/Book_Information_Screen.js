@@ -124,7 +124,7 @@ function BookInformationScreen({ navigation }) {
   // In the begging, we check if the book is faviroute already or not
   // This will be used as the intial value of isvaforite state.
   let isFavoriteIntial = !!student?.favBooks && student.favBooks.includes(isbn);
-  console.log(isFavoriteIntial);
+  // console.log(isFavoriteIntial);
   //This state variable keeps track of wether a book has been added to faviroute or not
   const [bookIsFavorite, setBookIsFavorite] = useState(isFavoriteIntial);
   // This will be used everywhere for fav list changes
@@ -142,7 +142,7 @@ function BookInformationScreen({ navigation }) {
         favBooks: studentCtx.student.favBooks.filter(isInFavList),
       };
       studentCtx.registerStudent(currentStudentContext);
-      console.log(studentCtx.student);
+      // console.log(studentCtx.student);
     } else {
       // If the book was not in fav list:
       // 1- We change the state of the current page, from not fav to fav, so button shows filled star
@@ -164,7 +164,7 @@ function BookInformationScreen({ navigation }) {
       }
 
       studentCtx.registerStudent(currentStudentContext);
-      console.log(studentCtx.student);
+      // console.log(studentCtx.student);
     }
   };
 

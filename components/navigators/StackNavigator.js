@@ -14,6 +14,7 @@ import HomeScreen from "../../screens/HomeScreen";
 import StatisticsScreen from "../../screens/Statistics_Screen";
 import LoginScreen from "../../screens/LoginScreen";
 import DrawerNavigator from "./DrawerNavigator";
+import Verification from "../../screens/Verification";
 
 function StackNavigator() {
   const Stack = createStackNavigator();
@@ -29,7 +30,7 @@ function StackNavigator() {
       <Stack.Screen
         component={SearchScreen}
         name="StackSearch"
-        options={{  title: "Search" }}
+        options={{ title: "Search" }}
       />
       <Stack.Screen
         name="StackEdit"
@@ -94,6 +95,13 @@ function StackNavigator() {
         component={LoginScreen}
         options={{
           title: "Login",
+        }}
+      />
+      <Stack.Screen
+        name="StackVerification"
+        component={Verification}
+        options={{
+          title: "Verify your account",
         }}
       />
     </Stack.Navigator>
