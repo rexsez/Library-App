@@ -20,6 +20,7 @@ function StatisticsScreen() {
 
     //default is showing most borrowed books (landing in page)
     books.sort(DescendingTimesBorrowed);
+    const [title, setTitle] = useState("Number of times borrowed");
     const [barChartData, setBarChartData] = useState(
         {
             //bottom labels as book titles
@@ -55,6 +56,7 @@ function StatisticsScreen() {
                 },
             ],
         })
+        setTitle("Number of times borrowed");
     }
 
     //function to show highest rated books in the chart
@@ -75,6 +77,7 @@ function StatisticsScreen() {
                 },
             ],
         })
+        setTitle("Rating out of 5");
     }
 
     //function to get ratings of the first five or less indices
@@ -157,7 +160,7 @@ function StatisticsScreen() {
     ];
 
     const screenWidth = (Dimensions.get("window").width) * 1.001;
-    const screenheight = (Dimensions.get("window").height) * 0.9;
+    const screenheight = (Dimensions.get("window").height) * 0.75;
     return (
         //root container
         <View style={styles.rootContainer}>
@@ -167,6 +170,12 @@ function StatisticsScreen() {
                 items={barItems}
             />
 
+            <View style={styles.titleContainer}>
+                <Text style={styles.titleText}>
+                    {title}
+                </Text>
+            </View>
+
             <BarChart //bar chart
                 style={styles.graphStyle}
                 data={barChartData}
@@ -174,7 +183,7 @@ function StatisticsScreen() {
                 height={screenheight}
                 yAxisLabel=""
                 chartConfig={chartConfig}
-                verticalLabelRotation={30}
+                verticalLabelRotation={45}
                 showValuesOnTopOfBars={true}
                 fromZero={true}
                 // withInnerLines={false}
@@ -196,6 +205,18 @@ const styles = StyleSheet.create({
         height: 85,
         alignItems: "center",
         backgroundColor: Colors.color9
+    },
+    titleContainer: {
+        padding: 15,
+        backgroundColor: "#366EA0",
+        borderBottomWidth: 1,
+        borderBottomColor: "black",
+    },
+    titleText: {
+        color: "white",
+        fontWeight: "900",
+        textAlign: "center",
+        letterSpacing: 1.5,
     },
     graphStyle: {
         flex: 1,
