@@ -283,3 +283,8 @@ export async function postBorrowRequestToStudent(isbn, userKey) {
 export async function updateFavList(ID, student) {
   axios.put(database + `students/${ID}.json`, student);
 }
+// ---------------------------------------- payment --------------------------------------------------------
+export async function checkPayment(cardNumber) {
+  // getting card info of a specifc card!
+  return await axios.get(database + `cards/${cardNumber}.json`);
+}

@@ -1,8 +1,8 @@
 import { TextInput, View, StyleSheet } from "react-native";
 
-function Inpute({ inputeTextProps, onChangeTextHandler, style }) {
+function Inpute({ inputeTextProps, onChangeTextHandler, style, size }) {
   return (
-    <View style={styles.Container}>
+    <View style={[styles.Container, size]}>
       <TextInput
         onChangeText={onChangeTextHandler}
         selectionColor={"#FFA920"}
