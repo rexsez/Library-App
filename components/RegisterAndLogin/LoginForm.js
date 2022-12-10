@@ -45,24 +45,39 @@ function LoginForm() {
       loginStudentInfomation = studens[indexOfStudent];
       // console.log(loginStudentInfomation.Email);
       const studentID = await getStudentID(loginStudentInfomation.Email);
-      console.log(studentID);
+      // console.log(studentID);
       const verification = await getVerification(studentID);
-      console.log(verification);
-      studentContext.setID(studentID);
-      // -----------------------------This needs some changes ------------------------
-      studentContext.registerStudent({
-        FName: loginStudentInfomation.FName,
-        LName: loginStudentInfomation.LName,
-        Email: loginStudentInfomation.Email,
-        psw: loginStudentInfomation.psw,
-        borrowedBooks: loginStudentInfomation.borrowedBooks,
-        favBooks: loginStudentInfomation.favBooks,
-      });
-      appCtx.changeScreenHandler("Profile");
-      navigation.navigate({ name: "DrawerProfile" });
+      studentContext.setToken(verification);
+      console.log("verification is " + verification);
+
+      if (verification !== "done") {
+        appCtx.changeScreenHandler("");
+        navigation.navigate("StackVerification", {
+          student: {
+            FName: loginStudentInfomation.FName,
+            LName: loginStudentInfomation.LName,
+            Email: loginStudentInfomation.Email,
+            psw: loginStudentInfomation.psw,
+            borrowedBooks: loginStudentInfomation.borrowedBooks,
+            favBooks: loginStudentInfomation.favBooks,
+          },
+        });
+      } else {
+        studentContext.setID(studentID);
+        // -----------------------------This needs some changes ------------------------
+        studentContext.registerStudent({
+          FName: loginStudentInfomation.FName,
+          LName: loginStudentInfomation.LName,
+          Email: loginStudentInfomation.Email,
+          psw: loginStudentInfomation.psw,
+          borrowedBooks: loginStudentInfomation.borrowedBooks,
+          favBooks: loginStudentInfomation.favBooks,
+        });
+        appCtx.changeScreenHandler("Profile");
+        navigation.navigate({ name: "DrawerProfile" });
+      }
     }
   }
-
   const initialLoginStudent = new Student(" ", " ", " ", " ", null, null);
 
   const [loginStudent, setLoginStudent] = useState(initialLoginStudent);

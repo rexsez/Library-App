@@ -200,7 +200,7 @@ export function DrawerContent(props) {
               label="Sign out"
               onPress={() => {
                 // First, we upload the changes made to student context to the database
-                updateFavList(studentContext.ID, studentContext.student);
+                updateFavList(studentContext.ID, studentContext.student,studentContext.Token);
                 // console.log(studentContext.student);
                 const initialNewStudent1 = new Student("", "", "", "", [], []);
                 studentContext.registerStudent(initialNewStudent1);

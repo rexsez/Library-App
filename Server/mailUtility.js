@@ -9,7 +9,7 @@ export async function sendMail(recipient_email, subject, name, message, token) {
       message,
       token,
     })
-    .then(() => alert("Message Send Successfuly"))
-    .catch(() => alert("Didn't work :("));
+    .then(() => console.log("Message Send Successfuly"))
+    .catch(() => console.log("Didn't work"));
   return;
 }

@@ -31,7 +31,11 @@ function BookInformationScreen({ navigation }) {
               <HeaderBackButton
                 onPress={() => {
                   // First, we upload the changes made to student context to the database
-                  updateFavList(studentCtx.ID, studentCtx.student);
+                  updateFavList(
+                    studentCtx.ID,
+                    studentCtx.student,
+                    studentCtx.Token
+                  );
                   // This will remove The previous screen (Barcode scanner screen)
                   navigation.dispatch(StackActions.popToTop());
                 }}
