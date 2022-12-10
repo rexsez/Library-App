@@ -153,10 +153,10 @@ function PaymentForm() {
 
   return (
     <>
-    <View style={styles.titleContainer}>
-      <Text style={styles.cardTitle}>Payment</Text>
-    </View>
       <View style={styles.InfoContainer}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.cardTitle}>Payment</Text>
+        </View>
         <View style={styles.details}>
           <View style={styles.innerDetial}>
             <Text style={[styles.title, { marginHorizontal: 0 }]}>
@@ -329,17 +329,17 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   titleContainer: {
-    marginTop: 55,
+    marginBottom: 20,
     alignItems: "center",
     justifyContent: "center",
     borderBottomWidth: 4,
     borderRadius: 4,
-    marginHorizontal: "30%"
+    marginHorizontal: "30%",
   },
   cardTitle: {
     textAlign: "center",
     fontSize: 36,
-    color: Colors.color6
+    color: Colors.color6,
   },
   ButtonContainer: {
     flexDirection: "row",
