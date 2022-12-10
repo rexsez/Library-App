@@ -95,8 +95,7 @@ export function DrawerContent(props) {
               }}
               labelStyle={{
                 marginLeft: -15,
-                color:
-                  appCtx.currentScreen === "Profile" ? "white" : undefined,
+                color: appCtx.currentScreen === "Profile" ? "white" : undefined,
               }}
             />
             <DrawerItem
@@ -127,7 +126,6 @@ export function DrawerContent(props) {
               }}
             />
           </Drawer.Section>
-
         </View>
       </DrawerContentScrollView>
       <Drawer.Section style={styles.bottomDrawerSection}>
@@ -149,7 +147,9 @@ export function DrawerContent(props) {
               }}
               style={{
                 backgroundColor:
-                  appCtx.currentScreen === "Login" ? Colors.primary500 : undefined,
+                  appCtx.currentScreen === "Login"
+                    ? Colors.primary500
+                    : undefined,
               }}
               labelStyle={{
                 marginLeft: -15,
@@ -176,7 +176,9 @@ export function DrawerContent(props) {
               }}
               style={{
                 backgroundColor:
-                  appCtx.currentScreen === "Register" ? Colors.primary500: undefined,
+                  appCtx.currentScreen === "Register"
+                    ? Colors.primary500
+                    : undefined,
               }}
               labelStyle={{
                 marginLeft: -15,
@@ -200,14 +202,25 @@ export function DrawerContent(props) {
               label="Sign out"
               onPress={() => {
                 // First, we upload the changes made to student context to the database
-                updateFavList(studentContext.ID, studentContext.student,studentContext.Token);
+                updateFavList(
+                  studentContext.ID,
+                  studentContext.student,
+                  studentContext.Token
+                );
                 // console.log(studentContext.student);
                 const initialNewStudent1 = new Student("", "", "", "", [], []);
                 studentContext.registerStudent(initialNewStudent1);
+                if (appCtx.currentScreen === "Profile") {
+                  appCtx.changeScreenHandler("Home");
+                  props.navigation.toggleDrawer();
+                  props.navigation.navigate("DrawerHome");
+                }
               }}
               style={{
                 backgroundColor:
-                  appCtx.currentScreen === "Logout" ? Colors.primary500 : undefined,
+                  appCtx.currentScreen === "Logout"
+                    ? Colors.primary500
+                    : undefined,
               }}
               labelStyle={{
                 marginLeft: -15,
@@ -230,7 +243,9 @@ export function DrawerContent(props) {
               }}
               style={{
                 backgroundColor:
-                  appCtx.currentScreen === "Edit" ? Colors.primary500 : undefined,
+                  appCtx.currentScreen === "Edit"
+                    ? Colors.primary500
+                    : undefined,
               }}
               labelStyle={{
                 marginLeft: -15,

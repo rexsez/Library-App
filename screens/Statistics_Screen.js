@@ -7,10 +7,7 @@ import ItemsBar from "../components/ItemsBar";
 import Colors from "../components/Utility/Colors";
 import { useContext, useState } from "react";
 import { AppContext } from "../store/AppContext";
-import {
-  DescendingRating,
-  DescendingTimesBorrowed,
-} from "../components/Utility/UtilityFunctions";
+import { DescendingRating, DescendingTimesBorrowed } from "../components/Utility/UtilityFunctions";
 import { Pressable } from "react-native";
 
 /*
@@ -18,206 +15,224 @@ more info on charts can be found in the following link:
 https://www.npmjs.com/package/react-native-chart-kit
 */
 function StatisticsScreen() {
-  const appCtx = useContext(AppContext);
-  const books = appCtx.books;
+    const appCtx = useContext(AppContext);
+    const books = appCtx.books;
 
-  //default is showing most borrowed books (landing in page)
-  books.sort(DescendingTimesBorrowed);
-  const [title, setTitle] = useState("Number of times borrowed");
-  const [barChartData, setBarChartData] = useState({
-    //bottom labels as book titles
-    labels: [...getFirstTitles(books)],
-    //data -> for example times borrowed, rating etc...
-    datasets: [
-      {
-        data: [...getFirstTimesBorrowed(books)],
-      },
-    ],
-  });
-
-  //function to show most borrowed books in the chart
-  function mostBorrowed(books) {
+    //default is showing most borrowed books (landing in page)
     books.sort(DescendingTimesBorrowed);
-
-    setBarChartData({
-      //bottom labels as book titles
-      labels: [...getFirstTitles(books)],
-      //data -> for example times borrowed, rating etc...
-      datasets: [
+    const [title, setTitle] = useState("Number of times borrowed");
+    const [barChartData, setBarChartData] = useState(
         {
-          data: [...getFirstTimesBorrowed(books)],
-        },
-      ],
-    });
-    setTitle("Number of times borrowed");
-  }
+            //bottom labels as book titles
+            labels: [
+                ...getFirstTitles(books)
+            ],
+            //data -> for example times borrowed, rating etc...
+            datasets: [
+                {
+                    data: [
+                        ...getFirstTimesBorrowed(books)
+                    ],
+                },
+            ],
+        }
+    );
 
-  //function to show highest rated books in the chart
-  function highestRatings(books) {
-    books.sort(DescendingRating);
+    //function to show most borrowed books in the chart
+    function mostBorrowed(books) {
+        books.sort(DescendingTimesBorrowed);
 
-    setBarChartData({
-      //bottom labels as book titles
-      labels: [...getFirstTitles(books)],
-      //data -> for example times borrowed, rating etc...
-      datasets: [
-        {
-          data: [...getFirstRatings(books)],
-        },
-      ],
-    });
-    setTitle("Rating out of 5");
-  }
-
-  //function to get ratings of the first five or less indices
-  //sort before using it!
-  function getFirstRatings(books) {
-    const result = [];
-    const length = books.length < 5 ? books.length : 5;
-    let rating;
-    for (let index = 0; index < length; index++) {
-      rating = books[index]["rating"] < 0 ? 0 : books[index]["rating"];
-      result.push(rating);
+        setBarChartData({
+            //bottom labels as book titles
+            labels: [
+                ...getFirstTitles(books)
+            ],
+            //data -> for example times borrowed, rating etc...
+            datasets: [
+                {
+                    data: [
+                        ...getFirstTimesBorrowed(books)
+                    ],
+                },
+            ],
+        })
+        setTitle("Number of times borrowed");
     }
-    return result;
-  }
 
-  //function to get times borrowed of the first five or less indices
-  //sort before using it!
-  function getFirstTimesBorrowed(books) {
-    const result = [];
-    const length = books.length < 5 ? books.length : 5;
-    for (let index = 0; index < length; index++) {
-      result.push(books[index]["timesBorrowed"]);
+    //function to show highest rated books in the chart
+    function highestRatings(books) {
+        books.sort(DescendingRating);
+
+        setBarChartData({
+            //bottom labels as book titles
+            labels: [
+                ...getFirstTitles(books)
+            ],
+            //data -> for example times borrowed, rating etc...
+            datasets: [
+                {
+                    data: [
+                        ...getFirstRatings(books)
+                    ],
+                },
+            ],
+        })
+        setTitle("Rating out of 5");
     }
-    return result;
-  }
 
-  //function to get titles of the first five or less indices
-  //sort before using it!
-  function getFirstTitles(books) {
-    const result = [];
-    const length = books.length < 5 ? books.length : 5;
-    for (let index = 0; index < length; index++) {
-      result.push(books[index]["title"]);
+    //function to get ratings of the first five or less indices
+    //Unsorted!
+    function getFirstRatings(books) {
+        const result = [];
+        const length = books.length < 5 ? books.length : 5;
+        let rating;
+        for (let index = 0; index < length; index++) {
+            rating = (books[index]['rating'] < 0) ? 0 : books[index]['rating'];
+            result.push(rating);
+        }
+        return result;
     }
-    return result;
-  }
 
-  //chart cofiguration (colors, opacity, etc...)
-  //check the above link for more info on configuration
-  const chartConfig = {
-    backgroundGradientFrom: "#FEFEFE",
-    backgroundGradientFromOpacity: 1,
-    backgroundGradientTo: Colors.color7,
-    backgroundGradientToOpacity: 1,
-    color: () => Colors.color6,
-    // strokeWidth: 5, // optional, default 3
-    barPercentage: 0.8,
-    backgroundGradientToOpacity: 1,
-    fillShadowGradientFromOpacity: 0.8,
-    fillShadowGradientFromOffset: 0.6,
-  };
+    //function to get times borrowed of the first five or less indices
+    //Unsorted!
+    function getFirstTimesBorrowed(books) {
+        const result = [];
+        const length = books.length < 5 ? books.length : 5;
+        for (let index = 0; index < length; index++) {
+            result.push(books[index]['timesBorrowed']);
+        }
+        return result;
+    }
 
-  //list of buttons inside the horizontal items bar
-  const barItems = [
-    //most borrowed button
-    <Pressable
-      style={({ pressed }) => [
-        {
-          backgroundColor: pressed ? "#8aabdd" : Colors.primary500,
-        },
-        styles.button,
-      ]}
-      onPress={() => mostBorrowed(books)}
-    >
-      <Text style={styles.buttonTextStyle}>Most Borrowed</Text>
-    </Pressable>,
+    //function to get titles of the first five or less indices
+    //Unsorted!
+    function getFirstTitles(books) {
+        const result = [];
+        const length = books.length < 5 ? books.length : 5;
+        for (let index = 0; index < length; index++) {
+            result.push(books[index]['title']);
+        }
+        return result;
+    }
 
-    //highest ratings button
-    <Pressable
-      style={({ pressed }) => [
-        {
-          backgroundColor: pressed ? "#8aabdd" : Colors.primary500,
-        },
-        styles.button,
-      ]}
-      onPress={() => highestRatings(books)}
-    >
-      <Text style={styles.buttonTextStyle}>Highest Ratings</Text>
-    </Pressable>,
-  ];
+    //chart cofiguration (colors, opacity, etc...)
+    //check the above link for more info on configuration
+    const chartConfig = {
+        backgroundGradientFrom: "#FEFEFE",
+        backgroundGradientFromOpacity: 1,
+        backgroundGradientTo: Colors.color7,
+        backgroundGradientToOpacity: 1,
+        color: () => Colors.color6,
+        // strokeWidth: 5, // optional, default 3
+        barPercentage: 0.8,
+        backgroundGradientToOpacity: 1,
+        fillShadowGradientFromOpacity: 0.8,
+        fillShadowGradientFromOffset: 0.6,
+    };
 
-  const screenWidth = Dimensions.get("window").width * 1.001;
-  const screenheight = Dimensions.get("window").height * 0.75;
-  return (
-    //root container
-    <View style={styles.rootContainer}>
-      <ItemsBar //horizontal buttons bar
-        style={styles.ItemsBar}
-        items={barItems}
-      />
+    //list of buttons inside the horizontal items bar
+    const barItems = [
+        //most borrowed button
+        <Pressable
+          style={({ pressed }) => [
+            {
+              backgroundColor: pressed ? "#8aabdd" : "#366EA0",
+            },
+            styles.button,
+          ]}
+          onPress={() => mostBorrowed(books)}
+        >
+          <Text style={styles.buttonTextStyle}>Most Borrowed</Text>
+        </Pressable>,
 
-      <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>{title}</Text>
-      </View>
+        //highest ratings button
+        <Pressable
+          style={({ pressed }) => [
+            {
+              backgroundColor: pressed ? "#8aabdd" : "#366EA0",
+            },
+            styles.button,
+          ]}
+          onPress={() => highestRatings(books)}
+        >
+          <Text style={styles.buttonTextStyle}>Highest Ratings</Text>
+        </Pressable>,
+    ];
 
-      <BarChart //bar chart
-        style={styles.graphStyle}
-        data={barChartData}
-        width={screenWidth}
-        height={screenheight}
-        yAxisLabel=""
-        chartConfig={chartConfig}
-        verticalLabelRotation={45}
-        showValuesOnTopOfBars={true}
-        fromZero={true}
-        // withInnerLines={false}
-      />
-    </View>
-  );
+    const screenWidth = (Dimensions.get("window").width) * 1.001;
+    const screenheight = (Dimensions.get("window").height) * 0.75;
+    return (
+        //root container
+        <View style={styles.rootContainer}>
+
+            <ItemsBar //horizontal buttons bar
+                style={styles.ItemsBar}
+                items={barItems}
+            />
+
+            <View style={styles.titleContainer}>
+                <Text style={styles.titleText}>
+                    {title}
+                </Text>
+            </View>
+
+            <BarChart //bar chart
+                style={styles.graphStyle}
+                data={barChartData}
+                width={screenWidth}
+                height={screenheight}
+                yAxisLabel=""
+                chartConfig={chartConfig}
+                verticalLabelRotation={45}
+                showValuesOnTopOfBars={true}
+                fromZero={true}
+                // withInnerLines={false}
+            />
+
+        </View>
+    );
 }
 
 export default StatisticsScreen;
 
 const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-  },
-  ItemsBar: {
-    borderWidth: 1,
-    borderColor: "black",
-    height: 85,
-    alignItems: "center",
-    backgroundColor: Colors.color9,
-  },
-  titleContainer: {
-    padding: 15,
-    backgroundColor: Colors.primary500,
-    borderBottomWidth: 1,
-    borderBottomColor: "black",
-  },
-  titleText: {
-    color: "white",
-    fontWeight: "900",
-    textAlign: "center",
-    letterSpacing: 1.5,
-  },
-  graphStyle: {
-    flex: 1,
-  },
-  button: {
-    borderRadius: 15,
-    padding: 15,
-    elevation: 5,
-    paddingHorizontal: 31,
-    borderWidth: 2,
-    borderColor: "#eddfb4",
-  },
-  buttonTextStyle: {
-    color: "white",
-    fontWeight: "900",
-    textAlign: "center",
-    letterSpacing: 1.5,
-  },
+    rootContainer: {
+        flex: 1,
+    },
+    ItemsBar: {
+        borderWidth: 1,
+        borderColor: "black",
+        height: 85,
+        alignItems: "center",
+        backgroundColor: Colors.color9
+    },
+    titleContainer: {
+        padding: 15,
+        backgroundColor: "#366EA0",
+        borderBottomWidth: 1,
+        borderBottomColor: "black",
+    },
+    titleText: {
+        color: "white",
+        fontWeight: "900",
+        textAlign: "center",
+        letterSpacing: 1.5,
+    },
+    graphStyle: {
+        flex: 1,
+    },
+    button: {
+        borderRadius: 15,
+        padding: 15,
+        elevation: 5,
+        paddingHorizontal: 31,
+        borderWidth: 2,
+        borderColor: '#eddfb4',
+      },
+      buttonTextStyle: {
+        color: "white",
+        fontWeight: "900",
+        textAlign: "center",
+        letterSpacing: 1.5,
+      },
 });

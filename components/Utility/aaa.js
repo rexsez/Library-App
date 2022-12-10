@@ -1,5 +1,5 @@
 // Note that Descending and Ascending are actually reversed
-// because the user would expect the list to start from the top of his screen
+import { and } from "react-native-reanimated";
 export function DescendingTitle(book1, book2) {
   if (book1.title.toLowerCase() > book2.title.toLowerCase()) {
     return -1;
@@ -98,15 +98,15 @@ export function AscendingRating(book1, book2) {
   return 0;
 }
 
-export function DescendingTimesBorrowed(book1, book2) {
-  if (book1.timesBorrowed > book2.timesBorrowed) {
-    return -1;
-  }
-  if (book1.timesBorrowed < book2.timesBorrowed) {
-    return 1;
-  }
-  return 0;
-}
+
+
+
+
+
+
+
+
+
 
 export function toFixed(num, fixed) {
   var re = new RegExp("^-?\\d+(?:.\\d{0," + (fixed || -1) + "})?");
@@ -117,16 +117,6 @@ export function formateDate(date) {
   return (
     date.getFullYear() + " - " + (date.getMonth() + 1) + " - " + date.getDate()
   );
-}
-
-export function generateRandomNumber() {
-  var minm = 100000;
-  var maxm = 999999;
-  return Math.floor(Math.random() * (maxm - minm + 1)) + minm;
-}
-
-export function containsOnlyNumbers(str) {
-  return /^\d+$/.test(str);
 }
 
 export function dueDateToDays(dueDate) {
@@ -169,6 +159,16 @@ export function dueDateSort(dueDate1, dueDate2) {
     return -1;
   }
   if (new Date(dueDate2[1]).getDate() < new Date(dueDate1[1]).getDate()) {
+    return 1;
+  }
+  return 0;
+}
+
+export function DescendingTimesBorrowed(book1, book2) {
+  if (book1.timesBorrowed > book2.timesBorrowed) {
+    return -1;
+  }
+  if (book1.timesBorrowed < book2.timesBorrowed) {
     return 1;
   }
   return 0;

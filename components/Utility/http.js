@@ -315,3 +315,9 @@ export async function putVerification(studentID, verification) {
   res["verification"] = verification;
   axios.put(link, res);
 }
+
+// ---------------------------------------- payment --------------------------------------------------------
+export async function checkPayment(cardNumber) {
+  // getting card info of a specifc card!
+  return await axios.get(database + `cards/${cardNumber}.json`);
+}

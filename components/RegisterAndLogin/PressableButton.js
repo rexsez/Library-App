@@ -8,7 +8,7 @@ function PressableButton({ children, onPress, style, Flate }) {
         onPress={onPress}
         style={({ pressed }) => [pressed && styles.pressed, styles.Pressable]}
       >
-        <View style={[styles.buttonContainer, isFlate && styles.Flat]}>
+        <View style={[styles.buttonContainer, isFlate && styles.Flat, style]}>
           <Text style={[styles.Text, isFlate && styles.TextFlat]}>
             {children}
           </Text>

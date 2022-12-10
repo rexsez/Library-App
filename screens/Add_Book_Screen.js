@@ -14,6 +14,7 @@ import DropDownMenu from "../components/AddBookComponents/Drop_Down_Menu";
 import { AppContext } from "../store/AppContext";
 import { requestBook /*uploadImage*/ } from "../components/Utility/http";
 import Colors from "../components/Utility/Colors";
+import { containsOnlyNumbers } from "../components/Utility/UtilityFunctions";
 
 function AddBookScreen({ navigation }) {
   const appCtx = useContext(AppContext);
@@ -99,17 +100,26 @@ function AddBookScreen({ navigation }) {
         bookData.date.toString() !== "Invalid Date" &&
         inputs.date.value.match(/^\d{4}-\d{2}-\d{2}$/) !== null;
     }
-    // const categoryIsValid = bookData.category.trim().length > 0;
-
-    //if one of the inputs is invalid..
+    let isbnIsValid = false;
     if (
+      (inputs.isbn.value.length === 13 ||
+        inputs.isbn.value.length === 10) &&
+      containsOnlyNumbers(inputs.isbn.value)
+    ) {
+      isbnIsValid = true;
+    }
+    if (
+      !isbnIsValid ||
       !titleIsValid ||
       // !authorIsValid ||
       !dateIsValid /*|| !categoryIsValid*/
     ) {
+      // const categoryIsValid = bookData.category.trim().length > 0;
+
+      //if one of the inputs is invalid..
       setInputs((curInputs) => {
         return {
-          isbn: { value: curInputs.isbn.value, isValid: true },
+          isbn: { value: curInputs.isbn.value, isValid: isbnIsValid },
           title: { value: curInputs.title.value, isValid: titleIsValid },
           author: { value: curInputs.author.value, isValid: true },
           image: { value: curInputs.image.value, isValid: true },
@@ -173,25 +183,29 @@ function AddBookScreen({ navigation }) {
       colors={[Colors.color7, "whitesmoke", Colors.color7]}
       style={styles.linearGradient}
     >
-      <View style={styles.rootContainer}>
-        <ScrollView>
+      <View style={styles.titleContainer}>
+        <Text style={styles.titleText}>Request Book</Text>
+      </View>
+
+      <ScrollView>
+        <View style={styles.rootContainer}>
           {/* <Title>Request Book</Title> */}
           {/* <Text style={styles.title}>Add Book</Text> */}
           {/* Using the Input component to create input fields */}
 
-          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>ISBN</Text>
           <Input //ISBN
             label="ISBN"
+            labelStyle={styles.label}
             invalid={!inputs.isbn.isValid}
             textInputConfig={{
-              editable: false,
               value: inputs.isbn.value,
+              onChangeText: inputChangedHandler.bind(this, "isbn"),
             }}
           />
 
-          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Title</Text>
           <Input //Book Title
             label="Title"
+            labelStyle={styles.label}
             invalid={!inputs.title.isValid}
             textInputConfig={{
               onChangeText: inputChangedHandler.bind(this, "title"),
@@ -199,43 +213,35 @@ function AddBookScreen({ navigation }) {
           />
 
           {/* <View style={styles.pickImageContainer}>
-          <MyButton
-          onPress={pickImage}
-          Flate={true}
-          style={styles.buttonStyles}
-          textStyle={styles.buttonText}
-          >
-          Pick Image
-          </MyButton>
-          {inputs.image.value != "" && (
-            <Image
-            source={{ uri: inputs.image.value.uri }}
-            style={styles.bookImage}
-            />
-            )}
-          </View> */}
-          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Author</Text>
+            <MyButton
+            onPress={pickImage}
+            Flate={true}
+            style={styles.buttonStyles}
+            textStyle={styles.buttonText}
+            >
+            Pick Image
+            </MyButton>
+            {inputs.image.value != "" && (
+              <Image
+              source={{ uri: inputs.image.value.uri }}
+              style={styles.bookImage}
+              />
+              )}
+            </View> */}
+          {/* <Text style={styles.label}>Author</Text> */}
           <Input //Author
             label="Author"
+            labelStyle={styles.label}
             invalid={!inputs.author.isValid}
             textInputConfig={{
               onChangeText: inputChangedHandler.bind(this, "author"),
-            }}
-          />
-          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Date</Text>
-          <Input //Date
-            label="Publish Date"
-            invalid={!inputs.date.isValid}
-            textInputConfig={{
-              placeholder: "YYYY-MM-DD",
-              maxLength: 10,
-              onChangeText: inputChangedHandler.bind(this, "date"),
             }}
           />
 
           <DropDownMenu //Category
             style={styles.dropdown}
             label={"Category"}
+            labelStyle={styles.label}
             elements={appCtx.categories}
             dropDownConfig={{
               dropdownPosition: "bottom",
@@ -248,9 +254,20 @@ function AddBookScreen({ navigation }) {
             }}
           />
 
-          <Text style={{ fontWeight: "bold", marginLeft: 5 }}>Summary</Text>
+          <Input //Date
+            label="Publish Date"
+            labelStyle={styles.label}
+            invalid={!inputs.date.isValid}
+            textInputConfig={{
+              placeholder: "YYYY-MM-DD",
+              maxLength: 10,
+              onChangeText: inputChangedHandler.bind(this, "date"),
+            }}
+          />
+
           <Input //Summary
             label="Summary"
+            labelStyle={styles.label}
             invalid={!inputs.summary.isValid}
             textInputConfig={{
               multiline: true,
@@ -258,12 +275,13 @@ function AddBookScreen({ navigation }) {
             }}
           />
 
-          {/* if the some input is invalid, display an error text */}
           {formIsInvalid && (
-            <ErrorComponent>
-              Invalid input. Please make sure there's a title and the date
-              format is YYYY-MM-DD
-            </ErrorComponent>
+            <View style={styles.errorContainer}>
+              <ErrorComponent errorColor={"red"}>
+                Invalid input. Please make sure there's a title and the date
+                format is YYYY-MM-DD
+              </ErrorComponent>
+            </View>
           )}
 
           <MyButton
@@ -274,9 +292,9 @@ function AddBookScreen({ navigation }) {
           >
             Submit
           </MyButton>
-        </ScrollView>
-        {/* </LinearGradient> */}
-      </View>
+          {/* </LinearGradient> */}
+        </View>
+      </ScrollView>
     </LinearGradient>
   );
 }
@@ -285,16 +303,32 @@ export default AddBookScreen;
 
 const styles = StyleSheet.create({
   rootContainer: {
-    marginTop: 45,
-    marginBottom: 4,
+    marginTop: 30,
+    marginBottom: 30,
+    paddingHorizontal: 15,
   },
-  title: {
-    fontSize: 36,
+  titleContainer: {
+    padding: 15,
+    backgroundColor: "#366EA0",
+    borderBottomWidth: 1,
+    borderBottomColor: "black",
+    height: 70,
+    justifyContent: "center",
+  },
+  titleText: {
+    color: "white",
+    fontWeight: "900",
     textAlign: "center",
-    color: "whitesmoke",
+    letterSpacing: 1.5,
+    fontSize: 24,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginLeft: 5,
   },
   dropdown: {
-    marginTop: 20,
+    marginTop: 12,
   },
   // pickImageContainer: {
   //   flexDirection: "row",
@@ -304,12 +338,14 @@ const styles = StyleSheet.create({
   //   height: 150,
   // },
   buttonStyles: {
+    marginTop: 8,
     alignSelf: "center",
     alignItems: "center",
+    justifyContent: "center",
     backgroundColor: "whitesmoke",
-    borderWidth: 1,
-    borderRadius: 8,
-    width: "50%",
+    borderWidth: 2,
+    borderRadius: 6,
+    width: "40%",
   },
   buttonText: {
     fontSize: 24,
@@ -317,9 +353,16 @@ const styles = StyleSheet.create({
   },
   linearGradient: {
     flex: 1,
-    paddingLeft: 15,
-    paddingRight: 15,
+    // paddingLeft: 15,
+    // paddingRight: 15,
     borderRadius: 5,
     opacity: 0.75,
+  },
+  errorContainer: {
+    borderWidth: 2,
+    borderRadius: 6,
+    borderColor: "red",
+    marginHorizontal: 24,
+    backgroundColor: "whitesmoke",
   },
 });

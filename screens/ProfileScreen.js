@@ -1,4 +1,11 @@
-import { View, StyleSheet, FlatList, Pressable } from "react-native";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  StatusBar,
+  ImageBackground,
+  Pressable
+} from "react-native";
 import { useContext, useState } from "react";
 import { StudentContext } from "../store/StudentContext";
 import {
@@ -7,7 +14,9 @@ import {
   useRoute,
 } from "@react-navigation/native";
 import BookCard from "../components/SearchScreenComponents/BookCard";
-import Card from "../components/Utility/Cards/Card";
+import BorrowedBookCard from "../components/ProfileScreenComponents/BorrowedBookCard";
+import CardBorrow_Fav from "../components/Utility/Cards/CardBorrow_Fav";
+import { dueDateSort } from "../components/Utility/UtilityFunctions";
 import { AppContext } from "../store/AppContext";
 import { Text } from "react-native-paper";
 
@@ -21,6 +30,7 @@ function ProfileScreen({ defaultScreen }) {
       navigation.navigate("DrawerProfile");
     }
   });
+
   function renderItem(book) {
     if (currentList == "fav") {
       const favoriteBook = appCtx.books.find(
@@ -32,12 +42,19 @@ function ProfileScreen({ defaultScreen }) {
       const borrowedBook = appCtx.books.find(
         (bookss) => bookss.isbn === book.item
       );
-      return <BookCard bookData={borrowedBook}></BookCard>;
+      return (
+        <BorrowedBookCard
+          bookData={borrowedBook}
+          dueDate={studentContext.student.borrowedBooks[book.item]}
+        ></BorrowedBookCard>
+      );
     }
   }
+
   function keyExtractor(book) {
     return book.item;
   }
+
   // changed_abdullah
   const [description, setDescription] = useState("Your favorite List");
   // end changed
@@ -45,9 +62,28 @@ function ProfileScreen({ defaultScreen }) {
     if (currentList === "fav") {
       return studentContext.student.favBooks;
     } else {
+      if (!!!studentContext.student.borrowedBooks) {
+        return [];
+      }
       // changed_abdullah
       // setDescription("Your list of borrowed books");
-      return Object.keys(studentContext.student?.borrowedBooks || []);
+      if (!!Object.keys(studentContext.student.borrowedBooks)) {
+        var currentKey = Object.keys(studentContext.student.borrowedBooks);
+        console.log(currentKey);
+        var currentDictionary = [];
+        for (var i = 0; i < currentKey.length; i++) {
+          currentDictionary.push([
+            currentKey[i],
+            studentContext.student.borrowedBooks[currentKey[i]],
+          ]);
+        }
+        currentDictionary.sort(dueDateSort);
+        for (var i = 0; i < currentDictionary.length; i++) {
+          currentKey[i] = currentDictionary[i][0];
+        }
+        return currentKey;
+      }
+      return [];
       // end changed
     }
   }
@@ -92,44 +128,56 @@ function ProfileScreen({ defaultScreen }) {
   };
 
   if (!!studentContext.student.Email) {
+    // testVerification();
     return (
       <View style={styles.container}>
-        <View style={styles.outerListContainer}>
-          <Text style={styles.greetings}>Welcome</Text>
-          <Text style={styles.name}>
-            {studentContext.student.FName + " " + studentContext.student.LName}
-          </Text>
-          <View style={styles.iconContainer}>
-            <Pressable style={[currentList == "fav" && styles.pressed]}>
-              <Card
-                onPressed={onPressIcon.bind(this, "fav")}
-                path="star"
-                color="rgb(130, 196, 217)"
-              ></Card>
-            </Pressable>
-            {/* changed_abdullah */}
-            <Pressable style={[currentList == "bor" && styles.pressed]}>
-              {/* end changed */}
-              <Card
-                onPressed={onPressIcon.bind(this, "bor")}
-                path="book"
-                color="rgb(130, 196, 217)"
-              ></Card>
-            </Pressable>
-          </View>
-          <View>
-            <Text style={styles.description}>{description}</Text>
-          </View>
+        <ImageBackground
+          style={styles.ImageBackground}
+          source={require("../assets/logoNew2.png")}
+          resizeMode="cover"
+        >
+          <StatusBar animated={false} backgroundColor="whitesmoke"></StatusBar>
+          <View style={styles.outerListContainer}>
+            <View style={styles.greetingsContainer}>
+              <Text style={styles.greetings}>Profile</Text>
+            </View>
+            <Text style={styles.name}>
+              {studentContext.student.FName +
+                " " +
+                studentContext.student.LName}
+            </Text>
 
-          <View style={styles.flatListContainer}>
-            <FlatList
-              data={whichList()}
-              renderItem={renderItem}
-              keyExtractor={keyExtractor}
-              style={styles.ImageBackground}
-            ></FlatList>
+            <View style={styles.iconContainer}>
+              <Pressable style={[currentList == "fav" && styles.pressed]}>
+                <CardBorrow_Fav
+                  onPressed={onPressIcon.bind(this, "fav")}
+                  path="star"
+                  color="rgb(130, 196, 217)"
+                ></CardBorrow_Fav>
+              </Pressable>
+              {/* changed_abdullah */}
+              <Pressable style={[currentList == "bor" && styles.pressed]}>
+                {/* end changed */}
+                <CardBorrow_Fav
+                  onPressed={onPressIcon.bind(this, "bor")}
+                  path="book"
+                  color="rgb(130, 196, 217)"
+                ></CardBorrow_Fav>
+              </Pressable>
+            </View>
+            <View>
+              <Text style={styles.description}>{description}</Text>
+            </View>
+            <View style={styles.flatListContainer}>
+              <FlatList
+                data={whichList()}
+                renderItem={renderItem}
+                keyExtractor={keyExtractor}
+                style={styles.ImageBackground}
+              ></FlatList>
+            </View>
           </View>
-        </View>
+        </ImageBackground>
       </View>
     );
   }
@@ -139,33 +187,41 @@ function ProfileScreen({ defaultScreen }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
+    marginHorizontal: 10,
+    marginVertical: 25,
+    borderWidth: 3,
+    borderColor: "black",
   },
   outerListContainer: {
+    backgroundColor: "white",
     margin: 10,
-    marginTop: 0,
+    marginTop: 10,
     flex: 1,
   },
   iconContainer: {
     margin: 20,
+    marginTop: 10,
     marginHorizontal: 0,
     flexDirection: "row",
-    justifyContent: "space-around",
-    borderWidth: 1,
-    borderColor: "white",
-    borderRadius: 10,
-    backgroundColor: "white",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 12,
-    },
-    shadowOpacity: 0.58,
-    shadowRadius: 16.0,
-
-    elevation: 24,
+    justifyContent: "space-evenly",
+    // borderWidth: 1,
+    // borderColor: "black",
+    // shadowColor: "#000",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 12,
+    // },
+    // shadowOpacity: 0.58,
+    // shadowRadius: 16.0,
+    // elevation: 24,
   },
   flatListContainer: {
     flex: 1,
+    backgroundColor: "white",
+    borderStyle: "solid",
+    borderWidth: 2,
+    borderColor: "black",
   },
   ImageBackground: {
     flex: 1,
@@ -173,24 +229,33 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.5,
   },
+  greetingsContainer: {
+    alignItems: "center",
+    marginTop: 30,
+    backgroundColor: "#0593bb",
+    width: "100%",
+    height: 45,
+  },
   greetings: {
+    marginTop: 5,
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "white",
+  },
+  name: {
+    color: "#144c84",
     fontSize: 24,
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
     marginTop: 30,
-  },
-  name: {
-    fontSize: 24,
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
-    marginTop: 10,
     fontWeight: "bold",
   },
   description: {
     fontSize: 22,
     textAlign: "center",
+    color: "#144c84",
+    fontWeight: "300",
   },
 });
 export default ProfileScreen;

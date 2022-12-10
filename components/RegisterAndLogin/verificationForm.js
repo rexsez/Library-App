@@ -10,9 +10,12 @@ import { StudentContext } from "../../store/StudentContext";
 import Input from "../AddBookComponents/Input";
 import MyButton from "../MyButton";
 import { getStudentID, putVerification } from "../Utility/http";
+import { Alert } from "react-native";
+import { AppContext } from "../../store/AppContext";
 
 function VerificationForm() {
   const navigation = useNavigation();
+  const appCtx = useContext(AppContext);
 
   useEffect(() => {
     navigation.setOptions({
@@ -20,6 +23,7 @@ function VerificationForm() {
         <HeaderBackButton
           onPress={() => {
             // This will remove The previous screen (Barcode scanner screen)
+            appCtx.changeScreenHandler("Home");
             navigation.navigate("DrawerHome");
           }}
         />
@@ -54,6 +58,11 @@ function VerificationForm() {
       navigation.navigate("DrawerProfile");
     } else {
       // console.log("I am here 2");
+      Alert.alert(
+        " Verification Response",
+        "The verification code is invalid",
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+      );
     }
   }
 

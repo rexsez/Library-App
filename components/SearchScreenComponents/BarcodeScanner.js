@@ -4,6 +4,7 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 import { StackActions } from "@react-navigation/native";
 
 import { AppContext } from "../../store/AppContext";
+import { containsOnlyNumbers } from "../Utility/UtilityFunctions";
 
 function BarcodeScanner({ navigation }) {
   const appCtx = useContext(AppContext);
@@ -23,9 +24,7 @@ function BarcodeScanner({ navigation }) {
   };
 
   // To check if input is valid, ISBN shouldn't contain any letter ot special character
-  function containsOnlyNumbers(str) {
-    return /^\d+$/.test(str);
-  }
+
 
   // Request Camera Permission
   useEffect(() => {

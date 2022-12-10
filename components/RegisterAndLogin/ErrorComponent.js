@@ -1,16 +1,20 @@
 import { View, Text, StyleSheet } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-function ErrorComponent({ children }) {
+function ErrorComponent({ children, errorColor }) {
+  let color = "#a64452";
+  if (!!errorColor) {
+    color = errorColor;
+  }
   return (
     <View style={styles.Container}>
       <Ionicons
         name="alert-circle"
-        color="#a64452"
+        color={color}
         size={24}
         style={styles.icon}
       ></Ionicons>
-      <Text style={styles.Text}>{children}</Text>
+      <Text style={[styles.Text, { color: color }]}>{children}</Text>
     </View>
   );
 }
@@ -21,7 +25,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  Text: { color: "#a64452", fontSize: 16 },
+  Text: { fontSize: 16 },
   icon: { fontSize: 30, marginRight: 6 },
 });
 export default ErrorComponent;
