@@ -3,10 +3,9 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 function ErrorComponent({ children, errorColor }) {
   let color = "#a64452";
-  if(!!errorColor) {
+  if (!!errorColor) {
     color = errorColor;
   }
-
   return (
     <View style={styles.Container}>
       <Ionicons
@@ -15,7 +14,7 @@ function ErrorComponent({ children, errorColor }) {
         size={24}
         style={styles.icon}
       ></Ionicons>
-      <Text style={[styles.Text, {color: color}]}>{children}</Text>
+      <Text style={[styles.Text, { color: color }]}>{children}</Text>
     </View>
   );
 }

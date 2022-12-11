@@ -11,11 +11,14 @@ import Inpute from "./Inpute";
 import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
 import { getStudentID, registerStudent } from "../Utility/http";
+import { AppContext } from "../../store/AppContext";
+import { Text } from "react-native";
 
 function RegisterForm() {
   // ----------------- Navigation stuff --------------
 
   const navigation = useNavigation();
+  const appCtx = useContext(AppContext);
   function forceRerender(rerender) {
     rerender();
   }
@@ -23,9 +26,11 @@ function RegisterForm() {
     navigation.navigate("StackLogin");
   }
   function onPressGoBackhandler() {
+    appCtx.changeScreenHandler("Home");
     navigation.navigate("TabHome");
   }
   function onPressTermshandler() {
+    appCtx.changeScreenHandler("Terms");
     navigation.navigate("StackTerms");
   }
   // ------------------------------------------------------
@@ -62,6 +67,7 @@ function RegisterForm() {
     });
   }
   const [error, setError] = useState(initialError);
+
   async function onPress() {
     //  we check if the input wasn't valid,
     // if input not valid we put error component with
@@ -77,17 +83,21 @@ function RegisterForm() {
       //  to the app wide context
       //  so it can be used every where else
     } else {
-      // putting new student data in context to be used locally
-      studentContext.registerStudent(newStudent);
-      // adding the new student data to the database using post
       await registerStudent(newStudent);
-      const ID = await getStudentID(newStudent.Email);
-      studentContext.setID(ID);
-      navigation.navigate({ name: "DrawerProfile" });
+      setError(initialError);
+
+      const token = newStudent["verification"];
+      // studentContext.setID(ID);
+      appCtx.changeScreenHandler("Profile");
+      studentContext.setToken(token);
+      navigation.navigate("StackVerification", {
+        student: newStudent,
+      });
+      setNewStudent(initialNewStudent);
     }
   }
 
-  const initialNewStudent = new Student(" ", " ", " ", " ", [], []);
+  const initialNewStudent = new Student("", "", "", "", [], []);
 
   const [newStudent, setNewStudent] = useState(initialNewStudent);
   function onChangeTextHanddler(feild, entertedText) {
@@ -126,60 +136,78 @@ function RegisterForm() {
   return (
     <>
       <View style={styles.InfoContainer}>
-        <Inpute
-          style={
-            error.feilds == "FName" &&
-            error.errorComponent &&
-            styles.InputeError
-          }
-          onChangeTextHandler={onChangeTextHanddler.bind(this, "FName")}
-          inputeTextProps={{
-            placeholder: "First Name",
-            placeholderTextColor: "#10426E",
-            maxLength: 15,
-          }}
-        ></Inpute>
-        <Inpute
-          style={
-            error.feilds == "LName" &&
-            error.errorComponent &&
-            styles.InputeError
-          }
-          onChangeTextHandler={onChangeTextHanddler.bind(this, "LName")}
-          inputeTextProps={{
-            placeholder: "Last Name",
-            placeholderTextColor: "#10426E",
-            maxLength: 15,
-          }}
-        ></Inpute>
-        <Inpute
-          style={
-            error.feilds == "Email" &&
-            error.errorComponent &&
-            styles.InputeError
-          }
-          onChangeTextHandler={onChangeTextHanddler.bind(this, "Email")}
-          inputeTextProps={{
-            placeholder: "Example@psu.edu.sa",
-            placeholderTextColor: "#10426E",
-            maxLength: 20,
-            autoCapitalize: "none",
-            keyboardType: "email-address",
-          }}
-        ></Inpute>
-        <Inpute
-          style={
-            error.feilds == "psw" && error.errorComponent && styles.InputeError
-          }
-          onChangeTextHandler={onChangeTextHanddler.bind(this, "psw")}
-          inputeTextProps={{
-            maxLength: 25,
-            placeholder: "Password",
-            placeholderTextColor: "#10426E",
-            autoCapitalize: "none",
-            secureTextEntry: true,
-          }}
-        ></Inpute>
+        {/* <View style={styles}>
+          <Text style={styles.label}>First Name</Text> */}
+          <Inpute
+            style={
+              error.feilds == "FName" &&
+              error.errorComponent &&
+              styles.InputeError
+            }
+            onChangeTextHandler={onChangeTextHanddler.bind(this, "FName")}
+            inputeTextProps={{
+              placeholder: "First Name",
+              placeholderTextColor: "#10426E",
+              maxLength: 15,
+              value: newStudent.FName,
+            }}
+          ></Inpute>
+        {/* </View> */}
+        {/* <View style={styles}>
+          <Text style={styles.label}>Last Name</Text> */}
+          <Inpute
+            style={
+              error.feilds == "LName" &&
+              error.errorComponent &&
+              styles.InputeError
+            }
+            onChangeTextHandler={onChangeTextHanddler.bind(this, "LName")}
+            inputeTextProps={{
+              placeholder: "Last Name",
+              placeholderTextColor: "#10426E",
+              maxLength: 15,
+              value: newStudent.LName,
+            }}
+          ></Inpute>
+        {/* </View> */}
+        {/* <View style={styles}>
+          <Text style={styles.label}>Email</Text> */}
+          <Inpute
+            style={
+              error.feilds == "Email" &&
+              error.errorComponent &&
+              styles.InputeError
+            }
+            onChangeTextHandler={onChangeTextHanddler.bind(this, "Email")}
+            inputeTextProps={{
+              placeholder: "Example@psu.edu.sa",
+              placeholderTextColor: "#10426E",
+              maxLength: 20,
+              autoCapitalize: "none",
+              keyboardType: "email-address",
+              value: newStudent.Email,
+            }}
+          ></Inpute>
+        {/* </View> */}
+        {/* <View style={styles}>
+          <Text style={styles.label}>Passwords</Text> */}
+          <Inpute
+            style={
+              error.feilds == "psw" &&
+              error.errorComponent &&
+              styles.InputeError
+            }
+            onChangeTextHandler={onChangeTextHanddler.bind(this, "psw")}
+            inputeTextProps={{
+              maxLength: 25,
+              placeholder: "Password",
+              placeholderTextColor: "#10426E",
+              autoCapitalize: "none",
+              secureTextEntry: true,
+              value: newStudent.psw,
+            }}
+          ></Inpute>
+        {/* </View> */}
         {error.errorComponent}
         <CheckBox
           chechboxStyle={
@@ -210,6 +238,10 @@ function RegisterForm() {
   );
 }
 const styles = StyleSheet.create({
+  label: {
+    justifyContent: "center",
+    marginHorizontal: "12%",
+  },
   InfoContainer: {
     flex: 1,
     padding: 15,

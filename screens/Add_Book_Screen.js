@@ -14,6 +14,7 @@ import DropDownMenu from "../components/AddBookComponents/Drop_Down_Menu";
 import { AppContext } from "../store/AppContext";
 import { requestBook /*uploadImage*/ } from "../components/Utility/http";
 import Colors from "../components/Utility/Colors";
+import { containsOnlyNumbers } from "../components/Utility/UtilityFunctions";
 
 function AddBookScreen({ navigation }) {
   const appCtx = useContext(AppContext);
@@ -99,17 +100,26 @@ function AddBookScreen({ navigation }) {
         bookData.date.toString() !== "Invalid Date" &&
         inputs.date.value.match(/^\d{4}-\d{2}-\d{2}$/) !== null;
     }
-    // const categoryIsValid = bookData.category.trim().length > 0;
-
-    //if one of the inputs is invalid..
+    let isbnIsValid = false;
     if (
+      (inputs.isbn.value.length === 13 ||
+        inputs.isbn.value.length === 10) &&
+      containsOnlyNumbers(inputs.isbn.value)
+    ) {
+      isbnIsValid = true;
+    }
+    if (
+      !isbnIsValid ||
       !titleIsValid ||
       // !authorIsValid ||
       !dateIsValid /*|| !categoryIsValid*/
     ) {
+      // const categoryIsValid = bookData.category.trim().length > 0;
+
+      //if one of the inputs is invalid..
       setInputs((curInputs) => {
         return {
-          isbn: { value: curInputs.isbn.value, isValid: true },
+          isbn: { value: curInputs.isbn.value, isValid: isbnIsValid },
           title: { value: curInputs.title.value, isValid: titleIsValid },
           author: { value: curInputs.author.value, isValid: true },
           image: { value: curInputs.image.value, isValid: true },
@@ -152,6 +162,7 @@ function AddBookScreen({ navigation }) {
     //   requestedData.image.value = filename;
     // }
     await requestBook(requestedData);
+    appCtx.changeScreenHandler("Home");
     navigation.navigate("TabSearch", { request: true });
   }
 
@@ -172,39 +183,36 @@ function AddBookScreen({ navigation }) {
       colors={[Colors.color7, "whitesmoke", Colors.color7]}
       style={styles.linearGradient}
     >
-
       <View style={styles.titleContainer}>
-          <Text style={styles.titleText}>
-              Request Book
-          </Text>
+        <Text style={styles.titleText}>Request Book</Text>
       </View>
 
       <ScrollView>
         <View style={styles.rootContainer}>
-            {/* <Title>Request Book</Title> */}
-            {/* <Text style={styles.title}>Add Book</Text> */}
-            {/* Using the Input component to create input fields */}
+          {/* <Title>Request Book</Title> */}
+          {/* <Text style={styles.title}>Add Book</Text> */}
+          {/* Using the Input component to create input fields */}
 
-            <Input //ISBN
-              label="ISBN"
-              labelStyle={styles.label}
-              invalid={!inputs.isbn.isValid}
-              textInputConfig={{
-                editable: false,
-                value: inputs.isbn.value,
-              }}
-            />
+          <Input //ISBN
+            label="ISBN"
+            labelStyle={styles.label}
+            invalid={!inputs.isbn.isValid}
+            textInputConfig={{
+              value: inputs.isbn.value,
+              onChangeText: inputChangedHandler.bind(this, "isbn"),
+            }}
+          />
 
-            <Input //Book Title
-              label="Title"
-              labelStyle={styles.label}
-              invalid={!inputs.title.isValid}
-              textInputConfig={{
-                onChangeText: inputChangedHandler.bind(this, "title"),
-              }}
-            />
+          <Input //Book Title
+            label="Title"
+            labelStyle={styles.label}
+            invalid={!inputs.title.isValid}
+            textInputConfig={{
+              onChangeText: inputChangedHandler.bind(this, "title"),
+            }}
+          />
 
-            {/* <View style={styles.pickImageContainer}>
+          {/* <View style={styles.pickImageContainer}>
             <MyButton
             onPress={pickImage}
             Flate={true}
@@ -220,70 +228,70 @@ function AddBookScreen({ navigation }) {
               />
               )}
             </View> */}
-            {/* <Text style={styles.label}>Author</Text> */}
-            <Input //Author
-              label="Author"
-              labelStyle={styles.label}
-              invalid={!inputs.author.isValid}
-              textInputConfig={{
-                onChangeText: inputChangedHandler.bind(this, "author"),
-              }}
-            />
+          {/* <Text style={styles.label}>Author</Text> */}
+          <Input //Author
+            label="Author"
+            labelStyle={styles.label}
+            invalid={!inputs.author.isValid}
+            textInputConfig={{
+              onChangeText: inputChangedHandler.bind(this, "author"),
+            }}
+          />
 
-            <DropDownMenu //Category
-              style={styles.dropdown}
-              label={"Category"}
-              labelStyle={styles.label}
-              elements={appCtx.categories}
-              dropDownConfig={{
-                dropdownPosition: "bottom",
-                search: true,
-                searchPlaceholder: "Search...",
-                value: inputs.category.value,
-                onChange: (item) => {
-                  inputChangedHandler("category", item.value);
-                },
-              }}
-            />
+          <DropDownMenu //Category
+            style={styles.dropdown}
+            label={"Category"}
+            labelStyle={styles.label}
+            elements={appCtx.categories}
+            dropDownConfig={{
+              dropdownPosition: "bottom",
+              search: true,
+              searchPlaceholder: "Search...",
+              value: inputs.category.value,
+              onChange: (item) => {
+                inputChangedHandler("category", item.value);
+              },
+            }}
+          />
 
-            <Input //Date
-              label="Publish Date"
-              labelStyle={styles.label}
-              invalid={!inputs.date.isValid}
-              textInputConfig={{
-                placeholder: "YYYY-MM-DD",
-                maxLength: 10,
-                onChangeText: inputChangedHandler.bind(this, "date"),
-              }}
-            />
+          <Input //Date
+            label="Publish Date"
+            labelStyle={styles.label}
+            invalid={!inputs.date.isValid}
+            textInputConfig={{
+              placeholder: "YYYY-MM-DD",
+              maxLength: 10,
+              onChangeText: inputChangedHandler.bind(this, "date"),
+            }}
+          />
 
-            <Input //Summary
-              label="Summary"
-              labelStyle={styles.label}
-              invalid={!inputs.summary.isValid}
-              textInputConfig={{
-                multiline: true,
-                onChangeText: inputChangedHandler.bind(this, "summary"),
-              }}
-            />
+          <Input //Summary
+            label="Summary"
+            labelStyle={styles.label}
+            invalid={!inputs.summary.isValid}
+            textInputConfig={{
+              multiline: true,
+              onChangeText: inputChangedHandler.bind(this, "summary"),
+            }}
+          />
 
-            {formIsInvalid && (
-              <View style={styles.errorContainer}>
-                <ErrorComponent errorColor={"red"}>
-                  Invalid input. Please make sure there's a title and the date
-                  format is YYYY-MM-DD
-                </ErrorComponent>
-              </View>
-            )}
+          {formIsInvalid && (
+            <View style={styles.errorContainer}>
+              <ErrorComponent errorColor={"red"}>
+                Invalid input. Please make sure there's a title and the date
+                format is YYYY-MM-DD
+              </ErrorComponent>
+            </View>
+          )}
 
-            <MyButton
-              onPress={submitHandler}
-              Flate={true}
-              style={styles.buttonStyles}
-              textStyle={styles.buttonText}
-            >
-              Submit
-            </MyButton>
+          <MyButton
+            onPress={submitHandler}
+            Flate={true}
+            style={styles.buttonStyles}
+            textStyle={styles.buttonText}
+          >
+            Submit
+          </MyButton>
           {/* </LinearGradient> */}
         </View>
       </ScrollView>
@@ -297,7 +305,7 @@ const styles = StyleSheet.create({
   rootContainer: {
     marginTop: 30,
     marginBottom: 30,
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
   },
   titleContainer: {
     padding: 15,
@@ -305,19 +313,19 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "black",
     height: 70,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   titleText: {
     color: "white",
     fontWeight: "900",
     textAlign: "center",
     letterSpacing: 1.5,
-    fontSize: 24
+    fontSize: 24,
   },
   label: {
     fontSize: 16,
-    fontWeight: "bold", 
-    marginLeft: 5
+    fontWeight: "bold",
+    marginLeft: 5,
   },
   dropdown: {
     marginTop: 12,
@@ -355,6 +363,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderColor: "red",
     marginHorizontal: 24,
-    backgroundColor: "whitesmoke"
-  }
+    backgroundColor: "whitesmoke",
+  },
 });

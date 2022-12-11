@@ -8,6 +8,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { updateFavList } from "../Utility/http";
 import { StudentContext } from "../../store/StudentContext";
 import Student from "../../models/Student";
+import { AppContext } from "../../store/AppContext";
+import Colors from "../Utility/Colors";
 
 export function DrawerContent(props) {
   // used to get dark mode option from student context, I am storing it in
@@ -15,11 +17,14 @@ export function DrawerContent(props) {
   const studentContext = useContext(StudentContext);
   // used to track the current screen, which is then used to change drawer's active screen
   // background color
-  const [currentScreen, setCurrentScreen] = useState("TabHome");
+  const [currentScreen, setCurrentScreen] = useState("Home");
   // just to change screen, will be called when a drawer screen is pressed
   function changeScreenHandler(ScreenName) {
     setCurrentScreen(ScreenName);
   }
+
+  const appCtx = useContext(AppContext);
+
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
@@ -39,19 +44,22 @@ export function DrawerContent(props) {
                   name="home"
                   // here we decide the icon color based on the active screen
                   // just to have a good mixture of coloring when the background color is changed
-                  color={currentScreen === "TabHome" ? "white" : undefined}
+                  color={appCtx.currentScreen === "Home" ? "white" : undefined}
                   size={size}
                 />
               )}
               label="Home"
               onPress={() => {
+                appCtx.changeScreenHandler("Home");
+                props.navigation.toggleDrawer();
                 props.navigation.navigate("TabHome");
-                changeScreenHandler("TabHome");
               }}
               style={{
                 backgroundColor:
                   // here we decide background color based on the active screen
-                  currentScreen === "TabHome" ? "#1b7ce4" : undefined,
+                  appCtx.currentScreen === "Home"
+                    ? Colors.primary500
+                    : undefined,
               }}
               labelStyle={{
                 // margin here is used to decide the distance between a drawer icon and its label
@@ -60,31 +68,34 @@ export function DrawerContent(props) {
                 marginLeft: -15,
                 // here we decide the text color based on the active screen
                 // just to have a good mixture of coloring when the background color is changed
-                color: currentScreen === "TabHome" ? "white" : undefined,
+                color: appCtx.currentScreen === "Home" ? "white" : undefined,
               }}
             />
             <DrawerItem
               icon={({ size }) => (
                 <Ionicons
-                  name="star"
+                  name="person-outline"
                   color={
-                    currentScreen === "DrawerProfile" ? "white" : undefined
+                    appCtx.currentScreen === "Profile" ? "white" : undefined
                   }
                   size={size}
                 />
               )}
-              label="Favorite"
+              label="Profile"
               onPress={() => {
+                appCtx.changeScreenHandler("Profile");
+                props.navigation.toggleDrawer();
                 props.navigation.navigate("DrawerProfile");
-                changeScreenHandler("DrawerProfile");
               }}
               style={{
                 backgroundColor:
-                  currentScreen === "DrawerProfile" ? "#1b7ce4" : undefined,
+                  appCtx.currentScreen === "Profile"
+                    ? Colors.primary500
+                    : undefined,
               }}
               labelStyle={{
                 marginLeft: -15,
-                color: currentScreen === "DrawerProfile" ? "white" : undefined,
+                color: appCtx.currentScreen === "Profile" ? "white" : undefined,
               }}
             />
             <DrawerItem
@@ -92,47 +103,28 @@ export function DrawerContent(props) {
                 <Ionicons
                   name="ios-information-circle-outline"
                   color={
-                    currentScreen === "DrawerContact" ? "white" : undefined
+                    appCtx.currentScreen === "Contact" ? "white" : undefined
                   }
                   size={size}
                 />
               )}
               label="About us"
               onPress={() => {
+                appCtx.changeScreenHandler("Contact");
+                props.navigation.toggleDrawer();
                 props.navigation.navigate("DrawerContact");
-                changeScreenHandler("DrawerContact");
               }}
               style={{
                 backgroundColor:
-                  currentScreen === "DrawerContact" ? "#1b7ce4" : undefined,
+                  appCtx.currentScreen === "Contact"
+                    ? Colors.primary500
+                    : undefined,
               }}
               labelStyle={{
                 marginLeft: -15,
-                color: currentScreen === "DrawerContact" ? "white" : undefined,
+                color: appCtx.currentScreen === "Contact" ? "white" : undefined,
               }}
             />
-          </Drawer.Section>
-          <Drawer.Section title="Settings">
-            <TouchableRipple
-              onPress={() => {
-                studentContext.toggleTheme();
-              }}
-            >
-              <View style={styles.preference}>
-                <View style={styles.toggle}>
-                  <View style={{ marginRight: 20 }}>
-                    <Text>Dark Theme</Text>
-                  </View>
-                  <View>
-                    {/* This is needed for the switch button to work properly, didn't understand why tbh */}
-                    <View pointerEvents="none">
-                      {/* Get switch value (pressed or no) from student context */}
-                      <Switch value={studentContext.isDarkTheme} />
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </TouchableRipple>
           </Drawer.Section>
         </View>
       </DrawerContentScrollView>
@@ -143,22 +135,25 @@ export function DrawerContent(props) {
               icon={({ size }) => (
                 <Ionicons
                   name="log-in-outline"
-                  color={currentScreen === "DrawerLogin" ? "white" : undefined}
+                  color={appCtx.currentScreen === "Login" ? "white" : undefined}
                   size={size}
                 />
               )}
               label="Sign in"
               onPress={() => {
-                props.navigation.navigate("StackLogin");
-                changeScreenHandler("DrawerLogin");
+                appCtx.changeScreenHandler("Login");
+                props.navigation.toggleDrawer();
+                props.navigation.navigate("DrawerLogin");
               }}
               style={{
                 backgroundColor:
-                  currentScreen === "DrawerLogin" ? "#1b7ce4" : undefined,
+                  appCtx.currentScreen === "Login"
+                    ? Colors.primary500
+                    : undefined,
               }}
               labelStyle={{
                 marginLeft: -15,
-                color: currentScreen === "DrawerLogin" ? "white" : undefined,
+                color: appCtx.currentScreen === "Login" ? "white" : undefined,
               }}
             />
             <DrawerItem
@@ -166,23 +161,29 @@ export function DrawerContent(props) {
                 <Ionicons
                   name="person-add-outline"
                   color={
-                    currentScreen === "DrawerRegister" ? "white" : undefined
+                    appCtx.currentScreen === "DrawerRegister"
+                      ? "white"
+                      : undefined
                   }
                   size={size}
                 />
               )}
               label="Sign up"
               onPress={() => {
-                props.navigation.navigate("StackRegister");
-                changeScreenHandler("DrawerRegister");
+                appCtx.changeScreenHandler("Register");
+                props.navigation.toggleDrawer();
+                props.navigation.navigate("DrawerRegister");
               }}
               style={{
                 backgroundColor:
-                  currentScreen === "DrawerRegister" ? "#1b7ce4" : undefined,
+                  appCtx.currentScreen === "Register"
+                    ? Colors.primary500
+                    : undefined,
               }}
               labelStyle={{
                 marginLeft: -15,
-                color: currentScreen === "DrawerRegister" ? "white" : undefined,
+                color:
+                  appCtx.currentScreen === "Register" ? "white" : undefined,
               }}
             />
           </>
@@ -192,25 +193,38 @@ export function DrawerContent(props) {
               icon={({ size }) => (
                 <Ionicons
                   name="log-out-outline"
-                  color={currentScreen === "DrawerLogout" ? "white" : undefined}
+                  color={
+                    appCtx.currentScreen === "Logout" ? "white" : undefined
+                  }
                   size={size}
                 />
               )}
               label="Sign out"
               onPress={() => {
                 // First, we upload the changes made to student context to the database
-                updateFavList(studentContext.ID, studentContext.student);
-                console.log(studentContext.student);
+                updateFavList(
+                  studentContext.ID,
+                  studentContext.student,
+                  studentContext.Token
+                );
+                // console.log(studentContext.student);
                 const initialNewStudent1 = new Student("", "", "", "", [], []);
                 studentContext.registerStudent(initialNewStudent1);
+                if (appCtx.currentScreen === "Profile") {
+                  appCtx.changeScreenHandler("Home");
+                  props.navigation.toggleDrawer();
+                  props.navigation.navigate("DrawerHome");
+                }
               }}
               style={{
                 backgroundColor:
-                  currentScreen === "DrawerLogout" ? "#1b7ce4" : undefined,
+                  appCtx.currentScreen === "Logout"
+                    ? Colors.primary500
+                    : undefined,
               }}
               labelStyle={{
                 marginLeft: -15,
-                color: currentScreen === "DrawerLogout" ? "white" : undefined,
+                color: appCtx.currentScreen === "Logout" ? "white" : undefined,
               }}
             />
             <DrawerItem
@@ -218,21 +232,24 @@ export function DrawerContent(props) {
                 <MaterialCommunityIcons
                   name="account-edit-outline"
                   size={size}
-                  color={currentScreen === "DrawerEdit" ? "white" : undefined}
+                  color={appCtx.currentScreen === "Edit" ? "white" : undefined}
                 />
               )}
               label="Edit Profile"
               onPress={() => {
+                appCtx.changeScreenHandler("Edit");
+                props.navigation.toggleDrawer();
                 props.navigation.navigate("DrawerEdit");
-                changeScreenHandler("DrawerEdit");
               }}
               style={{
                 backgroundColor:
-                  currentScreen === "DrawerEdit" ? "#1b7ce4" : undefined,
+                  appCtx.currentScreen === "Edit"
+                    ? Colors.primary500
+                    : undefined,
               }}
               labelStyle={{
                 marginLeft: -15,
-                color: currentScreen === "DrawerEdit" ? "white" : undefined,
+                color: appCtx.currentScreen === "Edit" ? "white" : undefined,
               }}
             />
           </>

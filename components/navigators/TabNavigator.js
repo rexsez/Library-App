@@ -5,6 +5,7 @@ import HomeScreen from "../../screens/HomeScreen";
 import ProfileScreen from "../../screens/ProfileScreen";
 import SearchScreen from "../../screens/SearchScreen";
 import StackNavigator from "./StackNavigator";
+import Colors from "../Utility/Colors";
 // import SearchScreenStack from "../screens/SearchScreenStack";
 
 function TabNavigator() {
@@ -14,7 +15,19 @@ function TabNavigator() {
     <SafeAreaView style={styles.container}>
       <Tab.Navigator
         style={styles.container}
-        screenOptions={{ headerShown: false, /*swipeEnabled: false, gestureEnabled: false*/ }}
+        screenOptions={{
+          headerShown: false /*swipeEnabled: false, gestureEnabled: false*/,
+        }}
+        tabBarOptions={{
+          activeTintColor: "white",
+          inactiveTintColor: "lightgray",
+          activeBackgroundColor: Colors.primary500,
+          inactiveBackgroundColor: Colors.primary500,
+          style: {
+            backgroundColor: "black",
+            paddingBottom: 3,
+          },
+        }}
       >
         <Tab.Screen
           name="TabHome"

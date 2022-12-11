@@ -63,6 +63,6 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 12,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
 });

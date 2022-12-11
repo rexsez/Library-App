@@ -2,9 +2,11 @@ import { useContext } from "react";
 import { StudentContext } from "../store/StudentContext";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import Student from "../models/Student";
+import { AppContext } from "../store/AppContext";
 
 function LogoutScreen() {
   const navigation = useNavigation();
+  const appCtx = useContext(AppContext);
   const studentContext = useContext(StudentContext);
   // Checking if you have logged in / registered already
   // If you have logged in, then u can view ur profile
@@ -26,7 +28,10 @@ function LogoutScreen() {
     favBooks: [],
   };
 
-  if (true) navigation.navigate("DrawerRegister");
+  if (true) {
+    appCtx.changeScreenHandler("Register");
+    navigation.navigate("DrawerRegister");
+  }
   // If you are not logged in, it will redirect u
   // To register screen, u can also move to login from there
   return;

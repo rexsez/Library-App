@@ -6,7 +6,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "dev": "nodemon app"
   },
   "dependencies": {
     "@miblanchard/react-native-slider": "^2.1.0",
@@ -15,6 +16,7 @@
     "@react-navigation/native": "6.0.13",
     "@react-navigation/stack": "6.3.2",
     "axios": "1.1.3",
+    "cors": "^2.8.5",
     "expo": "46.0.16",
     "expo-asset": "~8.6.1",
     "expo-barcode-scanner": "11.4.0",
@@ -23,7 +25,9 @@
     "expo-font": "~10.2.0",
     "expo-linear-gradient": "~11.4.0",
     "expo-status-bar": "~1.4.0",
+    "express": "^4.18.2",
     "firebase": "9.6.11",
+    "nodemailer": "^6.8.0",
     "radio-buttons-react-native": "^1.0.4",
     "react": "18.0.0",
     "react-native": "0.69.6",
@@ -44,7 +48,8 @@
     "react-navigation-stack": "2.10.4"
   },
   "devDependencies": {
-    "@babel/core": "7.19.3"
+    "@babel/core": "7.19.3",
+    "nodemon": "^2.0.20"
   },
   "private": true
 }

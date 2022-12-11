@@ -1,5 +1,6 @@
 import { Slider } from "@miblanchard/react-native-slider";
 import { StyleSheet, View, Text } from "react-native";
+import Colors from "./Colors";
 
 // This is basically a scale slider
 // value is used to show the initial value
@@ -26,8 +27,8 @@ function SliderExample({ rating, setRating }) {
         maximumValue={5}
         onSlidingComplete={(value) => changeValue(value)}
         step={0.5}
-        thumbTintColor="#1b7ce4"
-        minimumTrackTintColor="#1b7ce4"
+        thumbTintColor={Colors.primary500}
+        minimumTrackTintColor={Colors.primary500}
       />
       <Text style={styles.Text}>Value: {rating}</Text>
     </View>

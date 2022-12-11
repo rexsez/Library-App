@@ -118,3 +118,75 @@ export function formateDate(date) {
     date.getFullYear() + " - " + (date.getMonth() + 1) + " - " + date.getDate()
   );
 }
+
+export function generateRandomNumber() {
+  var minm = 100000;
+  var maxm = 999999;
+  return Math.floor(Math.random() * (maxm - minm + 1)) + minm;
+}
+
+export function containsOnlyNumbers(str) {
+  return /^\d+$/.test(str);
+}
+
+export function dueDateToDays(dueDate) {
+  if (dueDate == "pending") return "pending";
+  var days = new Date(dueDate).getTime() - new Date().getTime();
+  days = Math.floor(days / (1000 * 60 * 60 * 24));
+  days = days + 1;
+  if (days == 0) return "book is due today!";
+  if (days < 3 && days > 0)
+    return days == 1 ? days + " day left!" : -1 * days + " days left!";
+  else if (days >= 3) return days + " days left.";
+  else
+    return (
+      "Book is due " +
+      (days == -1 ? -1 * days + " day ago!" : -1 * days + " days ago!")
+    );
+}
+
+export function dueDateSort(dueDate1, dueDate2) {
+  if (dueDate1[1] == "pending" && dueDate2[1] == "pending") return 0;
+  if (dueDate1[1] == "pending") return 1;
+  if (dueDate2[1] == "pending") return -1;
+  if (
+    new Date(dueDate2[1]).getFullYear() > new Date(dueDate1[1]).getFullYear()
+  ) {
+    return -1;
+  }
+  if (
+    new Date(dueDate2[1]).getFullYear() < new Date(dueDate1[1]).getFullYear()
+  ) {
+    return 1;
+  }
+  if (new Date(dueDate2[1]).getMonth() > new Date(dueDate1[1]).getMonth()) {
+    return -1;
+  }
+  if (new Date(dueDate2[1]).getMonth() < new Date(dueDate1[1]).getMonth()) {
+    return 1;
+  }
+  if (new Date(dueDate2[1]).getDate() > new Date(dueDate1[1]).getDate()) {
+    return -1;
+  }
+  if (new Date(dueDate2[1]).getDate() < new Date(dueDate1[1]).getDate()) {
+    return 1;
+  }
+  return 0;
+}
+
+export function DescendingDateRegistered(book1, book2) {
+  const date = new Date();
+  const date1 = new Date(book1.dateRegistered);
+  const diffTime1 = Math.abs(date1 - date);
+  const diffDays1 = Math.ceil(diffTime1 / (1000 * 60 * 60 * 24));
+  const date2 = new Date(book2.dateRegistered);
+  const diffTime2 = Math.abs(date2 - date);
+  const diffDays2 = Math.ceil(diffTime2 / (1000 * 60 * 60 * 24));
+  if (diffDays1 > diffDays2) {
+    return -1;
+  }
+  if (diffDays1 < diffDays2) {
+    return 1;
+  }
+  return 0;
+}

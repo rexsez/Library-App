@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { View, StyleSheet, Modal } from "react-native";
 import { StudentContext } from "../../store/StudentContext";
 import MyButton from "../MyButton";
+import Colors from "../Utility/Colors";
 
 import { postRating } from "../Utility/http";
 import SliderExample from "../Utility/SliderExample";
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonRate:{
-    backgroundColor: '#1b7ce4',
+    backgroundColor: Colors.primary500,
     borderRadius: 15,
     padding: 10,
     paddingHorizontal: 22,

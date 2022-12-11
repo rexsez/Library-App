@@ -1,4 +1,4 @@
-import { View, StyleSheet, ImageBackground } from "react-native";
+import { View, StyleSheet, ImageBackground, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useContext, useEffect } from "react";
@@ -7,6 +7,7 @@ import Card from "../components/Utility/Cards/Card";
 import Announcements from "./Announcements";
 import { AppContext } from "../store/AppContext";
 import { fetchBooks, fetchCategories } from "../components/Utility/http";
+import Colors from "../components/Utility/Colors";
 
 function HomeScreen() {
   const navigation = useNavigation();
@@ -24,7 +25,7 @@ function HomeScreen() {
     }
     getBooks();
   }, []);
-  
+
   return (
     <View style={styles.container}>
       {/* <LinearGradient
@@ -36,19 +37,24 @@ function HomeScreen() {
       >
         <ScrollView>
           <View style={styles.cardContainer}>
+            <View style={styles.containerWelcomeMessage}>
+              <Text style={styles.welcomeMessage}>
+                Welcome to PSU Library Application
+              </Text>
+            </View>
             <Announcements />
             <View style={styles.rowContainer}>
               <Card
-                text="Search"
-                onPressed={GoTo.bind(this, "TabSearch")}
+                text="Search Books"
+                onPressed={GoTo.bind(this, "StackSearch")}
                 path="search"
-                color="#366EA0"
+                color={Colors.primary500}
               ></Card>
               <Card
-                text="Account"
+                text="lol: has bug"
                 onPressed={GoTo.bind(this, "StackLogin")}
                 path="ios-person"
-                color="#366EA0"
+                color={Colors.primary500}
               ></Card>
             </View>
             <View style={[styles.rowContainer, { marginTop: -20 }]}>
@@ -56,13 +62,13 @@ function HomeScreen() {
                 text="Contact Us"
                 onPressed={GoTo.bind(this, "StackContact")}
                 path="md-call-sharp"
-                color="#366EA0"
+                color={Colors.primary500}
               ></Card>
               <Card
-                text="Statistics"
+                text="Book Statistics"
                 onPressed={GoTo.bind(this, "StackStatistics")}
                 path="ios-stats-chart"
-                color="#366EA0"
+                color={Colors.primary500}
               ></Card>
             </View>
           </View>
@@ -90,7 +96,7 @@ const styles = StyleSheet.create({
     padding: 30,
     // paddingTop: 150,
     margin: 10,
-    marginTop: 155,
+    marginTop: 135,
     borderWidth: 3,
     borderColor: "black",
     borderRadius: 10,
@@ -111,5 +117,13 @@ const styles = StyleSheet.create({
   },
   ImageBackground: {
     flex: 1,
+  },
+  welcomeMessage: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#144c84",
+  },
+  containerWelcomeMessage: {
+    alignItems: "center",
   },
 });

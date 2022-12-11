@@ -3,9 +3,10 @@ import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import MyButton from "../MyButton";
-import { formateDate } from "../Utility/UtilityFunctions";
-
-function BookCard({ bookData }) {
+import { formateDate,dueDateToDays } from "../Utility/UtilityFunctions";
+function BorrowedBookCard({ bookData, dueDate }) {
+  let dateText = (<View style={styles.TextContainer}><Text style={styles.Text}>{"Due Date:"}</Text>
+  <Text style={styles.Text}>{dueDate}</Text></View>);
   const navigation = useNavigation();
   function onPress() {
     // Note: here im just getting bookData and spreading it varabiles into
@@ -57,25 +58,29 @@ function BookCard({ bookData }) {
           <View style={styles.TextContainer}>
             <Text style={styles.Text}>{bookData.author}</Text>
           </View>
+          <View>
+            {/* Function defined in utlity */}
+            {dueDate=="pending"?"":dateText}
+          </View>
           <View style={styles.TextContainer}>
             {/* Function defined in utlity */}
-            <Text style={styles.Text}>Publish Date:</Text>
-            <Text style={styles.Text}>{formateDate(bookData.date)}</Text>
+            <Text style={[dueDateToDays(dueDate).charAt(dueDateToDays(dueDate).length-1)=="."?styles.GreenText:null,dueDateToDays(dueDate)=="pending"?styles.YellowText:null,dueDateToDays(dueDate).charAt(dueDateToDays(dueDate).length-1)=="!"?styles.RedText:null]}>{dueDateToDays(dueDate)}</Text>
           </View>
         </View>
       </View>
       {/* --------------------------------------------------------- */}
       {/* ----------------------Share icon container ------------------- */}
       <View style={styles.ShareIconContainer}>
-        <View>{renderBadge()}</View>
+        {/* <Ionicons name="share-social-outline" size={24} color="blue"></Ionicons> */}
+        <View >{renderBadge()}</View>
         <Text style={styles.ratingStyle}>
-          {bookData.rating != -1 ? bookData.rating+"/5" : "Unrated"}
+          {bookData.rating != -1 ? bookData.rating +"/5": "Unrated"}
         </Text>
       </View>
     </View>
   );
 }
-export default BookCard;
+export default BorrowedBookCard;
 const styles = StyleSheet.create({
   Image: {
     width: 70,
@@ -119,6 +124,18 @@ const styles = StyleSheet.create({
     color: "gray",
     paddingVertical: 20,
     marginHorizontal:-10,
+  },
+  GreenText: {
+    fontSize: 12,
+    color: "green",
+  },
+  RedText: {
+    fontSize: 12,
+    color: "red",
+  },
+  YellowText: {
+    fontSize: 12,
+    color: "orange",
   },
   badgeContainer: {
     flexDirection: "row",

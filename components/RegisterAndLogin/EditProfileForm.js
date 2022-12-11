@@ -10,6 +10,7 @@ import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
 import validateEditStudent from "../Utility/InputValidation/ValidateEditStudent";
 import { updateProfile } from "../Utility/http";
+import { AppContext } from "../../store/AppContext";
 function EditProfileForm() {
   // ----------------- Navigation stuff --------------
   const navigation = useNavigation();
@@ -17,6 +18,8 @@ function EditProfileForm() {
   const oldStudentContext = useContext(StudentContext);
 
   const [oldPassword, setOldPassword] = useState("");
+
+  const appCtx = useContext(AppContext);
   //   Checking for errors on every input
   function onChangeTextHanddler(feild, entertedText) {
     // This function handles all text changes.
@@ -124,6 +127,7 @@ function EditProfileForm() {
       setNewStudent(initialNewStudent);
       setOldPassword("");
       SetRePsw("");
+      appCtx.changeScreenHandler("Profile");
       navigation.navigate({ name: "DrawerProfile" });
     }
   }

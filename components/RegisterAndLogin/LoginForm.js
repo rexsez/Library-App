@@ -10,11 +10,13 @@ import Inpute from "./Inpute";
 import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
 import validateLoginStudent from "../Utility/InputValidation/validateLoginStudent";
-import { getStudentID, getStudents } from "../Utility/http";
+import { getStudentID, getStudents, getVerification } from "../Utility/http";
+import { AppContext } from "../../store/AppContext";
 
 function LoginForm() {
   // -----------------Navigation stuff------------------------
   const navigation = useNavigation();
+  const appCtx = useContext(AppContext);
   function onPressCreateAccHandler() {
     navigation.navigate("StackRegister");
   }
@@ -41,21 +43,41 @@ function LoginForm() {
         (student) => student.Email === loginStudent.Email
       );
       loginStudentInfomation = studens[indexOfStudent];
+      // console.log(loginStudentInfomation.Email);
       const studentID = await getStudentID(loginStudentInfomation.Email);
-      studentContext.setID(studentID);
-      // -----------------------------This needs some changes ------------------------
-      studentContext.registerStudent({
-        FName: loginStudentInfomation.FName,
-        LName: loginStudentInfomation.LName,
-        Email: loginStudentInfomation.Email,
-        psw: loginStudentInfomation.psw,
-        borrowedBooks: loginStudentInfomation.borrowedBooks,
-        favBooks: loginStudentInfomation.favBooks,
-      });
-      navigation.navigate({ name: "DrawerProfile" });
+      // console.log(studentID);
+      const verification = await getVerification(studentID);
+      studentContext.setToken(verification);
+      console.log("verification is " + verification);
+
+      if (verification !== "done") {
+        appCtx.changeScreenHandler("");
+        navigation.navigate("StackVerification", {
+          student: {
+            FName: loginStudentInfomation.FName,
+            LName: loginStudentInfomation.LName,
+            Email: loginStudentInfomation.Email,
+            psw: loginStudentInfomation.psw,
+            borrowedBooks: loginStudentInfomation.borrowedBooks,
+            favBooks: loginStudentInfomation.favBooks,
+          },
+        });
+      } else {
+        studentContext.setID(studentID);
+        // -----------------------------This needs some changes ------------------------
+        studentContext.registerStudent({
+          FName: loginStudentInfomation.FName,
+          LName: loginStudentInfomation.LName,
+          Email: loginStudentInfomation.Email,
+          psw: loginStudentInfomation.psw,
+          borrowedBooks: loginStudentInfomation.borrowedBooks,
+          favBooks: loginStudentInfomation.favBooks,
+        });
+        appCtx.changeScreenHandler("Profile");
+        navigation.navigate({ name: "DrawerProfile" });
+      }
     }
   }
-
   const initialLoginStudent = new Student(" ", " ", " ", " ", null, null);
 
   const [loginStudent, setLoginStudent] = useState(initialLoginStudent);

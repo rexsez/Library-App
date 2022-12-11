@@ -28,6 +28,8 @@ export const StudentContext = createContext({
   // Needed to track book ratings
   ID: "",
   setID: () => {},
+  Token: "",
+  setToken: () => {},
 });
 // ----------------------------------------------------------------------------
 // reducer function holds all the different functions that
@@ -72,6 +74,7 @@ function StudentContextProvider({ children }) {
   const [studentState, dispatch] = useReducer(StudentReducer, student);
   const [isDarkTheme, setDarkTheme] = useState(false);
   const [ID, setStudentID] = useState();
+  const [Token, setTokenNew] = useState();
   function registerStudent(studentData) {
     dispatch(
       {
@@ -97,6 +100,9 @@ function StudentContextProvider({ children }) {
   function setID(StudentDatabaseID) {
     setStudentID(StudentDatabaseID);
   }
+  function setToken(Token) {
+    setTokenNew(Token);
+  }
   // --------------------------------------------------------
   // More functions needs to be added (add fav, add barrowed)
   // --------------------------------------------------------
@@ -110,6 +116,8 @@ function StudentContextProvider({ children }) {
     toggleTheme: toggleTheme,
     ID: ID,
     setID: setID,
+    Token: Token,
+    setToken: setToken,
     // ------------------------------------------------------
     // More Functions to be added here (barrowed, fag)
     // ------------------------------------------------------

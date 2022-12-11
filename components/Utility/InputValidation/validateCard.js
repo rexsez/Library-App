@@ -1,5 +1,3 @@
-// import { sha256 } from "react-native-sha256";
-
 const cardDB = {
   name: "abdullah",
   cardNumber: "1111111111111111111",

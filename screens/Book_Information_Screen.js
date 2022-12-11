@@ -31,7 +31,11 @@ function BookInformationScreen({ navigation }) {
               <HeaderBackButton
                 onPress={() => {
                   // First, we upload the changes made to student context to the database
-                  updateFavList(studentCtx.ID, studentCtx.student);
+                  updateFavList(
+                    studentCtx.ID,
+                    studentCtx.student,
+                    studentCtx.Token
+                  );
                   // This will remove The previous screen (Barcode scanner screen)
                   navigation.dispatch(StackActions.popToTop());
                 }}
@@ -67,6 +71,7 @@ function BookInformationScreen({ navigation }) {
     const userEmail = studentCtx.student.Email;
     const userKey = studentCtx.ID;
     await postBorrowRequest(isbn, title, userEmail, userKey);
+    appCtx.changeScreenHandler("Home");
     navigation.navigate("TabSearch", { request: true });
   }
   // setting the title of the page to the name of book
@@ -123,7 +128,7 @@ function BookInformationScreen({ navigation }) {
   // In the begging, we check if the book is faviroute already or not
   // This will be used as the intial value of isvaforite state.
   let isFavoriteIntial = !!student?.favBooks && student.favBooks.includes(isbn);
-  console.log(isFavoriteIntial);
+  // console.log(isFavoriteIntial);
   //This state variable keeps track of wether a book has been added to faviroute or not
   const [bookIsFavorite, setBookIsFavorite] = useState(isFavoriteIntial);
   // This will be used everywhere for fav list changes
@@ -141,7 +146,7 @@ function BookInformationScreen({ navigation }) {
         favBooks: studentCtx.student.favBooks.filter(isInFavList),
       };
       studentCtx.registerStudent(currentStudentContext);
-      console.log(studentCtx.student);
+      // console.log(studentCtx.student);
     } else {
       // If the book was not in fav list:
       // 1- We change the state of the current page, from not fav to fav, so button shows filled star
@@ -163,7 +168,7 @@ function BookInformationScreen({ navigation }) {
       }
 
       studentCtx.registerStudent(currentStudentContext);
-      console.log(studentCtx.student);
+      // console.log(studentCtx.student);
     }
   };
 
@@ -185,7 +190,7 @@ function BookInformationScreen({ navigation }) {
       textStyle={styles.rating}
       onPress={toggleModal}
     >
-      {selectedBook.rating != -1 ? selectedBook.rating + " / 5" : "N/A"}
+      {selectedBook.rating != -1 ? selectedBook.rating + " / 5" : "Unrated"}
     </MyButton>,
   ];
 
