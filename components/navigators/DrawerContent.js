@@ -81,7 +81,7 @@ export function DrawerContent(props) {
                   size={size}
                 />
               )}
-              label="Profile"
+              label={studentContext.student.Email?"Profile":"Account"}
               onPress={() => {
                 appCtx.changeScreenHandler("Profile");
                 props.navigation.toggleDrawer();

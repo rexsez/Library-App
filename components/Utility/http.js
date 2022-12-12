@@ -148,7 +148,6 @@ export async function postRating(studentID, bookID, rating) {
   res[studentID] = rating;
   axios.put(link, res);
 }
-
 // ------------------------------------------get books----------------------------------------------------
 export async function getBooks() {
   const appCtx = useContext(AppContext);
@@ -158,23 +157,11 @@ export async function getBooks() {
   appCtx.changeBooks(books);
   appCtx.changeCategories(categories);
 }
-
 // ------------------------------------------Book Request----------------------------------------------------
 //Send book request info to database -> so admin can view it from the admin panel
 export async function requestBook(requestData) {
   axios.post(database + "book_requests.json", requestData);
 }
-//uploading the requested book's image
-// export async function uploadImage(imgUri) {
-//   // await "psu-library-app.appspot.com".ref().child(filename).put(blob);
-//   // const storage = "psu-library-app.appspot.com/requests_images";
-//   const storage = getStorage();
-//   const ref = ref(storage, 'image.jpg');
-
-//   const img = await fetch(imgUri);
-//   const bytes = await img.blob();
-//   await uploadBytes(ref, bytes);
-// }
 // ------------------------------------------Announcement----------------------------------------------------
 export async function fetchAnnouncements() {
   // basically await waits for the promise to happen. ---> returns a promise ....
@@ -279,6 +266,7 @@ export async function postBorrowRequestToStudent(isbn, userKey) {
       { [isbn]: "pending" },
       res.favBooks
     );
+    temp["verification"] = "done";
     // console.log(JSON.stringify(temp));
     // res[isbn] = "pending";
     axios.put(link, temp);

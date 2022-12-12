@@ -8,6 +8,7 @@ import LogoutScreen from "../../screens/LogoutScreen";
 import RegisterScreen from "../../screens/RegisterScreen";
 import EditProfileScreen from "../../screens/EditProfileScreen";
 import TabNavigator from "./TabNavigator";
+import Colors from "../Utility/Colors";
 
 function DrawerNavigator() {
   const Drawer = createDrawerNavigator();
@@ -19,6 +20,8 @@ function DrawerNavigator() {
         headerShown: true,
         headerTransparent: false,
         gestureEnabled: false,
+        // sceneContainerStyle:{backgroundColor:'blue'},
+        // headerStyle:{backgroundColor:Colors.primary500},
       }}
     >
       {/* these screens are only needed as a reference, so I can navigation.navigate(Screen Name)*/}
@@ -50,6 +53,7 @@ function DrawerNavigator() {
         name="DrawerLogin"
         options={{
           title: "Sign in",
+          // headerTitleStyle:{color:'white'}
         }}
       />
       <Drawer.Screen

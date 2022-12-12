@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
 import {
   View,
@@ -29,7 +30,8 @@ class TermsAndConditions extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, { borderWidth: 2 }]}>
+        <StatusBar style="light" />
         <Text style={styles.title}>Terms and conditions</Text>
         <ScrollView
           style={styles.tcContainer}
@@ -129,9 +131,10 @@ const { width, height } = Dimensions.get("window");
 
 const styles = {
   container: {
-    marginTop: 20,
-    marginLeft: 10,
-    marginRight: 10,
+    marginTop: 60,
+    marginHorizontal: 10,
+    borderRadius: 15,
+    backgroundColor: "white",
   },
   title: {
     fontSize: 22,
@@ -156,18 +159,24 @@ const styles = {
     marginTop: 15,
     marginBottom: 15,
     height: height * 0.7,
+    padding: 10,
+
   },
 
   button: {
     backgroundColor: "#136AC7",
     borderRadius: 5,
     padding: 10,
+    marginHorizontal: 10,
+    marginBottom: 10,
   },
 
   buttonDisabled: {
     backgroundColor: "#999",
     borderRadius: 5,
     padding: 10,
+    marginHorizontal: 10,
+    marginBottom: 10,
   },
 
   buttonLabel: {

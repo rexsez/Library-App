@@ -52,7 +52,7 @@ function HomeScreen() {
               ></Card>
               <Card
                 text="Account"
-                onPressed={GoTo.bind(this, "StackLogin")}
+                onPressed={GoTo.bind(this, "DrawerProfile")}
                 path="ios-person"
                 color={Colors.primary500}
               ></Card>

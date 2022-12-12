@@ -97,6 +97,7 @@ function StackNavigator() {
           title: "Login",
         }}
       />
+      
       <Stack.Screen
         name="StackVerification"
         component={Verification}
