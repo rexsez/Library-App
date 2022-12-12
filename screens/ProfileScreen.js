@@ -108,7 +108,6 @@ function ProfileScreen({ defaultScreen }) {
   //     if (isOverDue(listOfBorrowedBooks[key])) {
   //       numOverDue = numOverDue + 1;
   //       let temp = numDaysFromDueDate(listOfBorrowedBooks[key]);
-  //       console.log(Math.abs(temp));
   //       totalFine = Math.round((totalFine + temp * 5) * 1.15);
   //       numDays = numDays + Math.abs(temp);
   //     }

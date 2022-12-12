@@ -130,7 +130,6 @@ function PaymentForm({ onCancel }) {
       //  to the app wide context
       //  so it can be used every where else
     } else {
-      console.log("okay valid!");
       // if there is no error, then:
       //1-  Give grace period for the student to return the book
       giveGracePeriod(studentContext.ID);

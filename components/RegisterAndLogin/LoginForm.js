@@ -38,7 +38,6 @@ function LoginForm() {
         return { ...currentState, errorComponent: newRrrorComponent };
       });
     } else {
-      console.log("im in login");
       const studens = await getStudents();
       indexOfStudent = studens.findIndex(
         (student) => student.Email === loginStudent.Email

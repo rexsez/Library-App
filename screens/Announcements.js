@@ -24,7 +24,6 @@ function Announcements() {
     setModalVisible(true);
     if (!!!Context.student.Email) {
       // if Email doesn't exist
-     // console.log(fetchedAnnouncement);
       setModalWorkingHours(fetchedAnnouncement.workingHours);
       setModalAnnouncement(fetchedAnnouncement.everyone);
     } else if (

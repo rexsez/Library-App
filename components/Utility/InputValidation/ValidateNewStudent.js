@@ -41,9 +41,9 @@ async function isUsedEmail(potentialStudent) {
   // so we need to wait for that promise using asyn and await beofore
   // the method that returns the promise.
   const studens = await getStudents();
-  for (let i = 0; i < studens.length; i++) {
-    // console.log(studens[i].Email + "\n");
-  }
+  // for (let i = 0; i < studens.length; i++) {
+  //   // console.log(studens[i].Email + "\n");
+  // }
   const isUsedEmail1 = !!studens.find(
     (student) => student.Email === potentialStudent
   );

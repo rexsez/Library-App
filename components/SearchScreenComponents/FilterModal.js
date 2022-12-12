@@ -76,7 +76,6 @@ function FilterModal({
   const [category, setCategory] = useState();
   const [filter, setFilter] = useState();
   const [orderBy, setOrderBy] = useState();
-  // console.log(rating);
 
   // Here we handle the options that is chosen as a sort options
   // it could be Title, Author, Date and Rating
