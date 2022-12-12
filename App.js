@@ -2,8 +2,8 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, SafeAreaView, Button } from "react-native";
 import { LogBox } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
+
 import StudentContextProvider from "./store/StudentContext";
-import DrawerNavigator from "./components/navigators/DrawerNavigator";
 import AppContextProvider from "./store/AppContext";
 import StackNavigator from "./components/navigators/StackNavigator";
 // import axios from "axios";

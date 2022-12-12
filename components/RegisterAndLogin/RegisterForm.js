@@ -11,11 +11,12 @@ import InputeForm from "./InputeForm";
 import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
 import { getStudentID, registerStudent } from "../Utility/http";
-
+import { AppContext } from "../../store/AppContext";
 function RegisterForm() {
   // ----------------- Navigation stuff --------------
 
   const navigation = useNavigation();
+  const appCtx = useContext(AppContext);
   function forceRerender(rerender) {
     rerender();
   }
@@ -77,13 +78,17 @@ function RegisterForm() {
       //  to the app wide context
       //  so it can be used every where else
     } else {
-      // putting new student data in context to be used locally
-      studentContext.registerStudent(newStudent);
-      // adding the new student data to the database using post
       await registerStudent(newStudent);
-      const ID = await getStudentID(newStudent.Email);
-      studentContext.setID(ID);
-      navigation.navigate({ name: "DrawerProfile" });
+      setError(initialError);
+
+      const token = newStudent["verification"];
+      // studentContext.setID(ID);
+      appCtx.changeScreenHandler("Profile");
+      studentContext.setToken(token);
+      navigation.navigate("StackVerification", {
+        student: newStudent,
+      });
+      setNewStudent(initialNewStudent);
     }
   }
 
@@ -201,16 +206,14 @@ function RegisterForm() {
             <PressableButton onPress={onPress}>Sign up</PressableButton>
             <MyButton
               Flate="flate"
-              style={{ marginTop: 20}}
+              style={{ marginTop: 20 }}
               onPress={onPressLoginHandler}
-              
             >
               I'm already a member
             </MyButton>
           </View>
         </KeyboardAvoidingView>
       </View>
-
     </>
   );
 }
@@ -224,7 +227,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 3,
     borderRadius: 15,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   ButtonContainer: {
     alignItems: "center",
@@ -238,15 +241,12 @@ const styles = StyleSheet.create({
   },
   welcomeMessage: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#144c84',
+    fontWeight: "bold",
+    color: "#144c84",
     opacity: 1,
-
   },
   containerWelcomeMessage: {
-    alignItems: 'center',
-
+    alignItems: "center",
   },
-
 });
 export default RegisterForm;

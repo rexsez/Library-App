@@ -321,7 +321,17 @@ export async function postBorrowRequestToStudent(isbn, userKey) {
 // -------------------------------------adding book to fav list---------------------------------------------
 export async function updateFavList(ID, student, Token) {
   student["verification"] = Token;
+  //###
+  //to keep borrowedBooks the same
+  let link = database + "students/" + ID + "/borrowedBooks.json";
+  let result = await axios.get(link);
+  let res = result.data;
 
+  if (!!res) {
+    let updateStudent = { ...student, borrowedBooks: res };
+    student = updateStudent;
+  }
+  //###
   axios.put(database + `students/${ID}.json`, student);
 }
 

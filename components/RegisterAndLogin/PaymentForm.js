@@ -1,5 +1,5 @@
 import { useState, useContext, useLayoutEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, KeyboardAvoidingView } from "react-native";
 import { Text } from "react-native-paper";
 import { StackActions, useNavigation } from "@react-navigation/native";
 import { getStudentID, giveGracePeriod } from "../Utility/http";
@@ -12,6 +12,8 @@ import { Alert } from "react-native";
 
 import DropDownMenu from "../AddBookComponents/Drop_Down_Menu";
 import Colors from "../Utility/Colors";
+import { Keyboard } from "react-native";
+import { TouchableWithoutFeedback } from "react-native";
 function PaymentForm({ onCancel }) {
   // changed_
   const navigation = useNavigation();
@@ -124,7 +126,6 @@ function PaymentForm({ onCancel }) {
   }
   useLayoutEffect(() => {
     if (!error.isValid) {
-
       // else we just pass student infomation (fav list, barrowed list)
       //  to the app wide context
       //  so it can be used every where else
@@ -173,7 +174,9 @@ function PaymentForm({ onCancel }) {
   // _changed
   const popAction = StackActions.pop(1);
   function cancelForm() {
-    onCancel();
+    if (!!onCancel) {
+      onCancel();
+    }
     navigation.dispatch(popAction);
   }
   let days = 1;
@@ -186,12 +189,12 @@ function PaymentForm({ onCancel }) {
   let fineAmount = days * 5;
 
   return (
-    <>
+    <TouchableWithoutFeedback style={{ flex: 1 }} onPress={Keyboard.dismiss}>
       <View style={styles.InfoContainer}>
         <View style={styles.details}>
           <View style={styles.innerDetial}>
             <Text style={[styles.title, { marginHorizontal: 0 }]}>
-              Over due by 
+              Over due by
             </Text>
             <Text style={[styles.amount, { marginHorizontal: 0 }]}>
               {days + daysText}
@@ -237,8 +240,8 @@ function PaymentForm({ onCancel }) {
             style={[
               styles.inpute,
               error.feilds == "name" &&
-              error.errorComponent &&
-              styles.InputeError,
+                error.errorComponent &&
+                styles.InputeError,
             ]}
             onChangeTextHandler={onChangeTextHanddler.bind(this, "name")}
             inputeTextProps={{
@@ -254,8 +257,8 @@ function PaymentForm({ onCancel }) {
             style={[
               styles.inpute,
               error.feilds == "cardNumber" &&
-              error.errorComponent &&
-              styles.InputeError,
+                error.errorComponent &&
+                styles.InputeError,
             ]}
             onChangeTextHandler={onChangeTextHanddler.bind(this, "cardNumber")}
             inputeTextProps={{
@@ -298,15 +301,13 @@ function PaymentForm({ onCancel }) {
             </View>
           </View>
           <View style={styles.inner}>
-            <Text style={[styles.title, { marginHorizontal: 0 }]}>
-              CCV
-            </Text>
+            <Text style={[styles.title, { marginHorizontal: 0 }]}>CCV</Text>
             <Inpute
               style={[
                 styles.inpute,
                 error.feilds == "ccv" &&
-                error.errorComponent &&
-                styles.InputeError,
+                  error.errorComponent &&
+                  styles.InputeError,
               ]}
               size={styles.size}
               // ---- to be edited, check password
@@ -343,11 +344,11 @@ function PaymentForm({ onCancel }) {
             Pay
           </PressableButton>
           <PressableButton style={styles.cancelButton} onPress={cancelForm}>
-            Cancel
+            Cance
           </PressableButton>
         </View>
       </View>
-    </>
+    </TouchableWithoutFeedback>
   );
 }
 const styles = StyleSheet.create({
@@ -407,7 +408,6 @@ const styles = StyleSheet.create({
   },
   inner: {
     flex: 1,
-
   },
   Image: {
     width: 70,
@@ -415,7 +415,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderWidth: 2,
     borderRadius: 2,
     borderColor: Colors.color5,
@@ -443,7 +443,6 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     backgroundColor: "#C65356",
-    
   },
   payButton: {
     backgroundColor: Colors.primary500,
