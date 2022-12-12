@@ -5,7 +5,7 @@ function Inpute({ inputeTextProps, onChangeTextHandler, style, size }) {
     <View style={[styles.Container, size]}>
       <TextInput
         onChangeText={onChangeTextHandler}
-        selectionColor={"#FFA920"}
+        selectionColor={"black"}
         style={[styles.TextInpute, style]}
         {...inputeTextProps}
       ></TextInput>

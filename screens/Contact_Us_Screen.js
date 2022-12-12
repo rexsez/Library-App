@@ -24,13 +24,7 @@ function Contact_Us_Screen() {
                                     Men Campus
                                 </Text>
                                 <Image
-                                    style={{
-                                        resizeMode: 'contain',
-                                        height: 250,
-                                        width: 350,
-                                        marginLeft: 5,
-                                        borderRadius: 10,
-                                    }}
+                                    style={styles.imageStyle}
                                     source={require("../assets/Library_Contact_Us.png")}
                                 />
                                 <Text style={styles.text}>
@@ -77,15 +71,7 @@ function Contact_Us_Screen() {
                                     Women Campus
                                 </Text>
                                 <Image
-                                    style={{
-                                        resizeMode: 'contain',
-                                        height: 250,
-                                        width: 350,
-                                        marginLeft: 5,
-                                        marginTop: 20,
-                                        borderRadius: 10,
-
-                                    }}
+                                    style={styles.imageStyle}
                                     source={require("../assets/Library_Contact_Us_2.png")}
                                 />
                                 <Text style={styles.text}>
@@ -149,10 +135,10 @@ const styles = StyleSheet.create({
     },
     scrollViewContactUs: {
         flex: 1,
-        backgroundColor: '#f5f5f5',
-        width: '90%',
-        borderColor: '#105EEA',
-        borderWidth: 1,
+        backgroundColor: "#f5f5f5",
+        width: "95%",
+        borderColor: "black",
+        borderWidth: 2,
         marginVertical: 20,
         padding: 5,
         borderRadius: 10,
@@ -181,7 +167,14 @@ const styles = StyleSheet.create({
     hyperlinkStyle: {
         color: '#063663',
     },
-
+    imageStyle: {
+        resizeMode: "contain",
+        height: 250,
+        width: 360,
+        marginLeft: 5,
+        marginTop: 20,
+        borderRadius: 10,
+      },
 
 
 

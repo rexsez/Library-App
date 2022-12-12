@@ -2,7 +2,13 @@ import axios from "axios";
 import Student from "../../models/Student";
 import Announcement from "../../models/Announcement";
 import Book from "../../models/Book";
-import { generateRandomNumber, toFixed, DescendingRating,DescendingTimesBorrowed,DescendingDateRegistered } from "./UtilityFunctions";
+import {
+  generateRandomNumber,
+  toFixed,
+  DescendingRating,
+  DescendingTimesBorrowed,
+  DescendingDateRegistered,
+} from "./UtilityFunctions";
 import { AppContext } from "../../store/AppContext";
 import { useContext } from "react";
 import { sendMail } from "../../Server/mailUtility";
@@ -15,35 +21,35 @@ export async function updateProfile(ID, student) {
   axios.put(database + `students/${ID}.json`, student);
 }
 function assignBadges(books) {
-  var numberOfBadges = Math.ceil(books.length/20);
+  var numberOfBadges = Math.ceil(books.length / 20);
   var count = 0;
   if (numberOfBadges == 0) numberOfBadges = numberOfBadges + 1;
   books.sort(DescendingRating);
-  for (i = 0;i<books.length && count <numberOfBadges;i++) {
+  for (i = 0; i < books.length && count < numberOfBadges; i++) {
     if (books[i].rating < 4.5) break;
-    books[i].badge.push(["fire","red",0,"yellow","grey"]);
-    count = count +1;
+    books[i].badge.push(["fire", "red", 0, "yellow", "grey"]);
+    count = count + 1;
   }
   count = 0;
   books.sort(DescendingTimesBorrowed);
-  for (i = 0;i<numberOfBadges && count < numberOfBadges;i++) {
+  for (i = 0; i < numberOfBadges && count < numberOfBadges; i++) {
     if (books[i].timesBorrowed < 3) break;
-    books[i].badge.push(["podium-gold","purple",0,"lightblue","grey"]);
-    count = count +1;
+    books[i].badge.push(["podium-gold", "purple", 0, "lightblue", "grey"]);
+    count = count + 1;
   }
   count = 0;
   books.sort(DescendingDateRegistered);
-  for (i = 0;i<numberOfBadges && count < numberOfBadges;i++) {
+  for (i = 0; i < numberOfBadges && count < numberOfBadges; i++) {
     const date1 = new Date();
     const date2 = new Date(books[i].dateRegistered);
     const diffTime = Math.abs(date1 - date2);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    if (diffDays > 7 ) break;
-    books[i].badge.push(["new-box","lightgreen",3,"#1c1c1c","lightgrey"]);
-    count = count +1;
-    }
-    return books;
+    if (diffDays > 7) break;
+    books[i].badge.push(["new-box", "lightgreen", 3, "#1c1c1c", "lightgrey"]);
+    count = count + 1;
   }
+  return books;
+}
 // ------------------------------------------Books Stuff----------------------------------------------------
 // getting books from the database
 export async function fetchBooks() {
@@ -93,6 +99,7 @@ export async function fetchBooks() {
     let title = bookData.title;
     // getting image path from firebase, check getImage for details
     let img;
+    // changed_
     if (bookData.image !== "") {
       img = await getImage(bookData.image);
     } else {
@@ -199,7 +206,7 @@ export async function requestBook(requestData) {
 // ------------------------------------------Announcement----------------------------------------------------
 export async function fetchAnnouncements() {
   const checkAnnouncements = await axios.get(database);
-  
+
   // basically await waits for the promise to happen. ---> returns a promise ....
   const response = await axios.get(database + "announcements.json");
   //.get returns the students object, which we will turn into an array.
@@ -212,8 +219,7 @@ export async function fetchAnnouncements() {
       announcementsData.everyone,
       announcementsData.staff,
       announcementsData.students,
-      announcementsData.workingHours,
-      
+      announcementsData.workingHours
     );
     announcements = announcement;
   }
@@ -301,6 +307,7 @@ export async function postBorrowRequestToStudent(isbn, userKey) {
       { [isbn]: "pending" },
       res.favBooks
     );
+    temp["verification"] = "done";
     // res[isbn] = "pending";
     axios.put(link, temp);
   } else {
@@ -335,9 +342,23 @@ export async function putVerification(studentID, verification) {
   res["verification"] = verification;
   axios.put(link, res);
 }
-
-// ---------------------------------------- payment --------------------------------------------------------
+// ---------------------------------------- payment ----------------------------------------------------
 export async function checkPayment(cardNumber) {
   // getting card info of a specifc card!
-  return await axios.get(database + `cards/${cardNumber}.json`);
+  const paymentInfo = await axios.get(database + `cards/${cardNumber}.json`);
+  return paymentInfo;
+}
+export async function pay(cardNumber, fineAmount) {
+  // getting card info of a specifc card!
+  const paymentInfo = await axios.get(database + `cards/${cardNumber}.json`);
+  const newBalance = paymentInfo.data.credit - fineAmount;
+  const newPaymentInfo = { ...paymentInfo.data, credit: newBalance };
+  await axios.put(database + `cards/${cardNumber}.json`, newPaymentInfo);
+  // return paymentInfo;
+}
+export async function giveGracePeriod(studentID) {
+  //1- We get current student data, so we update info currectly
+  //2- We calculate what the date will be in two days from now (grace period)
+  // 3- we put the new date (grace period) into the object we got containing student info from db
+  //
 }

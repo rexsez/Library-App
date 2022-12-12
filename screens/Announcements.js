@@ -93,8 +93,8 @@ function Announcements() {
 const styles = StyleSheet.create({
   centeredView: {
     // flex: 1,     
-    margin: 25,
-    marginTop: 100,
+    marginHorizontal: 25,
+    marginVertical:10,
   },
   modalView: {
     margin: 20,

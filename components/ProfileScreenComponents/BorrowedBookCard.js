@@ -3,10 +3,14 @@ import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import MyButton from "../MyButton";
-import { formateDate,dueDateToDays } from "../Utility/UtilityFunctions";
+import { formateDate, dueDateToDays } from "../Utility/UtilityFunctions";
 function BorrowedBookCard({ bookData, dueDate }) {
-  let dateText = (<View style={styles.TextContainer}><Text style={styles.Text}>{"Due Date:"}</Text>
-  <Text style={styles.Text}>{dueDate}</Text></View>);
+  let dateText = (
+    <View style={styles.TextContainer}>
+      <Text style={styles.Text}>{"Due Date:"}</Text>
+      <Text style={styles.Text}>{dueDate}</Text>
+    </View>
+  );
   const navigation = useNavigation();
   function onPress() {
     // Note: here im just getting bookData and spreading it varabiles into
@@ -15,24 +19,99 @@ function BorrowedBookCard({ bookData, dueDate }) {
     navigation.navigate("StackBook", { bookId: bookData.isbn });
   }
   function renderBadge() {
-    if (bookData.badge.length==3) return (
-      <View style={styles.badgeContainer}>
-        <MaterialCommunityIcons style={[styles.badgeStyle,{paddingTop:bookData.badge[0][2],backgroundColor:bookData.badge[0][3],borderColor:bookData.badge[0][4],}]} name={bookData.badge[0][0]} size={20} color = {bookData.badge[0][1]}/>
-        <MaterialCommunityIcons  style={[styles.badgeStyle,{paddingTop:bookData.badge[1][2],backgroundColor:bookData.badge[1][3],borderColor:bookData.badge[1][4],}]} name={bookData.badge[1][0]} size={20} color = {bookData.badge[1][1]}/>
-        <MaterialCommunityIcons  style={[styles.badgeStyle,{paddingTop:bookData.badge[2][2],backgroundColor:bookData.badge[2][3],borderColor:bookData.badge[2][4],}]} name={bookData.badge[2][0]} size={20} color = {bookData.badge[2][1]}/>
-      </View>
-    );
-    else if (bookData.badge.length == 2)return (
-      <View style={styles.badgeContainer}>
-        <MaterialCommunityIcons  style={[styles.badgeStyle,{paddingTop:bookData.badge[0][2],backgroundColor:bookData.badge[0][3],borderColor:bookData.badge[0][4],}]} name={bookData.badge[0][0]} size={20} color = {bookData.badge[0][1]}/>
-        <MaterialCommunityIcons style={[styles.badgeStyle,{paddingTop:bookData.badge[1][2],backgroundColor:bookData.badge[1][3],borderColor:bookData.badge[1][4],}]} name={bookData.badge[1][0]} size={20} color = {bookData.badge[1][1]}/>
-      </View>
-    );
-    else if (bookData.badge.length == 1)return (
-      <View style={styles.badgeContainer}>
-        <MaterialCommunityIcons style={[styles.badgeStyle,{paddingTop:bookData.badge[0][2],backgroundColor:bookData.badge[0][3],borderColor:bookData.badge[0][4],}]} name={bookData.badge[0][0]} size={20} color = {bookData.badge[0][1]}/>
-      </View>
-    );
+    if (bookData.badge.length == 3)
+      return (
+        <View style={styles.badgeContainer}>
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: bookData.badge[0][2],
+                backgroundColor: bookData.badge[0][3],
+                borderColor: bookData.badge[0][4],
+              },
+            ]}
+            name={bookData.badge[0][0]}
+            size={20}
+            color={bookData.badge[0][1]}
+          />
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: bookData.badge[1][2],
+                backgroundColor: bookData.badge[1][3],
+                borderColor: bookData.badge[1][4],
+              },
+            ]}
+            name={bookData.badge[1][0]}
+            size={20}
+            color={bookData.badge[1][1]}
+          />
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: bookData.badge[2][2],
+                backgroundColor: bookData.badge[2][3],
+                borderColor: bookData.badge[2][4],
+              },
+            ]}
+            name={bookData.badge[2][0]}
+            size={20}
+            color={bookData.badge[2][1]}
+          />
+        </View>
+      );
+    else if (bookData.badge.length == 2)
+      return (
+        <View style={styles.badgeContainer}>
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: bookData.badge[0][2],
+                backgroundColor: bookData.badge[0][3],
+                borderColor: bookData.badge[0][4],
+              },
+            ]}
+            name={bookData.badge[0][0]}
+            size={20}
+            color={bookData.badge[0][1]}
+          />
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: bookData.badge[1][2],
+                backgroundColor: bookData.badge[1][3],
+                borderColor: bookData.badge[1][4],
+              },
+            ]}
+            name={bookData.badge[1][0]}
+            size={20}
+            color={bookData.badge[1][1]}
+          />
+        </View>
+      );
+    else if (bookData.badge.length == 1)
+      return (
+        <View style={styles.badgeContainer}>
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: bookData.badge[0][2],
+                backgroundColor: bookData.badge[0][3],
+                borderColor: bookData.badge[0][4],
+              },
+            ]}
+            name={bookData.badge[0][0]}
+            size={20}
+            color={bookData.badge[0][1]}
+          />
+        </View>
+      );
   }
 
   return (
@@ -60,11 +139,27 @@ function BorrowedBookCard({ bookData, dueDate }) {
           </View>
           <View>
             {/* Function defined in utlity */}
-            {dueDate=="pending"?"":dateText}
+            {dueDate == "pending" ? "" : dateText}
           </View>
           <View style={styles.TextContainer}>
             {/* Function defined in utlity */}
-            <Text style={[dueDateToDays(dueDate).charAt(dueDateToDays(dueDate).length-1)=="."?styles.GreenText:null,dueDateToDays(dueDate)=="pending"?styles.YellowText:null,dueDateToDays(dueDate).charAt(dueDateToDays(dueDate).length-1)=="!"?styles.RedText:null]}>{dueDateToDays(dueDate)}</Text>
+            <Text
+              style={[
+                dueDateToDays(dueDate).charAt(
+                  dueDateToDays(dueDate).length - 1
+                ) == "."
+                  ? styles.GreenText
+                  : null,
+                dueDateToDays(dueDate) == "pending" ? styles.YellowText : null,
+                dueDateToDays(dueDate).charAt(
+                  dueDateToDays(dueDate).length - 1
+                ) == "!"
+                  ? styles.RedText
+                  : null,
+              ]}
+            >
+              {dueDateToDays(dueDate)}
+            </Text>
           </View>
         </View>
       </View>
@@ -72,9 +167,9 @@ function BorrowedBookCard({ bookData, dueDate }) {
       {/* ----------------------Share icon container ------------------- */}
       <View style={styles.ShareIconContainer}>
         {/* <Ionicons name="share-social-outline" size={24} color="blue"></Ionicons> */}
-        <View >{renderBadge()}</View>
+        <View>{renderBadge()}</View>
         <Text style={styles.ratingStyle}>
-          {bookData.rating != -1 ? bookData.rating +"/5": "Unrated"}
+          {bookData.rating != -1 ? bookData.rating + "/5" : "Unrated"}
         </Text>
       </View>
     </View>
@@ -123,7 +218,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "gray",
     paddingVertical: 20,
-    marginHorizontal:-10,
+    marginHorizontal: -10,
   },
   GreenText: {
     fontSize: 12,
@@ -139,13 +234,13 @@ const styles = StyleSheet.create({
   },
   badgeContainer: {
     flexDirection: "row",
-    alignItems:"center",
+    alignItems: "center",
     justifyContent: "center",
-    },
-    badgeStyle: {
-      marginHorizontal:3,
-      borderRadius:30,
-      borderWidth:1.5,
-      paddingLeft:3,
-      },
+  },
+  badgeStyle: {
+    marginHorizontal: 3,
+    borderRadius: 30,
+    borderWidth: 1.5,
+    paddingLeft: 3,
+  },
 });

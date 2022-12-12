@@ -14,24 +14,99 @@ function BookCard({ bookData }) {
     navigation.navigate("StackBook", { bookId: bookData.isbn });
   }
   function renderBadge() {
-    if (bookData.badge.length==3) return (
-      <View style={styles.badgeContainer}>
-        <MaterialCommunityIcons style={[styles.badgeStyle,{paddingTop:bookData.badge[0][2],backgroundColor:bookData.badge[0][3],borderColor:bookData.badge[0][4],}]} name={bookData.badge[0][0]} size={20} color = {bookData.badge[0][1]}/>
-        <MaterialCommunityIcons  style={[styles.badgeStyle,{paddingTop:bookData.badge[1][2],backgroundColor:bookData.badge[1][3],borderColor:bookData.badge[1][4],}]} name={bookData.badge[1][0]} size={20} color = {bookData.badge[1][1]}/>
-        <MaterialCommunityIcons  style={[styles.badgeStyle,{paddingTop:bookData.badge[2][2],backgroundColor:bookData.badge[2][3],borderColor:bookData.badge[2][4],}]} name={bookData.badge[2][0]} size={20} color = {bookData.badge[2][1]}/>
-      </View>
-    );
-    else if (bookData.badge.length == 2)return (
-      <View style={styles.badgeContainer}>
-        <MaterialCommunityIcons  style={[styles.badgeStyle,{paddingTop:bookData.badge[0][2],backgroundColor:bookData.badge[0][3],borderColor:bookData.badge[0][4],}]} name={bookData.badge[0][0]} size={20} color = {bookData.badge[0][1]}/>
-        <MaterialCommunityIcons style={[styles.badgeStyle,{paddingTop:bookData.badge[1][2],backgroundColor:bookData.badge[1][3],borderColor:bookData.badge[1][4],}]} name={bookData.badge[1][0]} size={20} color = {bookData.badge[1][1]}/>
-      </View>
-    );
-    else if (bookData.badge.length == 1)return (
-      <View style={styles.badgeContainer}>
-        <MaterialCommunityIcons style={[styles.badgeStyle,{paddingTop:bookData.badge[0][2],backgroundColor:bookData.badge[0][3],borderColor:bookData.badge[0][4],}]} name={bookData.badge[0][0]} size={20} color = {bookData.badge[0][1]}/>
-      </View>
-    );
+    if (bookData.badge.length == 3)
+      return (
+        <View style={styles.badgeContainer}>
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: bookData.badge[0][2],
+                backgroundColor: bookData.badge[0][3],
+                borderColor: bookData.badge[0][4],
+              },
+            ]}
+            name={bookData.badge[0][0]}
+            size={20}
+            color={bookData.badge[0][1]}
+          />
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: bookData.badge[1][2],
+                backgroundColor: bookData.badge[1][3],
+                borderColor: bookData.badge[1][4],
+              },
+            ]}
+            name={bookData.badge[1][0]}
+            size={20}
+            color={bookData.badge[1][1]}
+          />
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: bookData.badge[2][2],
+                backgroundColor: bookData.badge[2][3],
+                borderColor: bookData.badge[2][4],
+              },
+            ]}
+            name={bookData.badge[2][0]}
+            size={20}
+            color={bookData.badge[2][1]}
+          />
+        </View>
+      );
+    else if (bookData.badge.length == 2)
+      return (
+        <View style={styles.badgeContainer}>
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: bookData.badge[0][2],
+                backgroundColor: bookData.badge[0][3],
+                borderColor: bookData.badge[0][4],
+              },
+            ]}
+            name={bookData.badge[0][0]}
+            size={20}
+            color={bookData.badge[0][1]}
+          />
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: bookData.badge[1][2],
+                backgroundColor: bookData.badge[1][3],
+                borderColor: bookData.badge[1][4],
+              },
+            ]}
+            name={bookData.badge[1][0]}
+            size={20}
+            color={bookData.badge[1][1]}
+          />
+        </View>
+      );
+    else if (bookData.badge.length == 1)
+      return (
+        <View style={styles.badgeContainer}>
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: bookData.badge[0][2],
+                backgroundColor: bookData.badge[0][3],
+                borderColor: bookData.badge[0][4],
+              },
+            ]}
+            name={bookData.badge[0][0]}
+            size={20}
+            color={bookData.badge[0][1]}
+          />
+        </View>
+      );
   }
 
   return (
@@ -69,7 +144,7 @@ function BookCard({ bookData }) {
       <View style={styles.ShareIconContainer}>
         <View>{renderBadge()}</View>
         <Text style={styles.ratingStyle}>
-          {bookData.rating != -1 ? bookData.rating+"/5" : "Unrated"}
+          {bookData.rating != -1 ? bookData.rating + "/5" : "Unrated"}
         </Text>
       </View>
     </View>
@@ -118,17 +193,17 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "gray",
     paddingVertical: 20,
-    marginHorizontal:-10,
+    marginHorizontal: -10,
   },
   badgeContainer: {
     flexDirection: "row",
-    alignItems:"center",
+    alignItems: "center",
     justifyContent: "center",
-    },
-    badgeStyle: {
-      marginHorizontal:3,
-      borderRadius:30,
-      borderWidth:1.5,
-      paddingLeft:3,
-      },
+  },
+  badgeStyle: {
+    marginHorizontal: 3,
+    borderRadius: 30,
+    borderWidth: 1.5,
+    paddingLeft: 3,
+  },
 });

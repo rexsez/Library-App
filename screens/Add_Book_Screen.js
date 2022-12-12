@@ -180,7 +180,7 @@ function AddBookScreen({ navigation }) {
       end={{ x: 0.5, y: 1.0 }}
       locations={[0, 0.5, 0.6]}
       // Background Linear Gradient
-      colors={[Colors.color7, "whitesmoke", Colors.color7]}
+      colors={[Colors.primary500, "whitesmoke", Colors.primary500]}
       style={styles.linearGradient}
     >
       <View style={styles.titleContainer}>
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     padding: 15,
-    backgroundColor: "#366EA0",
+    backgroundColor: Colors.primary500,
     borderBottomWidth: 1,
     borderBottomColor: "black",
     height: 70,
@@ -345,23 +345,22 @@ const styles = StyleSheet.create({
     backgroundColor: "whitesmoke",
     borderWidth: 2,
     borderRadius: 6,
-    width: "40%",
+    width: "50%",
+    padding: 5,
   },
   buttonText: {
     fontSize: 24,
-    color: Colors.color6,
+    color: Colors.primary500,
   },
   linearGradient: {
     flex: 1,
     // paddingLeft: 15,
     // paddingRight: 15,
     borderRadius: 5,
-    opacity: 0.75,
   },
   errorContainer: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 6,
-    borderColor: "red",
     marginHorizontal: 24,
     backgroundColor: "whitesmoke",
   },

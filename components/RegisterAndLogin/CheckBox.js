@@ -78,6 +78,7 @@ function CheckBox({
 const styles = StyleSheet.create({
   IconConainer: {
     marginRight: 8,
+
   },
   COntainer: {
     marginHorizontal: "12%",

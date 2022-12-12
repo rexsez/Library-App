@@ -1,21 +1,24 @@
 import { useState, useContext, useLayoutEffect } from "react";
-import { View, StyleSheet, KeyboardAvoidingView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { getStudentID } from "../Utility/http";
-import Student from "../../models/Student";
-import ErrorComponent from "./ErrorComponent";
+import { View, StyleSheet } from "react-native";
+import { Text } from "react-native-paper";
+import { StackActions, useNavigation } from "@react-navigation/native";
+import { getStudentID, giveGracePeriod } from "../Utility/http";
 import validateCard from "../Utility/InputValidation/validateCard";
 import Inpute from "./Inpute";
 import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
-import validateEditStudent from "../Utility/InputValidation/ValidateEditStudent";
-import { updateProfile } from "../Utility/http";
-import { ActivityIndicator, Text } from "react-native-paper";
 import { Image } from "react-native";
+import { Alert } from "react-native";
 
 import DropDownMenu from "../AddBookComponents/Drop_Down_Menu";
 import Colors from "../Utility/Colors";
-function PaymentForm() {
+function PaymentForm({ onCancel }) {
+  // changed_
+  const navigation = useNavigation();
+  useLayoutEffect(() => {
+    navigation.navigate("PaymentScreen", { onCancel: onCancel });
+  }, [error]);
+
   const monthElements = [
     { label: "01", value: "01" },
     { label: "02", value: "02" },
@@ -67,28 +70,28 @@ function PaymentForm() {
         //  coz we keep everything as it is, but we change only the first name
         setNewStudent((currentState) => {
           const temp = { ...currentState, name: entertedText };
-          validateCard(temp, month, year, setError);
+
           return temp;
         });
         break;
       case "cardNumber":
         setNewStudent((currentState) => {
           const temp = { ...currentState, cardNumber: entertedText };
-          validateCard(temp, month, year, setError);
+
           return temp;
         });
         break;
       case "ccv":
         setNewStudent((currentState) => {
           const temp = { ...currentState, ccv: entertedText };
-          validateCard(temp, month, year, setError);
+
           return temp;
         });
         break;
       case "zipCode":
         setNewStudent((currentState) => {
           const temp = { ...currentState, zipCode: entertedText };
-          validateCard(temp, month, year, setError);
+
           return temp;
         });
         break;
@@ -98,12 +101,10 @@ function PaymentForm() {
   // checking for error in month
   function onChangeMonth(entertedText) {
     setMonth(entertedText.value);
-    validateCard(newStudent, entertedText.value, year, setError);
   }
   // checking for error in year
   function onChangeYear(entertedText) {
     setYear(entertedText.value);
-    validateCard(newStudent, month, entertedText.value, setError);
   }
   const studentContext = useContext(StudentContext);
   const initialError = {
@@ -114,34 +115,67 @@ function PaymentForm() {
   };
 
   const [error, setError] = useState(initialError);
-  function onPress() {
+  async function onPress() {
+    // First we validate the input
+    await validateCard(newStudent, month, year, setError, fineAmount);
     //  we check if the inpute wasnt valid,
     // if inpute not valid we put error component with
     // appropriate message
+  }
+  useLayoutEffect(() => {
     if (!error.isValid) {
-      let newRrrorComponent = (
-        <ErrorComponent>{error.errorMassage}</ErrorComponent>
-      );
-      setError((currentState) => {
-        return { ...currentState, errorComponent: newRrrorComponent };
-      });
+
       // else we just pass student infomation (fav list, barrowed list)
       //  to the app wide context
       //  so it can be used every where else
     } else {
       console.log("okay valid!");
+      // if there is no error, then:
+      //1-  Give grace period for the student to return the book
+      giveGracePeriod(studentContext.ID);
+      // 2- Show payment confirmation alert
+      onComplete();
     }
+  }, [error]);
+  function onComplete() {
+    const now = new Date();
+    const month = now.getMonth();
+    const nowDay = now.getDate();
+    const dueDay = parseInt(nowDay) + 2 + "";
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const customerMassage =
+      "Please return your the book before " +
+      dueDay +
+      "th of " +
+      months[month] +
+      ", or you wil be fined agian!";
+    const alertMassage = Alert.alert(
+      "Payment was Successful!",
+      `Thank you for paying the fine ($${fineAmount}).\nNow you can use our app facilities again!\n${customerMassage}`,
+      // add_nav
+      [{ text: "Ok", onPress: () => console.log("OK Pressed") }]
+    );
+    return alertMassage;
   }
-  async function lastTouch() {
-    // console.log(studentContext.Email);
-    const id = await getStudentID(studentContext.student.Email);
-    // console.log(id);
-    studentContext.setID(id);
+  // _changed
+  const popAction = StackActions.pop(1);
+  function cancelForm() {
+    onCancel();
+    navigation.dispatch(popAction);
   }
-
-  //   Putting the intiale context to be the context we already have
-  const studens = studentContext.student;
-
   let days = 1;
   let daysText = "";
   if (days > 1) {
@@ -149,35 +183,30 @@ function PaymentForm() {
   } else {
     daysText = " Day";
   }
-  let amount = days * 5;
+  let fineAmount = days * 5;
 
   return (
     <>
       <View style={styles.InfoContainer}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.cardTitle}>Payment</Text>
-        </View>
         <View style={styles.details}>
           <View style={styles.innerDetial}>
             <Text style={[styles.title, { marginHorizontal: 0 }]}>
-              Over due by
+              Over due by 
             </Text>
             <Text style={[styles.amount, { marginHorizontal: 0 }]}>
               {days + daysText}
             </Text>
-          </View>
-          <View>
             <Text style={[styles.title, { marginHorizontal: 0 }]}>
               Rate of charge
             </Text>
             <Text style={[styles.amount, { marginHorizontal: 0 }]}>
-              {amount}.00 SR/day
+              5.00 SR/day
             </Text>
           </View>
         </View>
         <View>
           <Text style={styles.title}>Payment amount</Text>
-          <Text style={styles.amount}>{amount}.00 SR</Text>
+          <Text style={styles.amount}>{fineAmount}.00 SR</Text>
         </View>
         <View>
           <View style={styles.imagesContainer}>
@@ -208,8 +237,8 @@ function PaymentForm() {
             style={[
               styles.inpute,
               error.feilds == "name" &&
-                error.errorComponent &&
-                styles.InputeError,
+              error.errorComponent &&
+              styles.InputeError,
             ]}
             onChangeTextHandler={onChangeTextHanddler.bind(this, "name")}
             inputeTextProps={{
@@ -225,8 +254,8 @@ function PaymentForm() {
             style={[
               styles.inpute,
               error.feilds == "cardNumber" &&
-                error.errorComponent &&
-                styles.InputeError,
+              error.errorComponent &&
+              styles.InputeError,
             ]}
             onChangeTextHandler={onChangeTextHanddler.bind(this, "cardNumber")}
             inputeTextProps={{
@@ -270,14 +299,14 @@ function PaymentForm() {
           </View>
           <View style={styles.inner}>
             <Text style={[styles.title, { marginHorizontal: 0 }]}>
-              Security code
+              CCV
             </Text>
             <Inpute
               style={[
                 styles.inpute,
                 error.feilds == "ccv" &&
-                  error.errorComponent &&
-                  styles.InputeError,
+                error.errorComponent &&
+                styles.InputeError,
               ]}
               size={styles.size}
               // ---- to be edited, check password
@@ -313,7 +342,7 @@ function PaymentForm() {
           <PressableButton onPress={onPress} style={styles.payButton}>
             Pay
           </PressableButton>
-          <PressableButton style={styles.cancelButton} onPress={onPress}>
+          <PressableButton style={styles.cancelButton} onPress={cancelForm}>
             Cancel
           </PressableButton>
         </View>
@@ -322,30 +351,27 @@ function PaymentForm() {
   );
 }
 const styles = StyleSheet.create({
+  cnt: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 24,
+    backgroundColor: "black",
+  },
   InfoContainer: {
     flex: 1,
     padding: 15,
-    marginTop: 20,
+    marginTop: -25,
+    marginHorizontal: 10,
     justifyContent: "flex-end",
-  },
-  titleContainer: {
-    marginBottom: 20,
-    alignItems: "center",
-    justifyContent: "center",
-    borderBottomWidth: 4,
-    borderRadius: 4,
-    marginHorizontal: "30%",
-  },
-  cardTitle: {
-    textAlign: "center",
-    fontSize: 36,
-    color: Colors.color6,
+    borderWidth: 3,
+    borderRadius: 10,
   },
   ButtonContainer: {
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "space-between",
-    marginHorizontal: "12%",
+    marginHorizontal: "10%",
     marginTop: 12,
   },
   InputeError: {
@@ -359,12 +385,13 @@ const styles = StyleSheet.create({
     borderColor: "black",
     padding: 4,
     paddingLeft: 8,
-    backgroundColor: "gray",
-    color: "white",
+    backgroundColor: "white",
+    borderRadius: 5,
+    color: "black",
   },
   title: {
     marginHorizontal: "12%",
-    color: "gray",
+    color: "black",
     fontSize: 20,
     fontWeight: "bold",
   },
@@ -380,6 +407,7 @@ const styles = StyleSheet.create({
   },
   inner: {
     flex: 1,
+
   },
   Image: {
     width: 70,
@@ -387,9 +415,10 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
+    backgroundColor: 'white',
     borderWidth: 2,
     borderRadius: 2,
-    borderColor: "#C5C5C5",
+    borderColor: Colors.color5,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 5,
@@ -397,7 +426,7 @@ const styles = StyleSheet.create({
   imagesContainer: {
     marginHorizontal: "12%",
     flexDirection: "row",
-    marginBottom: 5,
+    marginBottom: 10, //5151515151
   },
   details: {
     fontSize: 16,
@@ -405,7 +434,7 @@ const styles = StyleSheet.create({
   amount: {
     fontSize: 20,
     marginHorizontal: "12%",
-    color: "gray",
+    color: Colors.color5,
   },
   details: {
     flexDirection: "row",
@@ -414,9 +443,10 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     backgroundColor: "#C65356",
+    
   },
   payButton: {
-    backgroundColor: "#53c6c3",
+    backgroundColor: Colors.primary500,
   },
   date: {
     flexDirection: "row",

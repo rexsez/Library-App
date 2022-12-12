@@ -1,18 +1,20 @@
-import { View, StyleSheet, ImageBackground, Text } from "react-native";
+import { View, StyleSheet, ImageBackground, Text, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
-import { useContext, useEffect } from "react";
-
+import { useContext, useEffect, useState } from "react";
+import { StudentContext } from "../store/StudentContext";
 import Card from "../components/Utility/Cards/Card";
 import Announcements from "./Announcements";
 import { AppContext } from "../store/AppContext";
 import { fetchBooks, fetchCategories } from "../components/Utility/http";
 import Colors from "../components/Utility/Colors";
+import { isFined } from "../components/Utility/UtilityFunctions";
+import PaymentNotification from "../components/Utility/PaymentNotification";
 
 function HomeScreen() {
   const navigation = useNavigation();
   const appCtx = useContext(AppContext);
-
+  const studentCtx = useContext(StudentContext);
   function GoTo(stackName) {
     return navigation.navigate({ name: stackName });
   }
@@ -25,7 +27,38 @@ function HomeScreen() {
     }
     getBooks();
   }, []);
+  const iconBarButtons = [];
+  const [isPress, setIsPress] = useState(false);
+  let component = <View></View>;
+  if (isPress) {
+    component = (
+      <PaymentNotification
+        onPressCancel={setIsPress.bind(this, false)}
+      ></PaymentNotification>
+    );
+  }
+  if (!!studentCtx.student.Email) {
+    //add fine button if their is a fine
+    if (isFined(studentCtx)) {
+      iconBarButtons.push(
+        <>
+          <Pressable
+            style={({ pressed }) => [
+              {
+                backgroundColor: pressed ? "darkred" : "darkred",
+                opacity : pressed ? 0.5 : 1,
+              },
+              styles.fineButton,
+            ]}
+            onPress={setIsPress.bind(this, true)}
+          >
+            <Text style={styles.textStyleFine}>Checkout Fines</Text>
+          </Pressable>
+        </>
+      );
+    }
 
+  }
   return (
     <View style={styles.container}>
       {/* <LinearGradient
@@ -42,6 +75,8 @@ function HomeScreen() {
                 Welcome to PSU Library Application
               </Text>
             </View>
+            {iconBarButtons}
+            {component}
             <Announcements />
             <View style={styles.rowContainer}>
               <Card
@@ -51,8 +86,8 @@ function HomeScreen() {
                 color={Colors.primary500}
               ></Card>
               <Card
-                text="lol: has bug"
-                onPressed={GoTo.bind(this, "StackLogin")}
+                text="Profile"
+                onPressed={GoTo.bind(this, "DrawerProfile")}
                 path="ios-person"
                 color={Colors.primary500}
               ></Card>
@@ -71,6 +106,8 @@ function HomeScreen() {
                 color={Colors.primary500}
               ></Card>
             </View>
+
+
           </View>
         </ScrollView>
       </ImageBackground>
@@ -125,5 +162,20 @@ const styles = StyleSheet.create({
   },
   containerWelcomeMessage: {
     alignItems: "center",
+  },
+  fineButton: {
+    borderRadius: 15,
+    padding: 15,
+    elevation: 5,
+    paddingHorizontal: 30,
+    marginHorizontal: 60,
+    borderWidth: 2,
+    borderColor: '#eddfb4',
+  },
+  textStyleFine: {
+    color: "white",
+    fontWeight: "900",
+    textAlign: "center",
+    letterSpacing: 1.5,
   },
 });

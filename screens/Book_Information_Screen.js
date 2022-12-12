@@ -4,6 +4,7 @@ import { useLayoutEffect, useEffect, useContext, useState } from "react";
 import { HeaderBackButton } from "react-navigation-stack";
 import { FontAwesome } from "@expo/vector-icons";
 import { StackActions } from "@react-navigation/native";
+import Colors from "../components/Utility/Colors";
 
 import BookDetails from "../components/BookInfoComponents/Book_Details";
 import BookSummary from "../components/BookInfoComponents/Book_Summary";
@@ -15,6 +16,9 @@ import BookRatingModal from "../components/BookInfoComponents/Book_Rating";
 import { LinearGradient } from "expo-linear-gradient";
 import { postBorrowRequest, updateFavList } from "../components/Utility/http";
 import Student from "../models/Student";
+import { isFined } from "../components/Utility/UtilityFunctions";
+import PaymentNotification from "../components/Utility/PaymentNotification";
+import { Text } from "react-native-paper";
 
 function BookInformationScreen({ navigation }) {
   // to get the list of books
@@ -28,19 +32,19 @@ function BookInformationScreen({ navigation }) {
       headerLeft:
         Platform.OS === "android"
           ? () => (
-              <HeaderBackButton
-                onPress={() => {
-                  // First, we upload the changes made to student context to the database
-                  updateFavList(
-                    studentCtx.ID,
-                    studentCtx.student,
-                    studentCtx.Token
-                  );
-                  // This will remove The previous screen (Barcode scanner screen)
-                  navigation.dispatch(StackActions.popToTop());
-                }}
-              />
-            )
+            <HeaderBackButton
+              onPress={() => {
+                // First, we upload the changes made to student context to the database
+                updateFavList(
+                  studentCtx.ID,
+                  studentCtx.student,
+                  studentCtx.Token
+                );
+                // This will remove The previous screen (Barcode scanner screen)
+                navigation.dispatch(StackActions.popToTop());
+              }}
+            />
+          )
           : undefined,
     }); // if platform is IOS don't do anything
   }, []);
@@ -66,14 +70,20 @@ function BookInformationScreen({ navigation }) {
   }
 
   async function borrowBook() {
-    const isbn = selectedBook.isbn;
-    const title = selectedBook.title;
-    const userEmail = studentCtx.student.Email;
-    const userKey = studentCtx.ID;
-    await postBorrowRequest(isbn, title, userEmail, userKey);
-    appCtx.changeScreenHandler("Home");
-    navigation.navigate("TabSearch", { request: true });
+    if (isFined(studentCtx)) {
+      setIsPress(true);
+    } else {
+      const isbn = selectedBook.isbn;
+      const title = selectedBook.title;
+      const userEmail = studentCtx.student.Email;
+      const userKey = studentCtx.ID;
+      await postBorrowRequest(isbn, title, userEmail, userKey);
+      appCtx.changeScreenHandler("Home");
+      navigation.navigate("TabSearch", { request: true });
+    }
   }
+  const [isPress, setIsPress] = useState(false);
+
   // setting the title of the page to the name of book
   const Navigation = useNavigation();
   useLayoutEffect(() => {
@@ -193,60 +203,74 @@ function BookInformationScreen({ navigation }) {
       {selectedBook.rating != -1 ? selectedBook.rating + " / 5" : "Unrated"}
     </MyButton>,
   ];
-
-  if (isScanned && !!studentCtx.student.Email) {
+  if (!!studentCtx.student.Email) {
     //add the borrow option if the book is scanned
     iconBarButtons.push(
-      <MyButton style={styles.iconButton} onPress={borrowBook}>
-        {<FontAwesome name="hand-grab-o" {...iconStyles} />}
-      </MyButton>
+      <>
+        <MyButton style={styles.iconButton} onPress={borrowBook}>
+          {<FontAwesome name="hand-grab-o" {...iconStyles} />}
+        </MyButton>
+      </>
     );
   }
-
+  let component = <View></View>;
+  if (isPress) {
+    component = (
+      <PaymentNotification
+        onPressCancel={setIsPress.bind(this, false)}
+      ></PaymentNotification>
+    );
+  }
   return (
-    <LinearGradient
-      start={{ x: 0.1, y: 0.25 }}
-      end={{ x: 0.5, y: 1.0 }}
-      locations={[0, 0.5, 0.6]}
-      // Background Linear Gradient
-      colors={["#2596be", "whitesmoke", "#2596be"]}
-      style={styles.linearGradient}
-    >
-      {/* Scrollview for the entire screen */}
-      <View style={styles.rootContainer}>
-        <ScrollView
-          style={styles.rootContainer}
-          showsVerticalScrollIndicator={false}
-        >
-          <BookRatingModal
-            visible={visible}
-            rate={defaultRating}
-            changeVisibility={changeVisibility}
-            studentID={studentCtx.ID}
-            bookID={selectedBook.id}
-          />
+    <>
+      {component}
+      <LinearGradient
+        start={{ x: 0.1, y: 0.25 }}
+        end={{ x: 0.5, y: 1.0 }}
+        locations={[0, 0.5, 0.6]}
+        // Background Linear Gradient
+        colors={["#2596be", "whitesmoke", "#2596be"]}
+        style={styles.linearGradient}
+      >
+        {/* Scrollview for the entire screen */}
+        <View style={styles.titleContainer}>
+          <Text style={styles.titleText}>Book information</Text>
+        </View>
+        <View style={styles.rootContainer}>
+          <ScrollView
+            style={styles.scrollContainer}
+            showsVerticalScrollIndicator={false}
+          >
+            <BookRatingModal
+              visible={visible}
+              rate={defaultRating}
+              changeVisibility={changeVisibility}
+              studentID={studentCtx.ID}
+              bookID={selectedBook.id}
+            />
 
-          <BookDetails
-            isbn={isbn}
-            author={selectedBook.author}
-            date={selectedBook.date}
-            genre={selectedBook.genre}
-            bookImage={bookImage}
-          />
+            <BookDetails
+              isbn={isbn}
+              author={selectedBook.author}
+              date={selectedBook.date}
+              genre={selectedBook.genre}
+              bookImage={bookImage}
+            />
 
-          {/* using the items bar to add icon buttons */}
-          <ItemsBar
-            style={styles.itemsBar}
-            items={
-              //buttons to be added to the IconsBar
-              iconBarButtons
-            }
-          />
+            {/* using the items bar to add icon buttons */}
+            <ItemsBar
+              style={styles.itemsBar}
+              items={
+                //buttons to be added to the IconsBar
+                iconBarButtons
+              }
+            />
 
-          <BookSummary>{selectedBook.summary}</BookSummary>
-        </ScrollView>
-      </View>
-    </LinearGradient>
+            <BookSummary>{selectedBook.summary}</BookSummary>
+          </ScrollView>
+        </View>
+      </LinearGradient>
+    </>
   );
 }
 
@@ -254,8 +278,15 @@ export default BookInformationScreen;
 
 const styles = StyleSheet.create({
   rootContainer: {
-    margin: 16,
+    flex: 0.8,
+    margin: 5,
     backgroundColor: "whitesmoke",
+    marginTop: 100,
+    borderRadius: 15,
+  },
+  scrollContainer: {
+    margin: 16,
+
   },
   itemsBar: {
     marginTop: 8,
@@ -263,6 +294,7 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     // borderRadius: 4,
     alignItems: "center",
+
   },
   iconButton: {
     // backgroundColor: "transparent",
@@ -279,5 +311,19 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 5,
+  },
+
+  titleContainer: {
+    padding: 15,
+    backgroundColor: Colors.primary500,
+    height: 70,
+    justifyContent: "center",
+  },
+  titleText: {
+    color: "white",
+    fontWeight: "900",
+    textAlign: "center",
+    letterSpacing: 1.5,
+    fontSize: 24,
   },
 });

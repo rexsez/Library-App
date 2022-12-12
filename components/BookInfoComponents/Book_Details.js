@@ -60,9 +60,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 16,
-    borderRadius: 4,
+    borderRadius: 15,
     elevation: 4,
-    backgroundColor: "whitesmoke"
+    backgroundColor: "white"
   },
   bookDeatilsContainer: {
     marginLeft: 8,

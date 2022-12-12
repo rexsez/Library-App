@@ -1,5 +1,8 @@
 // Note that Descending and Ascending are actually reversed
 // because the user would expect the list to start from the top of his screen
+import { useNavigation } from "@react-navigation/native";
+import { useContext } from "react";
+import { useState } from "react";
 export function DescendingTitle(book1, book2) {
   if (book1.title.toLowerCase() > book2.title.toLowerCase()) {
     return -1;
@@ -115,7 +118,7 @@ export function toFixed(num, fixed) {
 
 export function formateDate(date) {
   return (
-    date.getFullYear() + " - " + (date.getMonth() + 1) + " - " + date.getDate()
+    date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
   );
 }
 
@@ -190,3 +193,47 @@ export function DescendingDateRegistered(book1, book2) {
   }
   return 0;
 }
+// changed_
+// -------------------------------------- list of fucnction ------------------------------
+
+// changed_
+
+// This variable will make sure to show the Aler massage only once
+
+export function isFined(studentContext) {
+  let totalFine = 0;
+  if (studentContext?.student.Email && studentContext.student?.borrowedBooks) {
+    const listOfBorrowedBooks = studentContext?.student.borrowedBooks;
+    const keys = Object.keys(listOfBorrowedBooks);
+    keys.forEach((key, index) => {
+      if (isOverDue(listOfBorrowedBooks[key])) {
+        let temp = numDaysFromDueDate(listOfBorrowedBooks[key]);
+        totalFine = Math.round((totalFine + temp * 5) * 1.15);
+      }
+    });
+  }
+
+  if (totalFine != 0) {
+    return true;
+  }
+  return false;
+}
+// Supporting function for checking if books are overdue
+export function isOverDue(dueDate) {
+  if (dueDate == "pending") return false; // added by aziz
+  const dueDateObject = new Date(dueDate);
+  const now = new Date();
+  if (dueDateObject - now <= 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+export function numDaysFromDueDate(dueDate) {
+  if (dueDate == "pending") return 0;
+  var days = new Date(dueDate).getTime() - new Date().getTime();
+  days = Math.floor(days / (1000 * 60 * 60 * 24));
+  days = days + 1;
+  return days;
+}
+

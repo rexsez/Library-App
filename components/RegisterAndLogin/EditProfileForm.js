@@ -5,7 +5,7 @@ import { getStudentID } from "../Utility/http";
 import Student from "../../models/Student";
 import ErrorComponent from "./ErrorComponent";
 
-import Inpute from "./Inpute";
+import InputeForm from "./InputeForm";
 import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
 import validateEditStudent from "../Utility/InputValidation/ValidateEditStudent";
@@ -103,8 +103,8 @@ function EditProfileForm() {
   const [error, setError] = useState(initialError);
   const [rePsw, SetRePsw] = useState("");
   function onPress() {
-    //  we check if the inpute wasnt valid,
-    // if inpute not valid we put error component with
+    //  we check if the InputeForm wasnt valid,
+    // if InputeForm not valid we put error component with
     // appropriate message
     if (!error.isValid) {
       let newRrrorComponent = (
@@ -132,9 +132,7 @@ function EditProfileForm() {
     }
   }
   async function lastTouch() {
-    // console.log(studentContext.Email);
     const id = await getStudentID(studentContext.student.Email);
-    // console.log(id);
     studentContext.setID(id);
   }
 
@@ -155,7 +153,7 @@ function EditProfileForm() {
   return (
     <>
       <View style={styles.InfoContainer}>
-        <Inpute
+        <InputeForm
           style={
             error.feilds == "FName" &&
             error.errorComponent &&
@@ -168,8 +166,8 @@ function EditProfileForm() {
             maxLength: 15,
             value: newStudent.FName,
           }}
-        ></Inpute>
-        <Inpute
+        ></InputeForm>
+        <InputeForm
           style={
             error.feilds == "LName" &&
             error.errorComponent &&
@@ -182,8 +180,8 @@ function EditProfileForm() {
             maxLength: 15,
             value: newStudent.LName,
           }}
-        ></Inpute>
-        <Inpute
+        ></InputeForm>
+        <InputeForm
           style={
             error.feilds == "oldPsw" &&
             error.errorComponent &&
@@ -198,8 +196,8 @@ function EditProfileForm() {
             secureTextEntry: true,
             value: oldPassword,
           }}
-        ></Inpute>
-        <Inpute
+        ></InputeForm>
+        <InputeForm
           style={
             error.feilds == "newPsw" &&
             error.errorComponent &&
@@ -215,8 +213,8 @@ function EditProfileForm() {
             secureTextEntry: true,
             value: newStudent.psw,
           }}
-        ></Inpute>
-        <Inpute
+        ></InputeForm>
+        <InputeForm
           style={
             error.feilds == "rePsw" &&
             error.errorComponent &&
@@ -232,23 +230,28 @@ function EditProfileForm() {
             secureTextEntry: true,
             value: rePsw.psw,
           }}
-        ></Inpute>
+        ></InputeForm>
         {error.errorComponent}
+        <KeyboardAvoidingView enabled={false}>
+          <View style={styles.ButtonContainer}>
+            <PressableButton onPress={onPress}>Confirm</PressableButton>
+          </View>
+        </KeyboardAvoidingView>
       </View>
-      <KeyboardAvoidingView enabled={false}>
-        <View style={styles.ButtonContainer}>
-          <PressableButton onPress={onPress}>Confirm</PressableButton>
-        </View>
-      </KeyboardAvoidingView>
     </>
   );
 }
 const styles = StyleSheet.create({
   InfoContainer: {
-    flex: 1,
-    padding: 15,
-    marginTop: 120,
+    flex: 0.9,
+    padding: 10,
+    paddingBottom: 0,
+    margin: 20,
+    marginTop: 175,
     justifyContent: "center",
+    borderWidth: 3,
+    borderRadius: 15,
+    backgroundColor: 'white',
   },
   ButtonContainer: {
     alignItems: "center",
@@ -260,6 +263,6 @@ const styles = StyleSheet.create({
   chechboxError: {
     color: "red",
   },
-  keyView: { flex: 1, padding: 15, marginTop: 120, justifyContent: "center" },
+  // keyView: { flex: 1, padding: 15, marginTop: 120, justifyContent: "center" },
 });
 export default EditProfileForm;
