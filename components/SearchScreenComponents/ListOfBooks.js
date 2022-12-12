@@ -1,7 +1,15 @@
-import { View, StyleSheet, TextInput, FlatList, Platform } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  FlatList,
+  Platform,
+  Text,
+} from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import BookCard from "./BookCard";
 import MyButton from "../MyButton";
@@ -39,8 +47,6 @@ function ListOfBooks() {
       return () => {};
     }, [])
   );
-
-  // console.log(appCtx.books);
 
   function toggleModal() {
     setModalVisible(!isModalVisible);
@@ -138,7 +144,7 @@ function ListOfBooks() {
           style={styles.icon}
         />
         <TextInput
-          placeholder="Search"
+          placeholder="Search using Title or Author..."
           placeholderTextColor="white"
           style={styles.search}
           //   This is to keep the displayed text updated
@@ -149,6 +155,90 @@ function ListOfBooks() {
           }}
         />
         {loadedButton}
+      </View>
+      <View style={styles.badgeContainer}>
+        <View style={{ flexDirection: "row", flex: 1 }}>
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                marginLeft: 25,
+                paddingTop: 0,
+                backgroundColor: "yellow",
+                borderColor: "grey",
+              },
+            ]}
+            name={"fire"}
+            size={15}
+            color={"red"}
+          />
+          <Text
+            style={{
+              fontSize: 10,
+              color: "grey",
+              textAlign: "center",
+              paddingTop: 3,
+              fontWeight: "bold",
+            }}
+          >
+            {" "}
+            Highly Rated
+          </Text>
+        </View>
+        <View style={{ flexDirection: "row", flex: 1 }}>
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: 0,
+                backgroundColor: "lightblue",
+                borderColor: "grey",
+              },
+            ]}
+            name={"podium-gold"}
+            size={15}
+            color={"purple"}
+          />
+          <Text
+            style={{
+              fontSize: 10,
+              color: "grey",
+              textAlign: "center",
+              paddingTop: 3,
+              fontWeight: "bold",
+            }}
+          >
+            {" "}
+            Highly Borrowed
+          </Text>
+        </View>
+        <View style={{ flexDirection: "row", flex: 1 }}>
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: 3,
+                backgroundColor: "#1c1c1c",
+                borderColor: "lightgrey",
+              },
+            ]}
+            name={"new-box"}
+            size={15}
+            color={"lightgreen"}
+          />
+          <Text
+            style={{
+              fontSize: 10,
+              color: "grey",
+              textAlign: "center",
+              paddingTop: 3,
+              fontWeight: "bold",
+            }}
+          >
+            {" "}
+            Newly Added
+          </Text>
+        </View>
       </View>
       <FilterModal
         isModalVisible={isModalVisible}
@@ -207,5 +297,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     textAlign: "center",
     textAlignVertical: "center",
+  },
+  badgeContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderBottomWidth: 1,
+  },
+  badgeStyle: {
+    marginHorizontal: 3,
+    borderRadius: 30,
+    borderWidth: 1.5,
+    paddingLeft: 3,
   },
 });

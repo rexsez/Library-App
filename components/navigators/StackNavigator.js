@@ -15,6 +15,7 @@ import StatisticsScreen from "../../screens/Statistics_Screen";
 import LoginScreen from "../../screens/LoginScreen";
 import DrawerNavigator from "./DrawerNavigator";
 import Verification from "../../screens/Verification";
+import PaymentScreen from "../../screens/PaymentScreen";
 
 function StackNavigator() {
   const Stack = createStackNavigator();
@@ -97,13 +98,18 @@ function StackNavigator() {
           title: "Login",
         }}
       />
-      
       <Stack.Screen
         name="StackVerification"
         component={Verification}
         options={{
           title: "Verify your account",
         }}
+      />
+      {/* changed_ */}
+      <Stack.Screen
+        component={PaymentScreen}
+        name="PaymentScreen"
+        options={{ headerShown: false, title: "Payment" }}
       />
     </Stack.Navigator>
   );

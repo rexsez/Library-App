@@ -5,14 +5,25 @@ import VerificationForm from "../components/RegisterAndLogin/verificationForm";
 function Verification() {
 
   return (
-    <View style={styles.Container}>
-      <VerificationForm />
-    </View>
+    <ImageBackground
+          style={styles.ImageBackground}
+          source={require("../assets/logoNew2.png")}
+          resizeMode="cover"
+        >
+          <View style={styles.container}>
+            <VerificationForm />
+          </View>
+    </ImageBackground>
   );
 }
 
 export default Verification;
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    marginTop:200,
+  },
+  ImageBackground: {
+    flex: 1,
+  },
 });

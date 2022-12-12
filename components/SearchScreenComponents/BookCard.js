@@ -4,28 +4,111 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import MyButton from "../MyButton";
 import { formateDate } from "../Utility/UtilityFunctions";
-import { useContext } from "react";
-import { AppContext } from "../../store/AppContext";
 
 function BookCard({ bookData }) {
   const navigation = useNavigation();
-  const appCtx = useContext(AppContext);
   function onPress() {
     // Note: here im just getting bookData and spreading it varabiles into
     // new object, so if this object is change, the original one doesnt change
     // Avoiding coupling them togather
-    appCtx.changeScreenHandler("Book");
     navigation.navigate("StackBook", { bookId: bookData.isbn });
   }
-
-  let bookIcon = null;
-  if (!!bookData.badge) {
-    bookIcon = (
-      <>
-        <MaterialCommunityIcons name="new-box" size={34} />
-      </>
-    );
+  function renderBadge() {
+    if (bookData.badge.length == 3)
+      return (
+        <View style={styles.badgeContainer}>
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: bookData.badge[0][2],
+                backgroundColor: bookData.badge[0][3],
+                borderColor: bookData.badge[0][4],
+              },
+            ]}
+            name={bookData.badge[0][0]}
+            size={20}
+            color={bookData.badge[0][1]}
+          />
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: bookData.badge[1][2],
+                backgroundColor: bookData.badge[1][3],
+                borderColor: bookData.badge[1][4],
+              },
+            ]}
+            name={bookData.badge[1][0]}
+            size={20}
+            color={bookData.badge[1][1]}
+          />
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: bookData.badge[2][2],
+                backgroundColor: bookData.badge[2][3],
+                borderColor: bookData.badge[2][4],
+              },
+            ]}
+            name={bookData.badge[2][0]}
+            size={20}
+            color={bookData.badge[2][1]}
+          />
+        </View>
+      );
+    else if (bookData.badge.length == 2)
+      return (
+        <View style={styles.badgeContainer}>
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: bookData.badge[0][2],
+                backgroundColor: bookData.badge[0][3],
+                borderColor: bookData.badge[0][4],
+              },
+            ]}
+            name={bookData.badge[0][0]}
+            size={20}
+            color={bookData.badge[0][1]}
+          />
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: bookData.badge[1][2],
+                backgroundColor: bookData.badge[1][3],
+                borderColor: bookData.badge[1][4],
+              },
+            ]}
+            name={bookData.badge[1][0]}
+            size={20}
+            color={bookData.badge[1][1]}
+          />
+        </View>
+      );
+    else if (bookData.badge.length == 1)
+      return (
+        <View style={styles.badgeContainer}>
+          <MaterialCommunityIcons
+            style={[
+              styles.badgeStyle,
+              {
+                paddingTop: bookData.badge[0][2],
+                backgroundColor: bookData.badge[0][3],
+                borderColor: bookData.badge[0][4],
+              },
+            ]}
+            name={bookData.badge[0][0]}
+            size={20}
+            color={bookData.badge[0][1]}
+          />
+        </View>
+      );
   }
+
   return (
     <View style={styles.Container}>
       {/* ----------------------Image container ------------------- */}
@@ -51,6 +134,7 @@ function BookCard({ bookData }) {
           </View>
           <View style={styles.TextContainer}>
             {/* Function defined in utlity */}
+            <Text style={styles.Text}>Publish Date:</Text>
             <Text style={styles.Text}>{formateDate(bookData.date)}</Text>
           </View>
         </View>
@@ -58,10 +142,9 @@ function BookCard({ bookData }) {
       {/* --------------------------------------------------------- */}
       {/* ----------------------Share icon container ------------------- */}
       <View style={styles.ShareIconContainer}>
-        {/* <Ionicons name="share-social-outline" size={24} color="blue"></Ionicons> */}
-        {bookIcon}
+        <View>{renderBadge()}</View>
         <Text style={styles.ratingStyle}>
-          {bookData.rating != -1 ? bookData.rating : "N/A"}
+          {bookData.rating != -1 ? bookData.rating + "/5" : "Unrated"}
         </Text>
       </View>
     </View>
@@ -70,7 +153,7 @@ function BookCard({ bookData }) {
 export default BookCard;
 const styles = StyleSheet.create({
   Image: {
-    width: 80,
+    width: 70,
     height: 100,
   },
   Container: {
@@ -89,7 +172,7 @@ const styles = StyleSheet.create({
     flex: 6,
   },
   ShareIconContainer: {
-    flex: 0.8,
+    flex: 1,
     alignItems: "flex-end",
   },
   InnerTextContainer: {
@@ -110,5 +193,17 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "gray",
     paddingVertical: 20,
+    marginHorizontal: -10,
+  },
+  badgeContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  badgeStyle: {
+    marginHorizontal: 3,
+    borderRadius: 30,
+    borderWidth: 1.5,
+    paddingLeft: 3,
   },
 });

@@ -2,7 +2,13 @@ import axios from "axios";
 import Student from "../../models/Student";
 import Announcement from "../../models/Announcement";
 import Book from "../../models/Book";
-import { generateRandomNumber, toFixed } from "./UtilityFunctions";
+import {
+  generateRandomNumber,
+  toFixed,
+  DescendingRating,
+  DescendingTimesBorrowed,
+  DescendingDateRegistered,
+} from "./UtilityFunctions";
 import { AppContext } from "../../store/AppContext";
 import { useContext } from "react";
 import { sendMail } from "../../Server/mailUtility";
@@ -14,6 +20,36 @@ const database =
 export async function updateProfile(ID, student) {
   axios.put(database + `students/${ID}.json`, student);
 }
+function assignBadges(books) {
+  var numberOfBadges = Math.ceil(books.length / 20);
+  var count = 0;
+  if (numberOfBadges == 0) numberOfBadges = numberOfBadges + 1;
+  books.sort(DescendingRating);
+  for (i = 0; i < books.length && count < numberOfBadges; i++) {
+    if (books[i].rating < 4.5) break;
+    books[i].badge.push(["fire", "red", 0, "yellow", "grey"]);
+    count = count + 1;
+  }
+  count = 0;
+  books.sort(DescendingTimesBorrowed);
+  for (i = 0; i < numberOfBadges && count < numberOfBadges; i++) {
+    if (books[i].timesBorrowed < 3) break;
+    books[i].badge.push(["podium-gold", "purple", 0, "lightblue", "grey"]);
+    count = count + 1;
+  }
+  count = 0;
+  books.sort(DescendingDateRegistered);
+  for (i = 0; i < numberOfBadges && count < numberOfBadges; i++) {
+    const date1 = new Date();
+    const date2 = new Date(books[i].dateRegistered);
+    const diffTime = Math.abs(date1 - date2);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDays > 7) break;
+    books[i].badge.push(["new-box", "lightgreen", 3, "#1c1c1c", "lightgrey"]);
+    count = count + 1;
+  }
+  return books;
+}
 // ------------------------------------------Books Stuff----------------------------------------------------
 // getting books from the database
 export async function fetchBooks() {
@@ -24,8 +60,8 @@ export async function fetchBooks() {
     let id = key;
     let author = bookData.author;
     let category = bookData.category;
-    let date;
     let timesBorrowed = bookData.timesBorrowed;
+    let date;
     if (bookData.date) {
       date = new Date(bookData.date);
     } else {
@@ -50,7 +86,6 @@ export async function fetchBooks() {
         }
       }
       // getting average
-      // console.log(ratings.length);
       if (ratings.length != 0) rating = sum / ratings.length;
       else rating = -1;
       // toFixed take two arguments, the first one being the number, and the second one being the
@@ -64,6 +99,7 @@ export async function fetchBooks() {
     let title = bookData.title;
     // getting image path from firebase, check getImage for details
     let img;
+    // changed_
     if (bookData.image !== "") {
       img = await getImage(bookData.image);
     } else {
@@ -71,14 +107,7 @@ export async function fetchBooks() {
         "https://firebasestorage.googleapis.com/v0/b/psu-library-app.appspot.com/o/images%2Fno_book.png?alt=media&token=4ddb2db7-9924-4f52-9041-11e0d6cf5c63";
     }
 
-    let badge = null;
-    const date1 = new Date();
-    const date2 = new Date(bookData.dateRegistered);
-    const diffTime = Math.abs(date1 - date2);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    if (diffDays <= 7) {
-      badge = "new-box";
-    }
+    let badge = [];
 
     databaseBooks.push(
       new Book(
@@ -98,7 +127,7 @@ export async function fetchBooks() {
       )
     );
   }
-  return databaseBooks;
+  return assignBadges(databaseBooks);
 }
 // get book categories from the database
 export async function fetchCategories() {
@@ -106,7 +135,6 @@ export async function fetchCategories() {
   let databaseCategories = [];
   for (const key in response.data) {
     let category = response.data[key].category;
-    // console.log(category);
     /* 
     This format is is required by the dropdown component that we are using, label indicates what will show 
     on the screen (user interface), and value is what value will be taken in the backend 
@@ -148,6 +176,7 @@ export async function postRating(studentID, bookID, rating) {
   res[studentID] = rating;
   axios.put(link, res);
 }
+
 // ------------------------------------------get books----------------------------------------------------
 export async function getBooks() {
   const appCtx = useContext(AppContext);
@@ -157,13 +186,27 @@ export async function getBooks() {
   appCtx.changeBooks(books);
   appCtx.changeCategories(categories);
 }
+
 // ------------------------------------------Book Request----------------------------------------------------
 //Send book request info to database -> so admin can view it from the admin panel
 export async function requestBook(requestData) {
   axios.post(database + "book_requests.json", requestData);
 }
+//uploading the requested book's image
+// export async function uploadImage(imgUri) {
+//   // await "psu-library-app.appspot.com".ref().child(filename).put(blob);
+//   // const storage = "psu-library-app.appspot.com/requests_images";
+//   const storage = getStorage();
+//   const ref = ref(storage, 'image.jpg');
+
+//   const img = await fetch(imgUri);
+//   const bytes = await img.blob();
+//   await uploadBytes(ref, bytes);
+// }
 // ------------------------------------------Announcement----------------------------------------------------
 export async function fetchAnnouncements() {
+  const checkAnnouncements = await axios.get(database);
+
   // basically await waits for the promise to happen. ---> returns a promise ....
   const response = await axios.get(database + "announcements.json");
   //.get returns the students object, which we will turn into an array.
@@ -175,7 +218,8 @@ export async function fetchAnnouncements() {
     const announcement = new Announcement(
       announcementsData.everyone,
       announcementsData.staff,
-      announcementsData.students
+      announcementsData.students,
+      announcementsData.workingHours
     );
     announcements = announcement;
   }
@@ -232,10 +276,8 @@ export async function getStudentID(email) {
   let studentID = null;
   for (const key in response.data) {
     const studentData = response.data[key];
-    // console.log(studentData)
     if (studentData.Email == email) {
       studentID = key;
-      // console.log(studentID)
     }
   }
   return studentID;
@@ -257,7 +299,6 @@ export async function postBorrowRequestToStudent(isbn, userKey) {
   let result = await axios.get(link);
   let res = result.data;
   if (!!!res?.borrowedBooks) {
-    // console.log(JSON.stringify(res))
     const temp = new Student(
       res.FName,
       res.LName,
@@ -267,7 +308,6 @@ export async function postBorrowRequestToStudent(isbn, userKey) {
       res.favBooks
     );
     temp["verification"] = "done";
-    // console.log(JSON.stringify(temp));
     // res[isbn] = "pending";
     axios.put(link, temp);
   } else {
@@ -299,13 +339,26 @@ export async function putVerification(studentID, verification) {
   const link = database + "students/" + studentID + ".json";
   var result = await axios.get(link);
   var res = result.data;
-  console.log(result.data);
   res["verification"] = verification;
   axios.put(link, res);
 }
-
-// ---------------------------------------- payment --------------------------------------------------------
+// ---------------------------------------- payment ----------------------------------------------------
 export async function checkPayment(cardNumber) {
   // getting card info of a specifc card!
-  return await axios.get(database + `cards/${cardNumber}.json`);
+  const paymentInfo = await axios.get(database + `cards/${cardNumber}.json`);
+  return paymentInfo;
+}
+export async function pay(cardNumber, fineAmount) {
+  // getting card info of a specifc card!
+  const paymentInfo = await axios.get(database + `cards/${cardNumber}.json`);
+  const newBalance = paymentInfo.data.credit - fineAmount;
+  const newPaymentInfo = { ...paymentInfo.data, credit: newBalance };
+  await axios.put(database + `cards/${cardNumber}.json`, newPaymentInfo);
+  // return paymentInfo;
+}
+export async function giveGracePeriod(studentID) {
+  //1- We get current student data, so we update info currectly
+  //2- We calculate what the date will be in two days from now (grace period)
+  // 3- we put the new date (grace period) into the object we got containing student info from db
+  //
 }

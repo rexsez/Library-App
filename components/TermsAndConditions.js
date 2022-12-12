@@ -1,5 +1,4 @@
 import { useNavigation } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
 import {
   View,
@@ -8,7 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-
+import { StatusBar } from "expo-status-bar";
 const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
   const paddingToBottom = 20;
   return (
@@ -159,24 +158,23 @@ const styles = {
     marginTop: 15,
     marginBottom: 15,
     height: height * 0.7,
-    padding: 10,
-
+    padding:10,
   },
 
   button: {
     backgroundColor: "#136AC7",
     borderRadius: 5,
     padding: 10,
-    marginHorizontal: 10,
-    marginBottom: 10,
+    marginHorizontal:10,
+    marginBottom:10,
   },
 
   buttonDisabled: {
     backgroundColor: "#999",
     borderRadius: 5,
     padding: 10,
-    marginHorizontal: 10,
-    marginBottom: 10,
+    marginHorizontal:10,
+    marginBottom:10,
   },
 
   buttonLabel: {

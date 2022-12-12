@@ -1,24 +1,22 @@
 import { useState, useContext } from "react";
-import { View, StyleSheet, KeyboardAvoidingView } from "react-native";
+import { View, StyleSheet, KeyboardAvoidingView, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import Student from "../../models/Student";
 import MyButton from "../MyButton";
 import CheckBox from "./CheckBox";
 import ErrorComponent from "./ErrorComponent";
-import Inpute from "./Inpute";
+import InputeForm from "./InputeForm";
 import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
 import validateLoginStudent from "../Utility/InputValidation/validateLoginStudent";
-import { getStudentID, getStudents, getVerification } from "../Utility/http";
-import { AppContext } from "../../store/AppContext";
+import { getStudentID, getStudents } from "../Utility/http";
 
 function LoginForm() {
   // -----------------Navigation stuff------------------------
   const navigation = useNavigation();
-  const appCtx = useContext(AppContext);
   function onPressCreateAccHandler() {
-    navigation.navigate("StackRegister");
+    navigation.navigate("DrawerRegister");
   }
   const studentContext = useContext(StudentContext);
   const initialError = {
@@ -38,46 +36,27 @@ function LoginForm() {
         return { ...currentState, errorComponent: newRrrorComponent };
       });
     } else {
+      console.log('im in login')
       const studens = await getStudents();
       indexOfStudent = studens.findIndex(
         (student) => student.Email === loginStudent.Email
       );
       loginStudentInfomation = studens[indexOfStudent];
-      // console.log(loginStudentInfomation.Email);
       const studentID = await getStudentID(loginStudentInfomation.Email);
-      // console.log(studentID);
-      const verification = await getVerification(studentID);
-      studentContext.setToken(verification);
-      console.log("verification is " + verification);
-
-      if (verification !== "done") {
-        appCtx.changeScreenHandler("");
-        navigation.navigate("StackVerification", {
-          student: {
-            FName: loginStudentInfomation.FName,
-            LName: loginStudentInfomation.LName,
-            Email: loginStudentInfomation.Email,
-            psw: loginStudentInfomation.psw,
-            borrowedBooks: loginStudentInfomation.borrowedBooks,
-            favBooks: loginStudentInfomation.favBooks,
-          },
-        });
-      } else {
-        studentContext.setID(studentID);
-        // -----------------------------This needs some changes ------------------------
-        studentContext.registerStudent({
-          FName: loginStudentInfomation.FName,
-          LName: loginStudentInfomation.LName,
-          Email: loginStudentInfomation.Email,
-          psw: loginStudentInfomation.psw,
-          borrowedBooks: loginStudentInfomation.borrowedBooks,
-          favBooks: loginStudentInfomation.favBooks,
-        });
-        appCtx.changeScreenHandler("Profile");
-        navigation.navigate({ name: "DrawerProfile" });
-      }
+      studentContext.setID(studentID);
+      // -----------------------------This needs some changes ------------------------
+      studentContext.registerStudent({
+        FName: loginStudentInfomation.FName,
+        LName: loginStudentInfomation.LName,
+        Email: loginStudentInfomation.Email,
+        psw: loginStudentInfomation.psw,
+        borrowedBooks: loginStudentInfomation.borrowedBooks,
+        favBooks: loginStudentInfomation.favBooks,
+      });
+      navigation.navigate({ name: "DrawerProfile" });
     }
   }
+
   const initialLoginStudent = new Student(" ", " ", " ", " ", null, null);
 
   const [loginStudent, setLoginStudent] = useState(initialLoginStudent);
@@ -104,8 +83,12 @@ function LoginForm() {
   }
   return (
     <>
+
       <View style={styles.InfoContainer}>
-        <Inpute
+        <View style={styles.containerWelcomeMessage}>
+          <Text style={styles.welcomeMessage}>Login</Text>
+        </View>
+        <InputeForm
           style={
             error.feilds == "Email" &&
             error.errorComponent &&
@@ -119,8 +102,8 @@ function LoginForm() {
             autoCapitalize: "none",
             keyboardType: "email-address",
           }}
-        ></Inpute>
-        <Inpute
+        ></InputeForm>
+        <InputeForm
           style={
             error.feilds == "psw" && error.errorComponent && styles.InputeError
           }
@@ -132,39 +115,57 @@ function LoginForm() {
             autoCapitalize: "none",
             secureTextEntry: true,
           }}
-        ></Inpute>
+        ></InputeForm>
+        <CheckBox text="Remember Me"></CheckBox>
         {error.errorComponent}
-        <CheckBox text="Rememebr Me"></CheckBox>
+        <KeyboardAvoidingView enabled={false}>
+          <View style={styles.ButtonContainer}>
+            <PressableButton onPress={onPress}>Sign in</PressableButton>
+            <MyButton
+              onPress={onPressCreateAccHandler}
+              Flate="flate"
+              style={{ marginTop: 5 }}
+            >
+              Create An Account?
+            </MyButton>
+          </View>
+        </KeyboardAvoidingView>
       </View>
-      <KeyboardAvoidingView enabled={false}>
-        <View style={styles.ButtonContainer}>
-          <PressableButton onPress={onPress}>Login</PressableButton>
-          <MyButton
-            onPress={onPressCreateAccHandler}
-            Flate="flate"
-            style={{ marginTop: 20 }}
-          >
-            Create An Account?
-          </MyButton>
-        </View>
-      </KeyboardAvoidingView>
     </>
   );
 }
 const styles = StyleSheet.create({
   InfoContainer: {
-    flex: 1,
-    padding: 15,
-    marginTop: 120,
+    flex: 0.80,
+    padding: 10,
+    paddingBottom: 0,
+    margin: 20,
+    marginTop: 200,
     justifyContent: "center",
+    borderWidth: 3,
+    borderRadius: 15,
+    backgroundColor: 'white',
+    
   },
   ButtonContainer: {
     alignItems: "center",
-    marginBottom: 30,
+
   },
   InputeError: {
     borderBottomColor: "red",
   },
   keyView: { flex: 1, padding: 15, marginTop: 120, justifyContent: "center" },
+  welcomeMessage: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    paddingBottom: 5,
+    color: '#144c84',
+    opacity: 1,
+    marginTop: -40,
+  },
+  containerWelcomeMessage: {
+    alignItems: 'center',
+
+  },
 });
 export default LoginForm;

@@ -118,16 +118,16 @@ function StatisticsScreen() {
     //chart cofiguration (colors, opacity, etc...)
     //check the above link for more info on configuration
     const chartConfig = {
-        backgroundGradientFrom: "#FEFEFE",
+        backgroundGradientFrom: Colors.primary500,
         backgroundGradientFromOpacity: 1,
-        backgroundGradientTo: Colors.color7,
+        backgroundGradientTo: Colors.primary500,
         backgroundGradientToOpacity: 1,
+        backgroundGradientToOpacity: 0.5,
         color: () => Colors.color6,
         // strokeWidth: 5, // optional, default 3
         barPercentage: 0.8,
-        backgroundGradientToOpacity: 1,
         fillShadowGradientFromOpacity: 0.8,
-        fillShadowGradientFromOffset: 0.6,
+        fillShadowGradientFromOffset: 0.3,
     };
 
     //list of buttons inside the horizontal items bar
@@ -136,7 +136,9 @@ function StatisticsScreen() {
         <Pressable
           style={({ pressed }) => [
             {
-              backgroundColor: pressed ? "#8aabdd" : "#366EA0",
+              backgroundColor: pressed ? "#0593bb" : "#0593bb",
+              opacity: pressed ? 0.5 : 1, 
+              
             },
             styles.button,
           ]}
@@ -149,7 +151,8 @@ function StatisticsScreen() {
         <Pressable
           style={({ pressed }) => [
             {
-              backgroundColor: pressed ? "#8aabdd" : "#366EA0",
+                backgroundColor: pressed ? "#0593bb" : "#0593bb",
+                opacity: pressed ? 0.5 : 1,             
             },
             styles.button,
           ]}
@@ -200,15 +203,13 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     ItemsBar: {
-        borderWidth: 1,
-        borderColor: "black",
         height: 85,
         alignItems: "center",
-        backgroundColor: Colors.color9
+        backgroundColor: Colors.primary500
     },
     titleContainer: {
         padding: 15,
-        backgroundColor: "#366EA0",
+        backgroundColor: Colors.primary500,
         borderBottomWidth: 1,
         borderBottomColor: "black",
     },

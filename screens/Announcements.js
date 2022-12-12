@@ -1,12 +1,12 @@
 import { useState, useContext, useEffect } from "react";
 import { Modal, StyleSheet, Text, Pressable, View } from "react-native";
-import Colors from "../components/Utility/Colors";
 import { fetchAnnouncements } from "../components/Utility/http";
 import { StudentContext } from "../store/StudentContext";
-
+import  Colors  from "../components/Utility/Colors";
 function Announcements() {
   const Context = useContext(StudentContext);
   const [modalAnnouncement, setModalAnnouncement] = useState("");
+  const [modalWorkingHours, setModalWorkingHours] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [fetchedAnnouncement, setFetchedAnnouncement] = useState();
 
@@ -14,23 +14,29 @@ function Announcements() {
     async function getAnnouncements() {
       const Announcement = await fetchAnnouncements();
       setFetchedAnnouncement(Announcement);
+      setModalWorkingHours(Announcement);
     }
     getAnnouncements();
   }, []);
 
   function onPressAnnouncement() {
+    
     setModalVisible(true);
     if (!!!Context.student.Email) {
       // if Email doesn't exist
+     // console.log(fetchedAnnouncement);
+      setModalWorkingHours(fetchedAnnouncement.workingHours);
       setModalAnnouncement(fetchedAnnouncement.everyone);
     } else if (
       !!Context.student.Email &&
       Context.student.Email.search(/\d/g) != -1
     ) {
       // Regular Expression - Regex
-      setModalAnnouncement(fetchedAnnouncement.students);
+      setModalWorkingHours(fetchedAnnouncement.workingHours);
+      setModalAnnouncement(fetchedAnnouncement.students + "\n" + fetchedAnnouncement.everyone);
     } else {
-      setModalAnnouncement(fetchedAnnouncement.staff);
+     setModalWorkingHours(fetchedAnnouncement.workingHours);
+      setModalAnnouncement(fetchedAnnouncement.staff + "\n" + fetchedAnnouncement.everyone);
     }
   }
 
@@ -47,11 +53,14 @@ function Announcements() {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.announcementMainText}> Announcements </Text>
-            <Text>{modalAnnouncement}</Text>
+            <Text style={styles.modalWorkingHoursText}>Working Hours</Text>
+            <Text style={styles.modalWorkingHoursText}>{modalWorkingHours}</Text>
+            <View style={styles.devidor}></View> 
+            <Text style={styles.modalAnnouncementText}>{modalAnnouncement}</Text>
             <Pressable
               style={({ pressed }) => [
                 {
-                  backgroundColor: pressed ? "#8aabdd" : Colors.primary500,
+                  backgroundColor: pressed ? "#8aabdd" : Colors.primary500 ,
                 },
                 styles.button,
               ]}
@@ -68,7 +77,7 @@ function Announcements() {
         <Pressable
           style={({ pressed }) => [
             {
-              backgroundColor: pressed ? "#8aabdd" : Colors.primary500,
+              backgroundColor: pressed ?  "#8aabdd" : Colors.primary500 ,
             },
             styles.button,
           ]}
@@ -83,8 +92,9 @@ function Announcements() {
 
 const styles = StyleSheet.create({
   centeredView: {
-    // flex: 1,
-    margin: 25,
+    // flex: 1,     
+    marginHorizontal: 25,
+    marginVertical:10,
   },
   modalView: {
     margin: 20,
@@ -110,7 +120,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     paddingHorizontal: 31,
     borderWidth: 2,
-    borderColor: "#eddfb4",
+    borderColor: '#eddfb4',
   },
   textStyleAnnouncements: {
     color: "white",
@@ -124,18 +134,33 @@ const styles = StyleSheet.create({
     textAlign: "center",
     letterSpacing: 0.5,
   },
-  modalText: {
+  modalWorkingHoursText: {
+    fontSize: 16,
     marginBottom: 15,
     textAlign: "center",
     fontWeight: "700",
+    color: "#ec9c2d",
+
+  },
+  modalAnnouncementText: {
+    fontSize: 16,
+    marginBottom: 15,
+    fontWeight: "bold",
+    textAlign: "center",
+
   },
   announcementMainText: {
     // fontFamily: "monospace",
     fontSize: 24,
     fontWeight: "bold",
-    color: Colors.primary500,
+    color: "#366EA0",
     paddingBottom: 30,
   },
+  devidor: {
+    borderWidth: 0.5,
+    borderColor: 'black',
+    margin: 10,
+},
 });
 
 export default Announcements;

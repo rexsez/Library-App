@@ -5,6 +5,12 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import MyButton from "../MyButton";
 import { formateDate, dueDateToDays } from "../Utility/UtilityFunctions";
 function BorrowedBookCard({ bookData, dueDate }) {
+  let dateText = (
+    <View style={styles.TextContainer}>
+      <Text style={styles.Text}>{"Due Date:"}</Text>
+      <Text style={styles.Text}>{dueDate}</Text>
+    </View>
+  );
   const navigation = useNavigation();
   function onPress() {
     // Note: here im just getting bookData and spreading it varabiles into
@@ -131,15 +137,9 @@ function BorrowedBookCard({ bookData, dueDate }) {
           <View style={styles.TextContainer}>
             <Text style={styles.Text}>{bookData.author}</Text>
           </View>
-          <View style={styles.TextContainer}>
+          <View>
             {/* Function defined in utlity */}
-            <Text style={styles.Text}>
-              {"publish " + formateDate(bookData.date)}
-            </Text>
-          </View>
-          <View style={styles.TextContainer}>
-            {/* Function defined in utlity */}
-            <Text style={styles.Text}>{"due date " + dueDate}</Text>
+            {dueDate == "pending" ? "" : dateText}
           </View>
           <View style={styles.TextContainer}>
             {/* Function defined in utlity */}
@@ -169,7 +169,7 @@ function BorrowedBookCard({ bookData, dueDate }) {
         {/* <Ionicons name="share-social-outline" size={24} color="blue"></Ionicons> */}
         <View>{renderBadge()}</View>
         <Text style={styles.ratingStyle}>
-          {bookData.rating != -1 ? bookData.rating : "Unrated"}
+          {bookData.rating != -1 ? bookData.rating + "/5" : "Unrated"}
         </Text>
       </View>
     </View>
@@ -178,7 +178,7 @@ function BorrowedBookCard({ bookData, dueDate }) {
 export default BorrowedBookCard;
 const styles = StyleSheet.create({
   Image: {
-    width: 80,
+    width: 70,
     height: 100,
   },
   Container: {
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     flex: 6,
   },
   ShareIconContainer: {
-    flex: 0.8,
+    flex: 1,
     alignItems: "flex-end",
   },
   InnerTextContainer: {
@@ -218,6 +218,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "gray",
     paddingVertical: 20,
+    marginHorizontal: -10,
   },
   GreenText: {
     fontSize: 12,

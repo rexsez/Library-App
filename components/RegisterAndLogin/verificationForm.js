@@ -5,11 +5,12 @@ import { TextInput } from "react-native";
 import { View, Text, StyleSheet } from "react-native";
 import { HeaderBackButton } from "react-navigation-stack";
 import { StackActions } from "@react-navigation/native";
-
+import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
 import Input from "../AddBookComponents/Input";
 import MyButton from "../MyButton";
 import { getStudentID, putVerification } from "../Utility/http";
+import Colors from "../Utility/Colors";
 import { Alert } from "react-native";
 import { AppContext } from "../../store/AppContext";
 
@@ -69,8 +70,8 @@ function VerificationForm() {
   return (
     <View style={styles.container}>
       <TextInput />
-      <Text>Enter Verification code</Text>
-      <Input
+      <Text style = {styles.textStyle}>Enter Verification code</Text>
+      <Input style = {styles.inputStyle}
         textInputConfig={{
           onChangeText: (enteredToken) => {
             // console.log(ddd);
@@ -79,9 +80,9 @@ function VerificationForm() {
         }}
       />
 
-      <MyButton textStyle={styles.textStyle} onPress={submitHandler}>
+      <PressableButton  onPress={submitHandler}>
         Submit
-      </MyButton>
+      </PressableButton>
     </View>
   );
 }
@@ -96,6 +97,10 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   textStyle: {
-    color: "black",
+    color: Colors.color5,
+  },
+  inputStyle: {
+    width: 200,
+    borderRadius:100,
   },
 });
