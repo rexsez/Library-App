@@ -1,11 +1,4 @@
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  FlatList,
-  Platform,
-  Text,
-} from "react-native";
+import { View, StyleSheet, TextInput, FlatList, Text } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -30,8 +23,6 @@ function ListOfBooks() {
   const [isModalVisible, setModalVisible] = useState(false);
   const [chosenFilter, setChosenFilter] = useState(1);
   const [chosenOrder, setChosenOrder] = useState(1);
-
-  const [render, setRender] = useState(false);
 
   useFocusEffect(
     React.useCallback(() => {

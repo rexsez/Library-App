@@ -4,8 +4,11 @@ import { useLayoutEffect, useEffect, useContext, useState } from "react";
 import { HeaderBackButton } from "react-navigation-stack";
 import { FontAwesome } from "@expo/vector-icons";
 import { StackActions } from "@react-navigation/native";
-import Colors from "../components/Utility/Colors";
+// Hisham start
+import { Text } from "react-native-paper";
+// Hisham close
 
+import Colors from "../components/Utility/Colors";
 import BookDetails from "../components/BookInfoComponents/Book_Details";
 import BookSummary from "../components/BookInfoComponents/Book_Summary";
 import ItemsBar from "../components/ItemsBar";
@@ -18,7 +21,6 @@ import { postBorrowRequest, updateFavList } from "../components/Utility/http";
 import Student from "../models/Student";
 import { isFined } from "../components/Utility/UtilityFunctions";
 import PaymentNotification from "../components/Utility/PaymentNotification";
-import { Text } from "react-native-paper";
 
 function BookInformationScreen({ navigation }) {
   // to get the list of books
@@ -32,19 +34,19 @@ function BookInformationScreen({ navigation }) {
       headerLeft:
         Platform.OS === "android"
           ? () => (
-            <HeaderBackButton
-              onPress={() => {
-                // First, we upload the changes made to student context to the database
-                updateFavList(
-                  studentCtx.ID,
-                  studentCtx.student,
-                  studentCtx.Token
-                );
-                // This will remove The previous screen (Barcode scanner screen)
-                navigation.dispatch(StackActions.popToTop());
-              }}
-            />
-          )
+              <HeaderBackButton
+                onPress={() => {
+                  // First, we upload the changes made to student context to the database
+                  updateFavList(
+                    studentCtx.ID,
+                    studentCtx.student,
+                    studentCtx.Token
+                  );
+                  // This will remove The previous screen (Barcode scanner screen)
+                  navigation.dispatch(StackActions.popToTop());
+                }}
+              />
+            )
           : undefined,
     }); // if platform is IOS don't do anything
   }, []);
@@ -58,16 +60,24 @@ function BookInformationScreen({ navigation }) {
   */
   const Route = useRoute();
   const isbn = Route.params.bookId;
-  const isScanned = Route.params.isScanned;
   const [visible, changeVisibility] = useState(false);
 
-  // console.log(JSON.stringify(appCtx.books));
   const selectedBook = appCtx.books.find((book) => book.isbn === isbn);
-  let defaultRating = 0;
+  // Hisham start
+  let defaultRating = -1;
+  let remove = false;
+  // Hisham close
   if (selectedBook.ratedBy.some((e) => e.key == studentCtx.ID)) {
     let obj = selectedBook.ratedBy.find((o) => o.key === studentCtx.ID);
     defaultRating = obj.rating;
   }
+// Hisahm start
+  if (defaultRating == -1) {
+    defaultRating = 0;
+  } else {
+    remove = true;
+  }
+  // Hisham close
 
   async function borrowBook() {
     if (isFined(studentCtx)) {
@@ -91,7 +101,6 @@ function BookInformationScreen({ navigation }) {
   }, [Navigation, selectedBook.title]);
 
   const bookImage = selectedBook.imageUrl; //dummy image to test
-  // console.log(bookImage);
   /*
   // This commented section might be used later to implement the favorite books feature
   // Note: Some variable / function namings might be changed
@@ -138,7 +147,6 @@ function BookInformationScreen({ navigation }) {
   // In the begging, we check if the book is faviroute already or not
   // This will be used as the intial value of isvaforite state.
   let isFavoriteIntial = !!student?.favBooks && student.favBooks.includes(isbn);
-  // console.log(isFavoriteIntial);
   //This state variable keeps track of wether a book has been added to faviroute or not
   const [bookIsFavorite, setBookIsFavorite] = useState(isFavoriteIntial);
   // This will be used everywhere for fav list changes
@@ -156,7 +164,6 @@ function BookInformationScreen({ navigation }) {
         favBooks: studentCtx.student.favBooks.filter(isInFavList),
       };
       studentCtx.registerStudent(currentStudentContext);
-      // console.log(studentCtx.student);
     } else {
       // If the book was not in fav list:
       // 1- We change the state of the current page, from not fav to fav, so button shows filled star
@@ -178,7 +185,6 @@ function BookInformationScreen({ navigation }) {
       }
 
       studentCtx.registerStudent(currentStudentContext);
-      // console.log(studentCtx.student);
     }
   };
 
@@ -247,6 +253,9 @@ function BookInformationScreen({ navigation }) {
               changeVisibility={changeVisibility}
               studentID={studentCtx.ID}
               bookID={selectedBook.id}
+              // Hisham start
+              remove={remove}
+              // Hisham close
             />
 
             <BookDetails
@@ -286,7 +295,6 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     margin: 16,
-
   },
   itemsBar: {
     marginTop: 8,
@@ -294,7 +302,6 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     // borderRadius: 4,
     alignItems: "center",
-
   },
   iconButton: {
     // backgroundColor: "transparent",

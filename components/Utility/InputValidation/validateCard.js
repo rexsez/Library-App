@@ -134,7 +134,10 @@ export default async function validateCard(
       feilds: "cardNumber",
       errorComponent: newRrrorComponent,
     });
-  } else if (cardInfo.cardNumber.length != 19) {
+  } else if (
+    cardInfo.cardNumber.length >= 16 &&
+    cardInfo.cardNumber.length <= 19
+  ) {
     let newRrrorComponent = (
       <ErrorComponent>Please enter your full card number!</ErrorComponent>
     );

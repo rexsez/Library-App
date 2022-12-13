@@ -76,7 +76,6 @@ function FilterModal({
   const [category, setCategory] = useState();
   const [filter, setFilter] = useState();
   const [orderBy, setOrderBy] = useState();
-  // console.log(rating);
 
   // Here we handle the options that is chosen as a sort options
   // it could be Title, Author, Date and Rating
@@ -274,16 +273,17 @@ function FilterModal({
         borderRadius: 15,
       }}
     >
-
       <View>
         <ScrollView>
-        <View style={{ alignItems: "flex-end" }}>
-        <View >
-          <MyButton onPress={toggleModal}>
-            <Ionicons name="close" size={35} color="black" />
-          </MyButton>
-        </View>
-      </View>
+          {/* Hisham start */}
+          <View style={styles.CloseButton}>
+            <View>
+              {/* Hisham close */}
+              <MyButton onPress={toggleModal}>
+                <Ionicons name="close" size={35} color="black" />
+              </MyButton>
+            </View>
+          </View>
           <View style={styles.Container}>
             <Text style={[styles.Text, { marginTop: 20 }]}>Filter By</Text>
             <DropDownMenu //Category
@@ -365,6 +365,11 @@ function FilterModal({
 export default FilterModal;
 
 const styles = StyleSheet.create({
+  // Hisham start
+  CloseButton: {
+    alignItems: "flex-end",
+  },
+  // Hisham close
   Container: {
     flex: 1,
     marginHorizontal: 20,

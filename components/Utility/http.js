@@ -176,7 +176,16 @@ export async function postRating(studentID, bookID, rating) {
   res[studentID] = rating;
   axios.put(link, res);
 }
+// Hisahm start
+export async function deleteRating(studentID, bookID) {
+  const link = database + "books/" + bookID + "/ratings.json";
+  const result = await axios.get(link);
+  let res = result.data;
+  delete res[studentID];
+  axios.put(link, res);
+}
 
+// Hisham close
 // ------------------------------------------get books----------------------------------------------------
 export async function getBooks() {
   const appCtx = useContext(AppContext);
@@ -321,7 +330,17 @@ export async function postBorrowRequestToStudent(isbn, userKey) {
 // -------------------------------------adding book to fav list---------------------------------------------
 export async function updateFavList(ID, student, Token) {
   student["verification"] = Token;
+  //###
+  //to keep borrowedBooks the same
+  let link = database + "students/" + ID + "/borrowedBooks.json";
+  let result = await axios.get(link);
+  let res = result.data;
 
+  if (!!res) {
+    let updateStudent = { ...student, borrowedBooks: res };
+    student = updateStudent;
+  }
+  //###
   axios.put(database + `students/${ID}.json`, student);
 }
 
