@@ -12,6 +12,7 @@ import {
 import { AppContext } from "../../store/AppContext";
 import { useContext } from "react";
 import { sendMail } from "../../Server/mailUtility";
+import { updatedListOfBorrowedBooks } from "./UtilityFunctions";
 
 const database =
   "https://psu-library-app-default-rtdb.europe-west1.firebasedatabase.app/";
@@ -302,7 +303,7 @@ export async function getStudentID(email) {
 }
 
 export async function postBorrowRequest(isbn, title, userEmail, userKey) {
-// Hisham start
+  // Hisham start
   const borrowData = {
     isbn: isbn,
     title: title,
@@ -318,7 +319,7 @@ export async function postBorrowRequest(isbn, title, userEmail, userKey) {
     }
   }
   await axios.post(database + "borrow_requests.json", borrowData);
-// Hisham close
+  // Hisham close
   await postBorrowRequestToStudent(isbn, userKey);
 }
 
@@ -345,15 +346,15 @@ export async function postBorrowRequestToStudent(isbn, userKey) {
     link = database + "students/" + userKey + "/borrowedBooks.json";
     result = await axios.get(link);
     res = result.data;
-// Hisham start
+    // Hisham start
     if (res[isbn] != null) {
       alert("A request for this book have been submitted already");
     } else {
-// Hisham close
+      // Hisham close
 
       res[isbn] = "pending";
       axios.put(link, res);
-// Hisham start
+      // Hisham start
       alert("Your borrow request have been submitted ");
     }
     // Hisham close
@@ -409,7 +410,11 @@ export async function pay(cardNumber, fineAmount) {
 }
 export async function giveGracePeriod(studentID) {
   //1- We get current student data, so we update info currectly
-  //2- We calculate what the date will be in two days from now (grace period)
+  const response = await axios.get(database + `students/${studentID}.json`);
+  let updatedData = response.data;
+  // 2- This function gives grace period to any book that is overdue
+  let updatedBorrowed = updatedListOfBorrowedBooks(updatedData.borrowedBooks);
   // 3- we put the new date (grace period) into the object we got containing student info from db
-  //
+  updatedData = { ...updatedData, borrowedBooks: updatedBorrowed };
+  await axios.put(database + `students/${studentID}.json`, updatedData);
 }
