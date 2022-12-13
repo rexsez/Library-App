@@ -27,13 +27,19 @@ function BookInformationScreen({ navigation }) {
   const appCtx = useContext(AppContext);
   // to get student info and use it to rate a book
   const studentCtx = useContext(StudentContext);
+  // Hisham start
+  const route = useRoute();
+  const isScanned = route.params.isScanned;
+  // Hisham close
 
   //using the isbn to find the selected book object
   useEffect(() => {
     navigation.setOptions({
       headerLeft:
-        Platform.OS === "android"
-          ? () => (
+        // Hisham start
+        Platform.OS === "android" && isScanned
+          ? // Hisham close
+            () => (
               <HeaderBackButton
                 onPress={() => {
                   // First, we upload the changes made to student context to the database
@@ -71,7 +77,7 @@ function BookInformationScreen({ navigation }) {
     let obj = selectedBook.ratedBy.find((o) => o.key === studentCtx.ID);
     defaultRating = obj.rating;
   }
-// Hisahm start
+  // Hisahm start
   if (defaultRating == -1) {
     defaultRating = 0;
   } else {
@@ -89,7 +95,9 @@ function BookInformationScreen({ navigation }) {
       const userKey = studentCtx.ID;
       await postBorrowRequest(isbn, title, userEmail, userKey);
       appCtx.changeScreenHandler("Home");
-      navigation.navigate("TabSearch", { request: true });
+      // Hisham start
+      navigation.navigate("TabSearch");
+      // Hisham close
     }
   }
   const [isPress, setIsPress] = useState(false);

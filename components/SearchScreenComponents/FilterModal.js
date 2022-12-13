@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import Modal from "react-native-modal";
 import RadioButtonRN from "radio-buttons-react-native";
+// Hisham start
+import { Ionicons } from "@expo/vector-icons";
 
 import DropDownMenu from "../AddBookComponents/Drop_Down_Menu";
 import SliderExample from "../Utility/SliderExample";
@@ -18,7 +20,6 @@ import {
 import { AppContext } from "../../store/AppContext";
 import MyButton from "../MyButton";
 import Colors from "../Utility/Colors";
-import { Ionicons } from "@expo/vector-icons";
 
 // This is going to be used to show filter options as a radio button
 // label is needed for radio button to work

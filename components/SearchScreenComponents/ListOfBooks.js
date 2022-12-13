@@ -1,5 +1,5 @@
 import { View, StyleSheet, TextInput, FlatList, Text } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -26,7 +26,7 @@ function ListOfBooks() {
   // Hisham start
   const [chosenMinimumRating, setMinimumRating] = useState(0);
   const [chosenCategory, setNewCategory] = useState();
-// Hisham close
+  // Hisham close
   useFocusEffect(
     React.useCallback(() => {
       // Do something when the screen is focused.
@@ -58,7 +58,7 @@ function ListOfBooks() {
   function SearchFilter(enteredSearch) {
     // Hisahm start
     let filteredBooks;
-      // Hisham close
+    // Hisham close
     // if something is entered (not empty), it will enter the condition
     if (enteredSearch) {
       // converting it to lower case to avoid case sensitive issues
