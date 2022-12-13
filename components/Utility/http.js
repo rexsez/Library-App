@@ -176,7 +176,16 @@ export async function postRating(studentID, bookID, rating) {
   res[studentID] = rating;
   axios.put(link, res);
 }
+// Hisahm start
+export async function deleteRating(studentID, bookID) {
+  const link = database + "books/" + bookID + "/ratings.json";
+  const result = await axios.get(link);
+  let res = result.data;
+  delete res[studentID];
+  axios.put(link, res);
+}
 
+// Hisham close
 // ------------------------------------------get books----------------------------------------------------
 export async function getBooks() {
   const appCtx = useContext(AppContext);
