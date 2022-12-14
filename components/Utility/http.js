@@ -43,6 +43,7 @@ function assignBadges(books) {
     else break;
   }
   books.sort(DescendingDateRegistered);
+  console.log(books);
   for (i = 0; i < books.length; i++) {
     let date1 = new Date();
     let date2 = new Date(books[i].dateRegistered);
@@ -375,6 +376,43 @@ export async function updateFavList(ID, student, Token) {
   }
   //###
   axios.put(database + `students/${ID}.json`, student);
+}
+
+export async function addToFavList(studentID, isbn) {
+  //fetching the user's object
+  let link = database + "students/" + studentID + ".json";
+  let result = await axios.get(link);
+  let res = result.data;
+
+  //if the user has a list of favorites -> add the isbn to it,
+  //otherwise create a new list with this isbn and add it to the student object
+  if (!!res?.favBooks) {
+    //favBooks exists
+    res.favBooks = [...res.favBooks, isbn];
+  } else {
+    //favBooks does not exist
+    res["favBooks"] = [isbn];
+  }
+
+  //upload to database
+  axios.put(link, res);
+  alert("Book is added to favorites");
+}
+
+export async function removeFromFavList(studentID, isbn) {
+  //fetching the user's current favorites
+  let link = database + "students/" + studentID + "/favBooks.json";
+  let result = await axios.get(link);
+  let res = result.data;
+
+  //removing the isbn of the book from the list
+  res = res.filter((currentIsbn) => {
+    return currentIsbn != isbn;
+  });
+
+  //uploading the new list
+  axios.put(link, res);
+  alert("Book is removed from favorites");
 }
 
 // added
