@@ -24,8 +24,10 @@ function HomeScreen() {
   const studentCtx = useContext(StudentContext);
   function GoTo(stackName) {
     if (stackName == "DrawerProfile") {
-      console.log("Profile");
       appCtx.changeScreenHandler("Profile");
+    }
+    if (stackName == "TabSearch") {
+      appCtx.changeScreenHandler("Search");
     }
     return navigation.navigate({ name: stackName });
   }
@@ -91,7 +93,7 @@ function HomeScreen() {
             <View style={styles.rowContainer}>
               <Card
                 text="Search Books"
-                onPressed={GoTo.bind(this, "StackSearch")}
+                onPressed={GoTo.bind(this, "TabSearch")}
                 path="search"
                 color={Colors.primary500}
               ></Card>
