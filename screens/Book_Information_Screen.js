@@ -17,7 +17,7 @@ import { AppContext } from "../store/AppContext";
 import { StudentContext } from "../store/StudentContext";
 import BookRatingModal from "../components/BookInfoComponents/Book_Rating";
 import { LinearGradient } from "expo-linear-gradient";
-import { postBorrowRequest, updateFavList } from "../components/Utility/http";
+import { postBorrowRequest, addToFavList } from "../components/Utility/http";
 import Student from "../models/Student";
 import { isFined } from "../components/Utility/UtilityFunctions";
 import PaymentNotification from "../components/Utility/PaymentNotification";
@@ -175,6 +175,9 @@ function BookInformationScreen({ navigation }) {
       // If the book was not in fav list:
       // 1- We change the state of the current page, from not fav to fav, so button shows filled star
       setBookIsFavorite(true);
+
+      addToFavList(studentCtx.ID, isbn);
+      
       // // 2- then we add it to fav list in the app wide context
       // If there is no fav in the context
       if (!!!currentStudentContext?.favBooks) {
@@ -191,11 +194,11 @@ function BookInformationScreen({ navigation }) {
       }
     }
     studentCtx.registerStudent(currentStudentContext);
-    updateFavList(
-      studentCtx.ID,
-      studentCtx.student,
-      studentCtx.Token
-    );
+    // addToFavList(
+    //   studentCtx.ID,
+    //   studentCtx.student,
+    //   studentCtx.Token
+    // );
   };
 
   //List of buttons to be added to the IconButtonBar

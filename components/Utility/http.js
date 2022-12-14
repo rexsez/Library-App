@@ -328,21 +328,52 @@ export async function postBorrowRequestToStudent(isbn, userKey) {
   }
 }
 // -------------------------------------adding book to fav list---------------------------------------------
-export async function updateFavList(ID, student, Token) {
-  // student["verification"] = Token;
-  // //###
-  // //to keep borrowedBooks the same
-  // let link = database + "students/" + ID + "/borrowedBooks.json";
-  // let result = await axios.get(link);
-  // let res = result.data;
-
-  // if (!!res) {
-  //   let updateStudent = { ...student, borrowedBooks: res };
-  //   student = updateStudent;
-  // }
-  // //###
-  // axios.put(database + `students/${ID}.json`, student);
+export async function addToFavList(studentID, isbn) {
+  const link = database + "students/" + studentID + ".json";
+  const result = await axios.get(link);
+  let res = result.data;
+  if(!!res?.favBooks) {
+    res = [...res, isbn];
+    axios.put(link, res);
+  }else{
+    link = database + "students/" + studentID + "/favBooks.json";
+    result = await axios.get(link);
+    res = result.data;
+    res = [isbn];
+    axios.put(link, res);
+  }
 }
+export async function updateFavList(ID, student, Token) {
+  student["verification"] = Token;
+  //###
+  //to keep borrowedBooks the same
+  let link = database + "students/" + ID + "/borrowedBooks.json";
+  let result = await axios.get(link);
+  let res = result.data;
+
+  if (!!res) {
+    let updateStudent = { ...student, borrowedBooks: res };
+    student = updateStudent;
+  }
+  //###
+  axios.put(database + `students/${ID}.json`, student);
+}
+// export async function postRating(studentID, bookID, rating) {
+//   const link = database + "books/" + bookID + "/ratings.json";
+
+//   const result = await axios.get(link);
+//   let res = result.data;
+//   res[studentID] = rating;
+//   axios.put(link, res);
+// }
+
+// export async function deleteRating(studentID, bookID) {
+//   const link = database + "books/" + bookID + "/ratings.json";
+//   const result = await axios.get(link);
+//   let res = result.data;
+//   delete res[studentID];
+//   axios.put(link, res);
+// }
 
 // added
 // -------------------------------------Verification Functions---------------------------------------------
