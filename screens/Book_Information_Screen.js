@@ -27,21 +27,23 @@ function BookInformationScreen({ navigation }) {
   const appCtx = useContext(AppContext);
   // to get student info and use it to rate a book
   const studentCtx = useContext(StudentContext);
+  const route = useRoute();
+  const isScanned = route.params.isScanned;
 
   //using the isbn to find the selected book object
   useEffect(() => {
     navigation.setOptions({
       headerLeft:
-        Platform.OS === "android"
+        Platform.OS === "android" && isScanned
           ? () => (
               <HeaderBackButton
                 onPress={() => {
                   // First, we upload the changes made to student context to the database
-                  updateFavList(
-                    studentCtx.ID,
-                    studentCtx.student,
-                    studentCtx.Token
-                  );
+                  // updateFavList(
+                  //   studentCtx.ID,
+                  //   studentCtx.student,
+                  //   studentCtx.Token
+                  // );
                   // This will remove The previous screen (Barcode scanner screen)
                   navigation.dispatch(StackActions.popToTop());
                 }}
@@ -71,7 +73,7 @@ function BookInformationScreen({ navigation }) {
     let obj = selectedBook.ratedBy.find((o) => o.key === studentCtx.ID);
     defaultRating = obj.rating;
   }
-// Hisahm start
+  // Hisahm start
   if (defaultRating == -1) {
     defaultRating = 0;
   } else {
@@ -134,15 +136,17 @@ function BookInformationScreen({ navigation }) {
   // Supporting function needed to change list of fav from student context
   // This method receives by defualt the values (in this case: ISBN) in the array
   const student = studentCtx.student;
-  const isInFavList = (currentItemISBN) => {
+
+  const isInFavList = (currentItemIsbn) => {
     // checks if the current element of the array has the same isbn
 
-    if (currentItemISBN == isbn) {
+    return currentItemIsbn != isbn;
+    // if (currentItemIsbn == isbn) {
       // if the item has the isbn, then it return false (This item is needs to be filtered out)
-      return false;
-    }
+      // return false;
+    // }
     // Else if the item doesnt match, it returns true (Dont filter the item)
-    return true;
+    // return true;
   };
   // In the begging, we check if the book is faviroute already or not
   // This will be used as the intial value of isvaforite state.
@@ -159,17 +163,19 @@ function BookInformationScreen({ navigation }) {
       // 1- We change the state of the current page, from fav to not fav, so button shows empty star
       setBookIsFavorite(false);
       // 2- then we delete it from fav list in the app wide context
+
+      const newFavBooks = studentCtx.student.favBooks.filter(isInFavList);
+
       currentStudentContext = {
         ...studentCtx.student,
-        favBooks: studentCtx.student.favBooks.filter(isInFavList),
+        favBooks: newFavBooks,
       };
-      studentCtx.registerStudent(currentStudentContext);
+
     } else {
       // If the book was not in fav list:
       // 1- We change the state of the current page, from not fav to fav, so button shows filled star
       setBookIsFavorite(true);
       // // 2- then we add it to fav list in the app wide context
-      currentStudentContext = studentCtx.student;
       // If there is no fav in the context
       if (!!!currentStudentContext?.favBooks) {
         currentStudentContext = new Student(
@@ -183,23 +189,17 @@ function BookInformationScreen({ navigation }) {
       } else {
         currentStudentContext.favBooks.push(isbn);
       }
-
-      studentCtx.registerStudent(currentStudentContext);
     }
+    studentCtx.registerStudent(currentStudentContext);
+    updateFavList(
+      studentCtx.ID,
+      studentCtx.student,
+      studentCtx.Token
+    );
   };
 
   //List of buttons to be added to the IconButtonBar
   const iconBarButtons = [
-    //favorite button
-    <MyButton style={styles.iconButton} onPress={onPressFav}>
-      {
-        <FontAwesome
-          name={bookIsFavorite ? "star" : "star-o"}
-          {...iconStyles}
-        />
-      }
-    </MyButton>,
-
     //rating
     <MyButton
       style={styles.iconButton}
@@ -209,16 +209,29 @@ function BookInformationScreen({ navigation }) {
       {selectedBook.rating != -1 ? selectedBook.rating + " / 5" : "Unrated"}
     </MyButton>,
   ];
+
   if (!!studentCtx.student.Email) {
     //add the borrow option if the book is scanned
     iconBarButtons.push(
-      <>
-        <MyButton style={styles.iconButton} onPress={borrowBook}>
-          {<FontAwesome name="hand-grab-o" {...iconStyles} />}
-        </MyButton>
-      </>
+      <MyButton style={styles.iconButton} onPress={borrowBook}>
+        {/* {<FontAwesome name="hand-grab-o" {...iconStyles} />} */}
+        <Text style={styles.borrowText}>Borrow</Text>
+      </MyButton>
+    );
+
+    //favorite button
+    iconBarButtons.unshift(
+      <MyButton style={styles.iconButton} onPress={onPressFav}>
+        {
+          <FontAwesome
+            name={bookIsFavorite ? "star" : "star-o"}
+            {...iconStyles}
+          />
+        }
+      </MyButton>
     );
   }
+
   let component = <View></View>;
   if (isPress) {
     component = (
@@ -302,6 +315,7 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     // borderRadius: 4,
     alignItems: "center",
+    // flexDirection: "column"
   },
   iconButton: {
     // backgroundColor: "transparent",
@@ -332,5 +346,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     letterSpacing: 1.5,
     fontSize: 24,
+  },
+  borrowText: {
+    color: "black",
+    fontWeight: "bold",
+    fontSize: 18,
   },
 });
