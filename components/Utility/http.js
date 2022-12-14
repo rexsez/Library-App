@@ -43,7 +43,6 @@ function assignBadges(books) {
     else break;
   }
   books.sort(DescendingDateRegistered);
-  console.log(books);
   for (i = 0; i < books.length; i++) {
     let date1 = new Date();
     let date2 = new Date(books[i].dateRegistered);

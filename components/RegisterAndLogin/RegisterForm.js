@@ -1,6 +1,11 @@
 import { useState, useContext } from "react";
 import { View, StyleSheet, KeyboardAvoidingView, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+// This is size-matters library imports, used to resize everything in specific scale.
+// https://www.npmjs.com/package/react-native-size-matters <-- for more information
+import { ScaledSheet } from "react-native-size-matters";
+import { s, vs, ms, mvs } from "react-native-size-matters";
+import { scale, verticalScale, moderateScale } from "react-native-size-matters";
 
 import Student from "../../models/Student";
 import MyButton from "../MyButton";
@@ -10,7 +15,7 @@ import validateNewStudent from "../Utility/InputValidation/ValidateNewStudent";
 import InputeForm from "./InputeForm";
 import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
-import { getStudentID, registerStudent } from "../Utility/http";
+import { registerStudent } from "../Utility/http";
 import { AppContext } from "../../store/AppContext";
 function RegisterForm() {
   // ----------------- Navigation stuff --------------
@@ -217,13 +222,14 @@ function RegisterForm() {
     </>
   );
 }
-const styles = StyleSheet.create({
+
+const styles = ScaledSheet.create({
   InfoContainer: {
-    flex: 0.9,
-    padding: 10,
-    paddingBottom: 0,
-    margin: 20,
-    marginTop: 175,
+    flex: 1,
+    padding: "10@mvs",
+    paddingBottom: "0@mvs",
+    margin: "20@mvs",
+    marginTop: "175@mvs0.3",
     justifyContent: "center",
     borderWidth: 3,
     borderRadius: 15,
@@ -231,7 +237,7 @@ const styles = StyleSheet.create({
   },
   ButtonContainer: {
     alignItems: "center",
-    marginBottom: 10,
+    marginBottom: "10@mvs",
   },
   InputeError: {
     borderBottomColor: "red",
