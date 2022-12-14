@@ -341,28 +341,23 @@ function ProfileScreen({ defaultScreen }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
-    borderWidth: 2,
-    borderColor: "black",
   },
   outerListContainer: {
     backgroundColor: "white",
-    margin: 10,
-    marginTop: 10,
     flex: 1,
   },
   iconContainer: {
     margin: 20,
-    marginTop: 10,
     marginHorizontal: 0,
     flexDirection: "row",
     justifyContent: "space-evenly",
   },
   flatListContainer: {
     flex: 1,
+    margin: '1%',
+    borderRadius: 15,
     backgroundColor: "white",
-    borderStyle: "solid",
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: "black",
   },
   ImageBackground: {
@@ -373,7 +368,6 @@ const styles = StyleSheet.create({
   },
   greetingsContainer: {
     alignItems: "center",
-    marginTop: 30,
     backgroundColor: "#0593bb",
     width: "100%",
     height: 45,

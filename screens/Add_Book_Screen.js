@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { View, StyleSheet, Text /*Image*/, Platform } from "react-native";
+import { View, StyleSheet, Text /*Image*/, Platform, Alert } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useRoute } from "@react-navigation/native";
 import { HeaderBackButton } from "react-navigation-stack";
@@ -36,6 +36,7 @@ function AddBookScreen({ navigation }) {
   }, []);
   const Route = useRoute();
   const isbn = Route.params.bookId;
+  const fetchedISBN = isbn;
 
   const [inputs, setInputs] = useState({
     //default input values
@@ -102,8 +103,7 @@ function AddBookScreen({ navigation }) {
     }
     let isbnIsValid = false;
     if (
-      (inputs.isbn.value.length === 13 ||
-        inputs.isbn.value.length === 10) &&
+      (inputs.isbn.value.length === 13 || inputs.isbn.value.length === 10) &&
       containsOnlyNumbers(inputs.isbn.value)
     ) {
       isbnIsValid = true;
@@ -163,7 +163,16 @@ function AddBookScreen({ navigation }) {
     // }
     await requestBook(requestedData);
     appCtx.changeScreenHandler("Home");
-    navigation.navigate("TabSearch", { request: true });
+    if (fetchedISBN == "") {
+      // Alert.alert("Your book request is recorded",[{}]);
+      Alert.alert(" Submitted", "Your request has been submitted", [
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ]);
+
+      navigation.navigate("DrawerHome");
+    } else {
+      navigation.navigate("TabSearch", { request: true });
+    }
   }
 
   //helper variable to display form error text if some input is invalid
