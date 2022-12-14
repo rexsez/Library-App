@@ -15,15 +15,15 @@ appServer.use((req, res, next) => {
 function sendEmail({ recipient_email, subject, message, name, token }) {
   return new Promise((resolve, reject) => {
     var transporter = nodemailer.createTransport({
-      service: "hotmail",
+      service: "gmail",
       auth: {
-        user: "PSULibraryApplication1@outlook.com",
-        pass: "qazwsdqazwsd12",
+        user: "PSULibraryApplication@gmail.com",
+        pass: "kwzojbsdoulevtqy",
       },
     });
 
     const mail_configs = {
-      from: "PSULibraryApplication1@outlook.com",
+      from: "PSULibraryApplication@gmail.com",
       to: recipient_email,
       subject: subject,
       html: `<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -196,9 +196,8 @@ function sendEmail({ recipient_email, subject, message, name, token }) {
                                     <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                       <tr>
                                         <td style="padding-right: 0px;padding-left: 0px;" align="center">
-      
-                                          <img align="center" border="0" src="https://ric.psu.edu.sa/ric-v1/images/psu-logo-lightbg.png" width="500" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;float: none;"
-                                            width="179.2" />
+                                        <img align="center" border="0" src="https://arablocal.com/img/business/logos/prince-sultan-university---college-for-women-kuwait-19-10-01-09-10-38.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 26%;max-width: 150.8px;"
+                                        width="150.8" />
       
                                         </td>
                                       </tr>
@@ -243,8 +242,7 @@ function sendEmail({ recipient_email, subject, message, name, token }) {
                                       <tr>
                                         <td style="padding-right: 0px;padding-left: 0px;" align="center">
       
-                                          <img align="center" border="0" src="https://cdn.templates.unlayer.com/assets/1597218650916-xxxxc.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 26%;max-width: 150.8px;"
-                                            width="150.8" />
+                                        
       
                                         </td>
                                       </tr>

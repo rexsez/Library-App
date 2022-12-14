@@ -81,7 +81,7 @@ export function DrawerContent(props) {
                   size={size}
                 />
               )}
-              label={studentContext.student.Email?"Profile":"Account"}
+              label={studentContext.student.Email ? "Profile" : "Account"}
               onPress={() => {
                 appCtx.changeScreenHandler("Profile");
                 props.navigation.toggleDrawer();
@@ -210,9 +210,13 @@ export function DrawerContent(props) {
                 const initialNewStudent1 = new Student("", "", "", "", [], []);
                 studentContext.registerStudent(initialNewStudent1);
                 if (appCtx.currentScreen === "Profile") {
-                  appCtx.changeScreenHandler("Home");
+                  appCtx.changeScreenHandler("Login");
                   props.navigation.toggleDrawer();
-                  props.navigation.navigate("DrawerHome");
+                  props.navigation.navigate("DrawerLogin");
+                }
+                else
+                {
+                  props.navigation.toggleDrawer();
                 }
               }}
               style={{

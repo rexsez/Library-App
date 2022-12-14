@@ -1,4 +1,10 @@
-import { View, StyleSheet, ImageBackground, Text, Pressable } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ImageBackground,
+  Text,
+  Pressable,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useContext, useEffect, useState } from "react";
@@ -16,6 +22,10 @@ function HomeScreen() {
   const appCtx = useContext(AppContext);
   const studentCtx = useContext(StudentContext);
   function GoTo(stackName) {
+    if (stackName == "DrawerProfile") {
+      console.log("Profile");
+      appCtx.changeScreenHandler("Profile");
+    }
     return navigation.navigate({ name: stackName });
   }
   useEffect(() => {
@@ -46,7 +56,7 @@ function HomeScreen() {
             style={({ pressed }) => [
               {
                 backgroundColor: pressed ? "darkred" : "darkred",
-                opacity : pressed ? 0.5 : 1,
+                opacity: pressed ? 0.5 : 1,
               },
               styles.fineButton,
             ]}
@@ -57,7 +67,6 @@ function HomeScreen() {
         </>
       );
     }
-
   }
   return (
     <View style={styles.container}>
@@ -106,8 +115,6 @@ function HomeScreen() {
                 color={Colors.primary500}
               ></Card>
             </View>
-
-
           </View>
         </ScrollView>
       </ImageBackground>
@@ -170,7 +177,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     marginHorizontal: 60,
     borderWidth: 2,
-    borderColor: '#eddfb4',
+    borderColor: "#eddfb4",
   },
   textStyleFine: {
     color: "white",
