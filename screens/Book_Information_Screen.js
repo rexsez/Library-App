@@ -2,7 +2,7 @@ import { StyleSheet, ScrollView, Platform, View } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useLayoutEffect, useEffect, useContext, useState } from "react";
 import { HeaderBackButton } from "react-navigation-stack";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { StackActions } from "@react-navigation/native";
 // Hisham start
 import { Text } from "react-native-paper";
@@ -130,7 +130,7 @@ function BookInformationScreen({ navigation }) {
   //helper variable to style the icons
   const iconStyles = {
     size: 32,
-    color: "black",
+    color: Colors.primary500,
   };
 
   // Supporting function needed to change list of fav from student context
@@ -201,34 +201,44 @@ function BookInformationScreen({ navigation }) {
   //List of buttons to be added to the IconButtonBar
   const iconBarButtons = [
     //rating
-    <MyButton
-      style={styles.iconButton}
-      textStyle={styles.rating}
-      onPress={toggleModal}
-    >
-      {selectedBook.rating != -1 ? selectedBook.rating + " / 5" : "Unrated"}
-    </MyButton>,
+    <View style={styles.barItemContainer}>
+      <Text style={styles.itemsBarLabels}>Rating</Text>
+      <MyButton
+        style={styles.iconButton}
+        textStyle={styles.rating}
+        onPress={toggleModal}
+      >
+        {selectedBook.rating != -1 ? selectedBook.rating + " / 5" : "Unrated"}
+      </MyButton>
+    </View>,
   ];
 
   if (!!studentCtx.student.Email) {
     //add the borrow option if the book is scanned
     iconBarButtons.push(
-      <MyButton style={styles.iconButton} onPress={borrowBook}>
-        {/* {<FontAwesome name="hand-grab-o" {...iconStyles} />} */}
-        <Text style={styles.borrowText}>Borrow</Text>
-      </MyButton>
+      <View style={styles.barItemContainer}>
+        <Text style={styles.itemsBarLabels}>Borrow</Text>
+        <MyButton style={styles.iconButton} onPress={borrowBook}>
+          {
+            <Ionicons name="book" {...iconStyles}/>
+          }
+        </MyButton>
+      </View>
     );
 
     //favorite button
     iconBarButtons.unshift(
-      <MyButton style={styles.iconButton} onPress={onPressFav}>
-        {
-          <FontAwesome
-            name={bookIsFavorite ? "star" : "star-o"}
-            {...iconStyles}
-          />
-        }
-      </MyButton>
+      <View style={styles.barItemContainer}>
+        <Text style={styles.itemsBarLabels}>Favorite</Text>
+        <MyButton style={styles.iconButton} onPress={onPressFav}>
+          {
+            <FontAwesome
+              name={bookIsFavorite ? "star" : "star-o"}
+              {...iconStyles}
+            />
+          }
+        </MyButton>
+      </View>
     );
   }
 
@@ -305,6 +315,7 @@ const styles = StyleSheet.create({
     backgroundColor: "whitesmoke",
     marginTop: 100,
     borderRadius: 15,
+    marginHorizontal: 15
   },
   scrollContainer: {
     margin: 16,
@@ -318,22 +329,20 @@ const styles = StyleSheet.create({
     // flexDirection: "column"
   },
   iconButton: {
-    // backgroundColor: "transparent",
   },
   rating: {
     fontSize: 18,
-    color: "black",
+    color: Colors.primary500,
   },
   ImageBackground: {
     flex: 1,
   },
   linearGradient: {
     flex: 1,
-    paddingLeft: 15,
-    paddingRight: 15,
+    // paddingLeft: 15,
+    // paddingRight: 15,
     borderRadius: 5,
   },
-
   titleContainer: {
     padding: 15,
     backgroundColor: Colors.primary500,
@@ -352,4 +361,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 18,
   },
+  barItemContainer: {
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  itemsBarLabels:{
+    flex: 1,
+    fontSize: 12,
+    fontWeight: "bold",
+  }
 });
