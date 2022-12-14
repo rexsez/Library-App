@@ -100,7 +100,10 @@ function Announcements() {
             <Pressable
               style={({ pressed }) => [
                 {
-                  backgroundColor: pressed ? "#8aabdd" : Colors.primary500,
+                  backgroundColor: pressed
+                    ? Colors.primary500
+                    : Colors.primary500,
+                  opacity: pressed ? 0.7 : 1,
                 },
                 styles.button,
               ]}
@@ -120,7 +123,8 @@ function Announcements() {
         <Pressable
           style={({ pressed }) => [
             {
-              backgroundColor: pressed ? "#8aabdd" : Colors.primary500,
+              backgroundColor: pressed ? Colors.primary500 : Colors.primary500,
+              opacity: pressed ? 0.7 : 1,
             },
             styles.button,
           ]}
@@ -191,7 +195,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   announcementMainText: {
-    // fontFamily: "monospace",
     fontSize: 24,
     fontWeight: "bold",
     color: "#366EA0",
@@ -203,5 +206,4 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 });
-
 export default Announcements;

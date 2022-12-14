@@ -360,7 +360,7 @@ export async function postBorrowRequestToStudent(isbn, userKey) {
     // Hisham close
   }
 }
-// -------------------------------------adding/removing book to/from fav list-----------------------------------
+// -------------------------------------adding book to fav list---------------------------------------------
 export async function updateFavList(ID, student, Token) {
   student["verification"] = Token;
   //###
@@ -382,14 +382,15 @@ export async function addToFavList(studentID, isbn) {
   let link = database + "students/" + studentID + ".json";
   let result = await axios.get(link);
   let res = result.data;
-  
+
   //if the user has a list of favorites -> add the isbn to it,
   //otherwise create a new list with this isbn and add it to the student object
-  if(!!res?.favBooks) { //favBooks exists
+  if (!!res?.favBooks) {
+    //favBooks exists
     res.favBooks = [...res.favBooks, isbn];
-  }
-  else{ //favBooks does not exist
-    res['favBooks'] = [isbn];
+  } else {
+    //favBooks does not exist
+    res["favBooks"] = [isbn];
   }
 
   //upload to database

@@ -1,5 +1,5 @@
 import { useState, useContext, useLayoutEffect } from "react";
-import { View, StyleSheet, KeyboardAvoidingView } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { StackActions, useNavigation } from "@react-navigation/native";
 import { giveGracePeriod } from "../Utility/http";
@@ -42,7 +42,7 @@ function PaymentForm({ onCancel }) {
     { label: "11", value: "11" },
     { label: "12", value: "12" },
   ];
-  // Getting the list of years danimacally based on the current year
+  // Getting the list of years dynamically based on the current year
   // First we get part of year we want 20 - (22)
   const d = new Date();
   let currentYear = d.getFullYear().toString();
@@ -235,166 +235,178 @@ function PaymentForm({ onCancel }) {
   return (
     <TouchableWithoutFeedback style={{ flex: 1 }} onPress={Keyboard.dismiss}>
       <View style={styles.InfoContainer}>
-        <View style={styles.details}>
-          <View style={styles.innerdetails}>
-            <View style={{ marginRight: 30 }}>
-              <Text style={[styles.title, { marginHorizontal: 0 }]}>
-                Over due by
-              </Text>
-              <Text style={[styles.amount, { marginHorizontal: 0 }]}>
-                {days + daysText}
-              </Text>
-            </View>
-            <View>
-              <Text style={[styles.title, { marginHorizontal: 0 }]}>
-                Rate of charge
-              </Text>
-              <Text style={[styles.amount, { marginHorizontal: 0 }]}>
-                5.00 SR/day
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View>
-          <Text style={styles.title}>Payment amount</Text>
-          <Text style={styles.amount}>{fineAmount}.00 SR</Text>
-        </View>
-        <View>
-          <View style={styles.imagesContainer}>
-            <View style={styles.imageContainer}>
-              <Image
-                resizeMode="contain"
-                source={require("../../assets/master.png")}
-                style={styles.Image}
-              ></Image>
-            </View>
-            <View style={styles.imageContainer}>
-              <Image
-                resizeMode="contain"
-                source={require("../../assets/Stc_pay.png")}
-                style={styles.Image}
-              ></Image>
-            </View>
-            <View style={styles.imageContainer}>
-              <Image
-                resizeMode="contain"
-                source={require("../../assets/visa.png")}
-                style={styles.Image}
-              ></Image>
+        <LinearGradient
+          start={{ x: 1.5, y: 0.6 }}
+          end={{ x: 1, y: 1.4 }}
+          locations={[0, 0.5, 0.6]}
+          // Background Linear Gradient
+          colors={[Colors.primary500, "white", Colors.primary500]}
+          style={styles.linearGradient}
+        >
+          <View style={styles.details}>
+            <View style={styles.innerdetails}>
+              <View style={{ marginRight: 30 }}>
+                <Text style={[styles.title, { marginHorizontal: 0 }]}>
+                  Over due by
+                </Text>
+                <Text style={[styles.amount, { marginHorizontal: 0 }]}>
+                  {days + daysText}
+                </Text>
+              </View>
+              <View>
+                <Text style={[styles.title, { marginHorizontal: 0 }]}>
+                  Rate of charge
+                </Text>
+                <Text style={[styles.amount, { marginHorizontal: 0 }]}>
+                  5.00 SR/day
+                </Text>
+              </View>
             </View>
           </View>
-          <Text style={styles.title}>Name on card</Text>
-          <Inpute
-            style={[
-              styles.inpute,
-              error.feilds == "name" &&
-                error.errorComponent &&
-                styles.InputeError,
-            ]}
-            onChangeTextHandler={onChangeTextHanddler.bind(this, "name")}
-            inputeTextProps={{
-              placeholderTextColor: "white",
-              maxLength: 29,
-              value: newStudent.name,
-            }}
-          ></Inpute>
-        </View>
-        <View>
-          <Text style={styles.title}>Card number</Text>
-          <Inpute
-            style={[
-              styles.inpute,
-              error.feilds == "cardNumber" &&
-                error.errorComponent &&
-                styles.InputeError,
-            ]}
-            onChangeTextHandler={onChangeTextHanddler.bind(this, "cardNumber")}
-            inputeTextProps={{
-              placeholderTextColor: "white",
-              maxLength: 19,
-              value: newStudent.cardNumber,
-              keyboardType: "number-pad",
-            }}
-          ></Inpute>
-        </View>
-        <View style={styles.doubleInpute}>
-          <View style={[styles.inner, { marginRight: 10 }]}>
-            <Text style={[styles.title, { marginHorizontal: 0 }]}>
-              Expiry date
-            </Text>
-            <View style={[styles.date]}>
-              <DropDownMenu //Category
-                style={[
-                  {
-                    flex: 1,
-                    marginHorizontal: 0,
-                    marginVertical: 0,
-                    marginRight: 2,
-                  },
-                ]}
-                label={month}
-                elements={monthElements}
-                dropDownConfig={{
-                  onChange: onChangeMonth,
-                }}
-              />
-              <DropDownMenu //Category
-                style={{ flex: 1, marginHorizontal: 0, marginVertical: 0 }}
-                label={year}
-                elements={yearElements}
-                dropDownConfig={{
-                  onChange: onChangeYear,
-                }}
-              />
-            </View>
+          <View>
+            <Text style={styles.title}>Payment amount</Text>
+            <Text style={styles.amount}>{fineAmount}.00 SR</Text>
           </View>
-          <View style={styles.inner}>
-            <Text style={[styles.title, { marginHorizontal: 0 }]}>CCV</Text>
+          <View>
+            <View style={styles.imagesContainer}>
+              <View style={styles.imageContainer}>
+                <Image
+                  resizeMode="contain"
+                  source={require("../../assets/master.png")}
+                  style={styles.Image}
+                ></Image>
+              </View>
+              <View style={styles.imageContainer}>
+                <Image
+                  resizeMode="contain"
+                  source={require("../../assets/Stc_pay.png")}
+                  style={styles.Image}
+                ></Image>
+              </View>
+              <View style={styles.imageContainer}>
+                <Image
+                  resizeMode="contain"
+                  source={require("../../assets/visa.png")}
+                  style={styles.Image}
+                ></Image>
+              </View>
+            </View>
+            <Text style={styles.title}>Name on card</Text>
             <Inpute
               style={[
                 styles.inpute,
-                error.feilds == "ccv" &&
+                error.feilds == "name" &&
                   error.errorComponent &&
                   styles.InputeError,
               ]}
-              size={styles.size}
-              // ---- to be edited, check password
-              onChangeTextHandler={onChangeTextHanddler.bind(this, "ccv")}
+              onChangeTextHandler={onChangeTextHanddler.bind(this, "name")}
               inputeTextProps={{
-                maxLength: 3,
-                placeholder: "CCV",
                 placeholderTextColor: "white",
-                autoCapitalize: "none",
-                value: newStudent.ccv,
+                maxLength: 29,
+                value: newStudent.name,
+              }}
+            ></Inpute>
+          </View>
+          <View>
+            <Text style={styles.title}>Card number</Text>
+            <Inpute
+              style={[
+                styles.inpute,
+                error.feilds == "cardNumber" &&
+                  error.errorComponent &&
+                  styles.InputeError,
+              ]}
+              onChangeTextHandler={onChangeTextHanddler.bind(
+                this,
+                "cardNumber"
+              )}
+              inputeTextProps={{
+                placeholderTextColor: "white",
+                maxLength: 19,
+                value: newStudent.cardNumber,
                 keyboardType: "number-pad",
               }}
             ></Inpute>
           </View>
-        </View>
-        <View>
-          <Text style={styles.title}>ZIP/Postal code</Text>
-          <Inpute
-            style={[styles.inpute]}
-            onChangeTextHandler={onChangeTextHanddler.bind(this, "zipCode")}
-            inputeTextProps={{
-              maxLength: 10,
-              placeholderTextColor: "white",
-              placeholder: " Optional",
-              autoCapitalize: "none",
-              keyboardType: "numeric",
-              value: newStudent.zipCode,
-            }}
-          ></Inpute>
-        </View>
-        {error.errorComponent}
-        <View style={styles.ButtonContainer}>
-          <PressableButton onPress={onPress} style={styles.payButton}>
-            Pay
-          </PressableButton>
-          <PressableButton style={styles.cancelButton} onPress={cancelForm}>
-            Cancel
-          </PressableButton>
-        </View>
+          <View style={styles.doubleInpute}>
+            <View style={[styles.inner, { marginRight: 10 }]}>
+              <Text style={[styles.title, { marginHorizontal: 0 }]}>
+                Expiry date
+              </Text>
+              <View style={[styles.date]}>
+                <DropDownMenu //Category
+                  style={[
+                    {
+                      flex: 1,
+                      marginHorizontal: 0,
+                      marginVertical: 0,
+                      marginRight: 2,
+                    },
+                  ]}
+                  label={month}
+                  elements={monthElements}
+                  dropDownConfig={{
+                    onChange: onChangeMonth,
+                  }}
+                />
+                <DropDownMenu //Category
+                  style={{ flex: 1, marginHorizontal: 0, marginVertical: 0 }}
+                  label={year}
+                  elements={yearElements}
+                  dropDownConfig={{
+                    onChange: onChangeYear,
+                  }}
+                />
+              </View>
+            </View>
+            <View style={styles.inner}>
+              <Text style={[styles.title, { marginHorizontal: 0 }]}>CCV</Text>
+              <Inpute
+                style={[
+                  styles.inpute,
+                  error.feilds == "ccv" &&
+                    error.errorComponent &&
+                    styles.InputeError,
+                ]}
+                size={styles.size}
+                // ---- to be edited, check password
+                onChangeTextHandler={onChangeTextHanddler.bind(this, "ccv")}
+                inputeTextProps={{
+                  maxLength: 3,
+                  placeholder: "CCV",
+                  placeholderTextColor: "white",
+                  autoCapitalize: "none",
+                  value: newStudent.ccv,
+                  keyboardType: "number-pad",
+                }}
+              ></Inpute>
+            </View>
+          </View>
+          <View>
+            <Text style={styles.title}>ZIP/Postal code</Text>
+            <Inpute
+              style={[styles.inpute]}
+              onChangeTextHandler={onChangeTextHanddler.bind(this, "zipCode")}
+              inputeTextProps={{
+                maxLength: 10,
+                placeholderTextColor: "white",
+                placeholder: " Optional",
+                autoCapitalize: "none",
+                keyboardType: "numeric",
+                value: newStudent.zipCode,
+              }}
+            ></Inpute>
+          </View>
+          {error.errorComponent}
+          <View style={styles.ButtonContainer}>
+            <PressableButton onPress={onPress} style={styles.payButton}>
+              Pay
+            </PressableButton>
+            <PressableButton style={styles.cancelButton} onPress={cancelForm}>
+              Cancel
+            </PressableButton>
+          </View>
+        </LinearGradient>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -402,25 +414,20 @@ function PaymentForm({ onCancel }) {
 const styles = StyleSheet.create({
   cnt: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 24,
-    backgroundColor: "black",
+    // justifyContent: "center",
+    // alignItems: "center",
+    // padding: 24,
+    // backgroundColor: "black",
   },
   InfoContainer: {
     flex: 1,
-    padding: 15,
-    marginTop: -25,
-    marginHorizontal: 10,
     justifyContent: "flex-end",
-    borderWidth: 3,
-    borderRadius: 10,
   },
   ButtonContainer: {
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "space-between",
-    marginHorizontal: "10%",
+    marginHorizontal: "14%",
     marginTop: 12,
   },
   InputeError: {
@@ -482,7 +489,7 @@ const styles = StyleSheet.create({
   amount: {
     fontSize: 20,
     marginHorizontal: "12%",
-    color: Colors.color5,
+    color: "white",
   },
   details: {
     flexDirection: "row",
@@ -493,7 +500,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#C65356",
   },
   payButton: {
-    backgroundColor: Colors.primary500,
+    backgroundColor: Colors.color4,
   },
   date: {
     flexDirection: "row",
@@ -501,6 +508,12 @@ const styles = StyleSheet.create({
   // changed_
   innerdetails: {
     flexDirection: "row",
+  },
+  linearGradient: {
+    flex: 1,
+    borderWidth: 2,
+    borderColor: "white",
+    margin: "-3%",
   },
 });
 export default PaymentForm;

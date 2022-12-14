@@ -167,7 +167,7 @@ function ListOfBooks() {
           style={styles.icon}
         />
         <TextInput
-          placeholder="Search using Title or Author..."
+          placeholder=" Title or Author"
           placeholderTextColor="white"
           style={styles.search}
           //   This is to keep the displayed text updated
