@@ -1,10 +1,9 @@
 import { useState, useEffect, useContext } from "react";
-import { View, StyleSheet, Text /*Image*/, Platform, Alert } from "react-native";
+import { View, StyleSheet, Text, Platform } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useRoute } from "@react-navigation/native";
 import { HeaderBackButton } from "react-navigation-stack";
 import { StackActions } from "@react-navigation/native";
-// import * as imagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
 
 import Input from "../components/AddBookComponents/Input";
@@ -12,7 +11,7 @@ import MyButton from "../components/MyButton";
 import ErrorComponent from "../components/RegisterAndLogin/ErrorComponent";
 import DropDownMenu from "../components/AddBookComponents/Drop_Down_Menu";
 import { AppContext } from "../store/AppContext";
-import { requestBook /*uploadImage*/ } from "../components/Utility/http";
+import { requestBook } from "../components/Utility/http";
 import Colors from "../components/Utility/Colors";
 import { containsOnlyNumbers } from "../components/Utility/UtilityFunctions";
 
@@ -59,25 +58,6 @@ function AddBookScreen({ navigation }) {
     });
   }
 
-  // const pickImage = async () => {
-  //   let result = await imagePicker.launchImageLibraryAsync({
-  //     mediaTypes: imagePicker.MediaTypeOptions.All,
-  //     allowsEditing: true,
-  //     aspect: [4, 6],
-  //     quality: 1,
-  //   });
-
-  //   const titleIsValid = titleIsValid == null ? true : titleIsValid;
-  //   const dateIsValid = dateIsValid == null ? true : dateIsValid;
-  //   const source = { uri: result.uri };
-  //   setInputs((curInputs) => {
-  //     return {
-  //       ...curInputs,
-  //       ["image"]: { value: source, isValid: true },
-  //     };
-  //   });
-  // };
-
   function submitHandler() {
     //taking the inputs
     const bookData = {
@@ -101,6 +81,7 @@ function AddBookScreen({ navigation }) {
         bookData.date.toString() !== "Invalid Date" &&
         inputs.date.value.match(/^\d{4}-\d{2}-\d{2}$/) !== null;
     }
+    
     let isbnIsValid = false;
     if (
       (inputs.isbn.value.length === 13 || inputs.isbn.value.length === 10) &&
@@ -108,14 +89,12 @@ function AddBookScreen({ navigation }) {
     ) {
       isbnIsValid = true;
     }
+
     if (
       !isbnIsValid ||
       !titleIsValid ||
-      // !authorIsValid ||
-      !dateIsValid /*|| !categoryIsValid*/
+      !dateIsValid
     ) {
-      // const categoryIsValid = bookData.category.trim().length > 0;
-
       //if one of the inputs is invalid..
       setInputs((curInputs) => {
         return {
@@ -150,25 +129,9 @@ function AddBookScreen({ navigation }) {
 
   //call the requestBook function from the http and pass the data object to it
   async function onSubmit(requestedData) {
-    // if (requestedData.image.value != "") {
-    //   // const img = await fetch(inputs.image.value.uri);
-    //   // const bytes = await img.blob();
-    //   const filename =
-    //     // isbn.toString() +
-    //     inputs.image.value.uri.substring(
-    //       inputs.image.value.uri.lastIndexOf("/") + 1
-    //     );
-    //   await uploadImage(inputs.image.value.uri);
-    //   requestedData.image.value = filename;
-    // }
     await requestBook(requestedData);
     appCtx.changeScreenHandler("Home");
     if (fetchedISBN == "") {
-      // Alert.alert("Your book request is recorded",[{}]);
-      Alert.alert(" Submitted", "Your request has been submitted", [
-        { text: "OK", onPress: () => console.log("OK Pressed") },
-      ]);
-
       navigation.navigate("DrawerHome");
     } else {
       navigation.navigate("TabSearch", { request: true });
@@ -198,10 +161,8 @@ function AddBookScreen({ navigation }) {
 
       <ScrollView>
         <View style={styles.rootContainer}>
-          {/* <Title>Request Book</Title> */}
-          {/* <Text style={styles.title}>Add Book</Text> */}
-          {/* Using the Input component to create input fields */}
 
+          {/* Using the Input component to create input fields */}
           <Input //ISBN
             label="ISBN"
             labelStyle={styles.label}
@@ -221,23 +182,6 @@ function AddBookScreen({ navigation }) {
             }}
           />
 
-          {/* <View style={styles.pickImageContainer}>
-            <MyButton
-            onPress={pickImage}
-            Flate={true}
-            style={styles.buttonStyles}
-            textStyle={styles.buttonText}
-            >
-            Pick Image
-            </MyButton>
-            {inputs.image.value != "" && (
-              <Image
-              source={{ uri: inputs.image.value.uri }}
-              style={styles.bookImage}
-              />
-              )}
-            </View> */}
-          {/* <Text style={styles.label}>Author</Text> */}
           <Input //Author
             label="Author"
             labelStyle={styles.label}
@@ -301,7 +245,7 @@ function AddBookScreen({ navigation }) {
           >
             Submit
           </MyButton>
-          {/* </LinearGradient> */}
+
         </View>
       </ScrollView>
     </LinearGradient>
@@ -339,13 +283,6 @@ const styles = StyleSheet.create({
   dropdown: {
     marginTop: 12,
   },
-  // pickImageContainer: {
-  //   flexDirection: "row",
-  // },
-  // bookImage: {
-  //   width: 100,
-  //   height: 150,
-  // },
   buttonStyles: {
     marginTop: 8,
     alignSelf: "center",
@@ -363,8 +300,6 @@ const styles = StyleSheet.create({
   },
   linearGradient: {
     flex: 1,
-    // paddingLeft: 15,
-    // paddingRight: 15,
     borderRadius: 5,
   },
   errorContainer: {

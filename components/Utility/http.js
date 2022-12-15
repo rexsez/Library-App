@@ -211,19 +211,26 @@ export async function getBooks() {
 // ------------------------------------------Book Request----------------------------------------------------
 //Send book request info to database -> so admin can view it from the admin panel
 export async function requestBook(requestData) {
+  //getting the isbn of the requested book
+  const isbn = requestData.isbn;
+  
+  // check if there's a book with the same isbn is requested
+  const response = await axios.get(database + "book_requests.json");
+
+  if(!!response?.data){
+    for (const key in response.data) {
+      let currentBook = response.data[key];
+      if (currentBook.isbn == isbn) {
+        alert("This book have already been requested");
+        return;
+      }
+    }
+  }
+  
+  // //book isn't requested -> add it to requested_books table
+  alert("Your request has been submitted");
   axios.post(database + "book_requests.json", requestData);
 }
-//uploading the requested book's image
-// export async function uploadImage(imgUri) {
-//   // await "psu-library-app.appspot.com".ref().child(filename).put(blob);
-//   // const storage = "psu-library-app.appspot.com/requests_images";
-//   const storage = getStorage();
-//   const ref = ref(storage, 'image.jpg');
-
-//   const img = await fetch(imgUri);
-//   const bytes = await img.blob();
-//   await uploadBytes(ref, bytes);
-// }
 // ------------------------------------------Announcement----------------------------------------------------
 export async function fetchAnnouncements() {
   const checkAnnouncements = await axios.get(database);
@@ -313,11 +320,13 @@ export async function postBorrowRequest(isbn, title, userEmail, userKey) {
     userKey: userKey,
   };
   const response = await axios.get(database + "borrow_requests.json");
-  for (const key in response.data) {
-    let currentBorrow = response.data[key];
-    if (currentBorrow.isbn == isbn && currentBorrow.userEmail == userEmail) {
-      alert("A request for this book have been submitted already");
-      return;
+  if(!!response?.data){
+    for (const key in response.data) {
+      let currentBorrow = response.data[key];
+      if (currentBorrow.isbn == isbn && currentBorrow.userEmail == userEmail) {
+        alert("A request for this book have been submitted already");
+        return;
+      }
     }
   }
   await axios.post(database + "borrow_requests.json", borrowData);
