@@ -196,8 +196,8 @@ function sendEmail({ recipient_email, subject, message, name, token }) {
                                     <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                       <tr>
                                         <td style="padding-right: 0px;padding-left: 0px;" align="center">
-                                        <img align="center" border="0" src="https://arablocal.com/img/business/logos/prince-sultan-university---college-for-women-kuwait-19-10-01-09-10-38.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 26%;max-width: 150.8px;"
-                                        width="150.8" />
+        <img align="center" border="0" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDonIauaoX7eplYmyo32zjvsiHToFc9tVR7A&usqp=CAU" width="500" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;"
+                                       />
       
                                         </td>
                                       </tr>

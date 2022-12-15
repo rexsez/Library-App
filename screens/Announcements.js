@@ -16,7 +16,6 @@ function Announcements() {
   // Hisham start
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   // Hisham close
-
   useEffect(() => {
     async function getAnnouncements() {
       const Announcement = await fetchAnnouncements();

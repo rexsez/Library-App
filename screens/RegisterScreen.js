@@ -1,5 +1,3 @@
-import { useFocusEffect } from "@react-navigation/native";
-import React from "react";
 import { ImageBackground, View, StyleSheet, SafeAreaView } from "react-native";
 
 import RegisterForm from "../components/RegisterAndLogin/RegisterForm";

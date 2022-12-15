@@ -10,6 +10,7 @@ import FilterModal from "./FilterModal";
 import { fetchBooks, fetchCategories } from "../Utility/http";
 import { AppContext } from "../../store/AppContext";
 import Colors from "../Utility/Colors";
+import { FlashList } from "@shopify/flash-list";
 
 function ListOfBooks() {
   const appCtx = useContext(AppContext);
@@ -279,12 +280,13 @@ function ListOfBooks() {
         setNewCategory={setNewCategory}
         // Hisham close
       />
-      <FlatList
+      <FlashList
         data={currentBooks}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         style={styles.Container}
-      ></FlatList>
+        estimatedItemSize={11}
+      ></FlashList>
     </View>
   );
 }

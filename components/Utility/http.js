@@ -24,7 +24,8 @@ export async function updateProfile(ID, student) {
 // Hisham start
 function assignBadges(books) {
   books.sort(DescendingRating);
-  for (i = 0; i < books.length; i++) {
+
+  for (let i = 0; i < books.length; i++) {
     if (books[i].rating >= 4.75)
       books[i].badge.push(["fire", "red", 0, "yellow", "grey"]);
     else break;
@@ -37,13 +38,13 @@ function assignBadges(books) {
     if (books[books.length - 1].timesBorrowed > 5)
       timesBorrowedMax = books[books.length - 1].timesBorrowed;
   }
-  for (i = 0; i < books.length; i++) {
+  for (let i = 0; i < books.length; i++) {
     if (books[i].timesBorrowed >= timesBorrowedMax)
       books[i].badge.push(["podium-gold", "purple", 0, "lightblue", "grey"]);
     else break;
   }
   books.sort(DescendingDateRegistered);
-  for (i = 0; i < books.length; i++) {
+  for (let i = 0; i < books.length; i++) {
     let date1 = new Date();
     let date2 = new Date(books[i].dateRegistered);
     let diffTime = Math.abs(date1 - date2);
@@ -106,6 +107,7 @@ export async function fetchBooks() {
     // changed_
     if (bookData.image !== "") {
       img = await getImage(bookData.image);
+      img = img.trim();
     } else {
       img =
         "https://firebasestorage.googleapis.com/v0/b/psu-library-app.appspot.com/o/images%2Fno_book.png?alt=media&token=4ddb2db7-9924-4f52-9041-11e0d6cf5c63";

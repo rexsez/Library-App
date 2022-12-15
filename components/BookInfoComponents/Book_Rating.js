@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
   // Hisham Start
   CloseButton: {
     alignItems: "flex-end",
+    marginEnd: 5,
   },
   // Hisham close
   centeredView: {
@@ -114,9 +115,9 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   modalView: {
-    width: 330,
+    width: 355,
     // Hisham start
-    flex: 0.2,
+    flex: 0.24,
     // Hisham close
     backgroundColor: "white",
     borderRadius: 20,
@@ -153,5 +154,4 @@ const styles = StyleSheet.create({
     fontWeight: "400",
   },
 });
-
 export default BookRatingModal;

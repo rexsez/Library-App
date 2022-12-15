@@ -17,6 +17,7 @@ function LoginForm() {
   // -----------------Navigation stuff------------------------
   const navigation = useNavigation();
   const appCtx = useContext(AppContext);
+  
   function onPressCreateAccHandler() {
     navigation.navigate("StackRegister");
   }
@@ -40,7 +41,9 @@ function LoginForm() {
     } else {
       const studens = await getStudents();
       indexOfStudent = studens.findIndex(
-        (student) => student.Email === loginStudent.Email
+        (student) =>
+        // I think here is them error, there was no check for the password
+          student.Email == loginStudent.Email && student.psw == loginStudent.psw
       );
       loginStudentInfomation = studens[indexOfStudent];
       const studentID = await getStudentID(loginStudentInfomation.Email);
@@ -69,15 +72,12 @@ function LoginForm() {
           borrowedBooks: loginStudentInfomation.borrowedBooks,
           favBooks: loginStudentInfomation.favBooks,
         });
-  
-       
-          appCtx.changeScreenHandler("Profile");
-          navigation.navigate({ name: "DrawerProfile" });
-      }
-      
+
+        appCtx.changeScreenHandler("Profile");
+        navigation.navigate({ name: "DrawerProfile" });
       }
     }
-  
+  }
 
   const initialLoginStudent = new Student(" ", " ", " ", " ", null, null);
 

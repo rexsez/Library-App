@@ -92,8 +92,8 @@ function BookInformationScreen({ navigation }) {
       const userEmail = studentCtx.student.Email;
       const userKey = studentCtx.ID;
       await postBorrowRequest(isbn, title, userEmail, userKey);
-      appCtx.changeScreenHandler("Home");
       // Hisham start
+      appCtx.changeScreenHandler("Search");
       navigation.navigate("TabSearch");
       // Hisham close
     }

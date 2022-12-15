@@ -37,7 +37,8 @@ function SearchScreenStack({ navigation }) {
               ? () => (
                   <HeaderBackButton
                     onPress={() => {
-                      navigation.navigate("StackSearch");
+                      appCtx.changeScreenHandler("Search");
+                      navigation.navigate("TabSearch");
                     }}
                   />
                 )
