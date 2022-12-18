@@ -19,7 +19,14 @@ const database =
 // ----------------------------------------- Edit profile stuff -------------------------------------------
 
 export async function updateProfile(ID, student) {
+  const verification = await getVerification(ID);
+  const isSent = await getIsSent(ID);
+  student.borrowedBooks = await getBorrowedBooks(ID);
   axios.put(database + `students/${ID}.json`, student);
+  putVerification(ID, verification);
+  if (!!isSent) {
+    putIsSent(ID, isSent);
+  }
 }
 // Hisham start
 function assignBadges(books) {
@@ -260,6 +267,7 @@ export async function fetchAnnouncements() {
 export async function registerStudent(studentInfo) {
   const token = generateRandomNumber();
   studentInfo["verification"] = token;
+  console.log("HELLO WORLD!");
   sendMail(
     studentInfo["Email"],
     "Verify your account",
@@ -345,9 +353,12 @@ export async function postBorrowRequestToStudent(isbn, userKey) {
       res.Email,
       res.psw,
       { [isbn]: "pending" },
-      res.favBooks
+      res.favBooks,
     );
     temp["verification"] = "done";
+    if (!!res?.isSent) {
+      temp["isSent"] = res.isSent;
+    }
     // res[isbn] = "pending";
     axios.put(link, temp);
     // Hisham added
@@ -372,22 +383,6 @@ export async function postBorrowRequestToStudent(isbn, userKey) {
   }
 }
 // -------------------------------------adding book to fav list---------------------------------------------
-export async function updateFavList(ID, student, Token) {
-  student["verification"] = Token;
-  //###
-  //to keep borrowedBooks the same
-  let link = database + "students/" + ID + "/borrowedBooks.json";
-  let result = await axios.get(link);
-  let res = result.data;
-
-  if (!!res) {
-    let updateStudent = { ...student, borrowedBooks: res };
-    student = updateStudent;
-  }
-  //###
-  axios.put(database + `students/${ID}.json`, student);
-}
-
 export async function addToFavList(studentID, isbn) {
   //fetching the user's object
   let link = database + "students/" + studentID + ".json";
@@ -478,4 +473,10 @@ export async function putIsSent(studentID, isSent) {
   var res = result.data;
   res["isSent"] = isSent;
   axios.put(link, res);
+}
+export async function getBorrowedBooks(studentID) {
+  const link = database + "students/" + studentID + ".json";
+  const result = await axios.get(link);
+  let res = result.data?.borrowedBooks;
+  return res;
 }
