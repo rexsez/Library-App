@@ -249,3 +249,26 @@ export function updatedListOfBorrowedBooks(updatedBorrowed) {
   });
   return updatedBorrowed;
 }
+export function shouldSendReminder(borrowedBooks) {
+  if (!!!borrowedBooks) return false;
+  const keys = Object.keys(borrowedBooks);
+  var bool = false;
+  keys.forEach((key) => {
+    if (isClose(borrowedBooks[key])) {
+      bool = true;
+    }
+  });
+  return bool;
+}
+
+export function isClose(dueDate) {
+  if (dueDate == "pending") return false; 
+  var days = new Date(dueDate).getTime() - new Date().getTime();
+  days = Math.floor(days / (1000 * 60 * 60 * 24));
+  days = days + 1;
+  if (days <=2) {
+    return true;
+  } else {
+    return false;
+  }
+}

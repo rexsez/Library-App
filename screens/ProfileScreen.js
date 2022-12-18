@@ -28,7 +28,6 @@ import PaymentNotification from "../components/Utility/PaymentNotification";
 function ProfileScreen({ defaultScreen }) {
   const appCtx = useContext(AppContext);
   const route = useRoute();
-
   function renderItem(book) {
     if (currentList == "fav") {
       const favoriteBook = appCtx.books.find(

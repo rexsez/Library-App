@@ -466,3 +466,16 @@ export async function giveGracePeriod(studentID) {
   updatedData = { ...updatedData, borrowedBooks: updatedBorrowed };
   await axios.put(database + `students/${studentID}.json`, updatedData);
 }
+export async function getIsSent(studentID) {
+  const link = database + "students/" + studentID + ".json";
+  const result = await axios.get(link);
+  let res = result.data?.isSent;
+  return res;
+}
+export async function putIsSent(studentID, isSent) {
+  const link = database + "students/" + studentID + ".json";
+  var result = await axios.get(link);
+  var res = result.data;
+  res["isSent"] = isSent;
+  axios.put(link, res);
+}

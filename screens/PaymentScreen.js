@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
   Container: {
     flex: 0.96,
     marginVertical: 3,
-    marginBottom: -20,
   },
   ImageBackground: {
     flex: 1,

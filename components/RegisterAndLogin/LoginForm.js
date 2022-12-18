@@ -2,8 +2,8 @@ import { useState, useContext } from "react";
 import { View, StyleSheet, KeyboardAvoidingView, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AppContext } from "../../store/AppContext";
-
-import { getStudentID, getStudents, getVerification } from "../Utility/http";
+import { sendMail } from "../../Server/mailUtility";
+import { getStudentID, getStudents, getVerification,getIsSent,putIsSent } from "../Utility/http";
 import Student from "../../models/Student";
 import MyButton from "../MyButton";
 import CheckBox from "./CheckBox";
@@ -12,7 +12,7 @@ import InputeForm from "./InputeForm";
 import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
 import validateLoginStudent from "../Utility/InputValidation/validateLoginStudent";
-
+import { shouldSendReminder } from "../Utility/UtilityFunctions";
 function LoginForm() {
   // -----------------Navigation stuff------------------------
   const navigation = useNavigation();
@@ -72,7 +72,37 @@ function LoginForm() {
           borrowedBooks: loginStudentInfomation.borrowedBooks,
           favBooks: loginStudentInfomation.favBooks,
         });
-
+        var isSent = await getIsSent(studentID);
+        if (shouldSendReminder(loginStudentInfomation.borrowedBooks)) {
+          if(!!!isSent) {
+            putIsSent(studentID,"true");
+            sendMail(
+              loginStudentInfomation.Email,
+              "Borrowed Books Reminder",
+              loginStudentInfomation.FName + " " + loginStudentInfomation.LName,
+              "This is a reminder for returning your borrowed books",
+              ""
+            );
+          }
+          if (isSent == "false") {
+            putIsSent(studentID,"true");
+            sendMail(
+              loginStudentInfomation.Email,
+              "Borrowed Books Reminder",
+              loginStudentInfomation.FName + " " + loginStudentInfomation.LName,
+              "This is a reminder for returning your borrowed books",
+              ""
+            );
+          }
+        }
+        else {
+          if(!!!isSent) {
+            putIsSent(studentID,"false");
+          }
+          if (isSent == "true") {
+            putIsSent(studentID,"false");
+          }
+        }
         appCtx.changeScreenHandler("Profile");
         navigation.navigate({ name: "DrawerProfile" });
       }
