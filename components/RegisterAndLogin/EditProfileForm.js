@@ -145,7 +145,7 @@ function EditProfileForm() {
     studens.Email,
     "",
     studens.borrowedBooks || [],
-    studens.favBooks || []
+    studens.favBooks || [],
   );
 
   const [newStudent, setNewStudent] = useState(initialNewStudent);

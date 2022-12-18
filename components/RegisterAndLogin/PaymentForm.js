@@ -2,18 +2,28 @@ import { useState, useContext, useLayoutEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { StackActions, useNavigation } from "@react-navigation/native";
-import { getStudentID, giveGracePeriod } from "../Utility/http";
+import { giveGracePeriod } from "../Utility/http";
 import validateCard from "../Utility/InputValidation/validateCard";
 import Inpute from "./Inpute";
 import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
 import { Image } from "react-native";
 import { Alert } from "react-native";
+// changed_
+import {
+  isOverDue,
+  numDaysFromDueDate,
+  toFixed,
+} from "../Utility/UtilityFunctions";
 
 import DropDownMenu from "../AddBookComponents/Drop_Down_Menu";
 import Colors from "../Utility/Colors";
+import { Keyboard } from "react-native";
+import { TouchableWithoutFeedback } from "react-native";
+import { updatedListOfBorrowedBooks } from "../Utility/UtilityFunctions";
+import { LinearGradient } from "react-native-svg";
+
 function PaymentForm({ onCancel }) {
-  // changed_
   const navigation = useNavigation();
   useLayoutEffect(() => {
     navigation.navigate("PaymentScreen", { onCancel: onCancel });
@@ -33,7 +43,7 @@ function PaymentForm({ onCancel }) {
     { label: "11", value: "11" },
     { label: "12", value: "12" },
   ];
-  // Getting the list of years danimacally based on the current year
+  // Getting the list of years dynamically based on the current year
   // First we get part of year we want 20 - (22)
   const d = new Date();
   let currentYear = d.getFullYear().toString();
@@ -124,16 +134,38 @@ function PaymentForm({ onCancel }) {
   }
   useLayoutEffect(() => {
     if (!error.isValid) {
-
       // else we just pass student infomation (fav list, barrowed list)
       //  to the app wide context
       //  so it can be used every where else
     } else {
-      console.log("okay valid!");
+      // changed_
       // if there is no error, then:
-      //1-  Give grace period for the student to return the book
+      //1- Updated DB to give grace period for the student to return the book
       giveGracePeriod(studentContext.ID);
-      // 2- Show payment confirmation alert
+      //2- Updated Context to give grace period for the student to return the book
+      // First we give grace period on all books over due from list of borrowed books
+      console.log(
+        " before updating it: " +
+          JSON.stringify(studentContext.student.borrowedBooks)
+      );
+      const updatedBorrowedBooks = updatedListOfBorrowedBooks(
+        studentContext.student.borrowedBooks
+      );
+      console.log(
+        " after updating it: " +
+          JSON.stringify(studentContext.student.borrowedBooks)
+      );
+
+      const updatedStudent = {
+        FName: studentContext.student.FName,
+        LName: studentContext.student.LName,
+        Email: studentContext.student.Email,
+        psw: studentContext.student.psw,
+        borrowedBooks: updatedBorrowedBooks,
+        favBooks: studentContext.student.favBooks,
+      };
+      studentContext.registerStudent(updatedStudent);
+      // 3-how payment confirmation alert
       onComplete();
     }
   }, [error]);
@@ -162,51 +194,71 @@ function PaymentForm({ onCancel }) {
       "th of " +
       months[month] +
       ", or you wil be fined agian!";
+    // changed_
     const alertMassage = Alert.alert(
       "Payment was Successful!",
-      `Thank you for paying the fine ($${fineAmount}).\nNow you can use our app facilities again!\n${customerMassage}`,
+      `Thank you for paying the fine (SR ${fineAmount}).\nNow you can use our app facilities again!\n${customerMassage}`,
       // add_nav
-      [{ text: "Ok", onPress: () => console.log("OK Pressed") }]
+      [{ text: "Ok", onPress: () => cancelForm() }]
     );
     return alertMassage;
   }
-  // _changed
+  // changed_
+  const listOfBorrowedBooks = studentContext?.student.borrowedBooks;
+  const keys = Object.keys(listOfBorrowedBooks);
+  let totalFine = 0;
+  let numDays = 0;
+  keys.forEach((key, index) => {
+    if (isOverDue(listOfBorrowedBooks[key])) {
+      let temp = numDaysFromDueDate(listOfBorrowedBooks[key]);
+      totalFine = Math.round(totalFine + temp * 5);
+      numDays = numDays + Math.abs(temp);
+    }
+  });
+  totalFine *= 1.15;
+  totalFine = Math.abs(toFixed(totalFine, 2));
   const popAction = StackActions.pop(1);
   function cancelForm() {
-    onCancel();
+    if (!!onCancel) {
+      onCancel();
+    }
     navigation.dispatch(popAction);
   }
-  let days = 1;
+  let days = numDays;
   let daysText = "";
   if (days > 1) {
     daysText = " Days";
   } else {
     daysText = " Day";
   }
-  let fineAmount = days * 5;
-
+  let fineAmount = totalFine;
+  // end change
   return (
-    <>
+    <TouchableWithoutFeedback style={{ flex: 1 }} onPress={Keyboard.dismiss}>
       <View style={styles.InfoContainer}>
         <View style={styles.details}>
-          <View style={styles.innerDetial}>
-            <Text style={[styles.title, { marginHorizontal: 0 }]}>
-              Over due by 
-            </Text>
-            <Text style={[styles.amount, { marginHorizontal: 0 }]}>
-              {days + daysText}
-            </Text>
-            <Text style={[styles.title, { marginHorizontal: 0 }]}>
-              Rate of charge
-            </Text>
-            <Text style={[styles.amount, { marginHorizontal: 0 }]}>
-              5.00 SR/day
-            </Text>
+          <View style={styles.innerdetails}>
+            <View style={{ marginRight: 30 }}>
+              <Text style={[styles.title, { marginHorizontal: 0 }]}>
+                Over due by
+              </Text>
+              <Text style={[styles.amount, { marginHorizontal: 0 }]}>
+                {days + daysText}
+              </Text>
+            </View>
+            <View>
+              <Text style={[styles.title, { marginHorizontal: 0 }]}>
+                Rate of charge
+              </Text>
+              <Text style={[styles.amount, { marginHorizontal: 0 }]}>
+                5.00 SR/day
+              </Text>
+            </View>
           </View>
         </View>
-        <View>
+        <View style={{ marginBottom: 15 }}>
           <Text style={styles.title}>Payment amount</Text>
-          <Text style={styles.amount}>{fineAmount}.00 SR</Text>
+          <Text style={styles.amount}>{fineAmount} SR</Text>
         </View>
         <View>
           <View style={styles.imagesContainer}>
@@ -237,13 +289,13 @@ function PaymentForm({ onCancel }) {
             style={[
               styles.inpute,
               error.feilds == "name" &&
-              error.errorComponent &&
-              styles.InputeError,
+                error.errorComponent &&
+                styles.InputeError,
             ]}
             onChangeTextHandler={onChangeTextHanddler.bind(this, "name")}
             inputeTextProps={{
               placeholderTextColor: "white",
-              maxLength: 25,
+              maxLength: 29,
               value: newStudent.name,
             }}
           ></Inpute>
@@ -254,8 +306,8 @@ function PaymentForm({ onCancel }) {
             style={[
               styles.inpute,
               error.feilds == "cardNumber" &&
-              error.errorComponent &&
-              styles.InputeError,
+                error.errorComponent &&
+                styles.InputeError,
             ]}
             onChangeTextHandler={onChangeTextHanddler.bind(this, "cardNumber")}
             inputeTextProps={{
@@ -298,15 +350,13 @@ function PaymentForm({ onCancel }) {
             </View>
           </View>
           <View style={styles.inner}>
-            <Text style={[styles.title, { marginHorizontal: 0 }]}>
-              CCV
-            </Text>
+            <Text style={[styles.title, { marginHorizontal: 0 }]}>CCV</Text>
             <Inpute
               style={[
                 styles.inpute,
                 error.feilds == "ccv" &&
-                error.errorComponent &&
-                styles.InputeError,
+                  error.errorComponent &&
+                  styles.InputeError,
               ]}
               size={styles.size}
               // ---- to be edited, check password
@@ -347,31 +397,26 @@ function PaymentForm({ onCancel }) {
           </PressableButton>
         </View>
       </View>
-    </>
+    </TouchableWithoutFeedback>
   );
 }
 const styles = StyleSheet.create({
   cnt: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 24,
-    backgroundColor: "black",
+    // justifyContent: "center",
+    // alignItems: "center",
+    // padding: 24,
+    // backgroundColor: "black",
   },
   InfoContainer: {
     flex: 1,
-    padding: 15,
-    marginTop: -25,
-    marginHorizontal: 10,
     justifyContent: "flex-end",
-    borderWidth: 3,
-    borderRadius: 10,
   },
   ButtonContainer: {
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "space-between",
-    marginHorizontal: "10%",
+    marginHorizontal: "14%",
     marginTop: 12,
   },
   InputeError: {
@@ -407,7 +452,6 @@ const styles = StyleSheet.create({
   },
   inner: {
     flex: 1,
-
   },
   Image: {
     width: 70,
@@ -415,7 +459,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderWidth: 2,
     borderRadius: 2,
     borderColor: Colors.color5,
@@ -434,7 +478,7 @@ const styles = StyleSheet.create({
   amount: {
     fontSize: 20,
     marginHorizontal: "12%",
-    color: Colors.color5,
+    color: "black",
   },
   details: {
     flexDirection: "row",
@@ -443,13 +487,22 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     backgroundColor: "#C65356",
-    
   },
   payButton: {
-    backgroundColor: Colors.primary500,
+    backgroundColor: Colors.color4,
   },
   date: {
     flexDirection: "row",
+  },
+  // changed_
+  innerdetails: {
+    flexDirection: "row",
+  },
+  linearGradient: {
+    flex: 1,
+    borderWidth: 2,
+    borderColor: "white",
+    margin: "-3%",
   },
 });
 export default PaymentForm;

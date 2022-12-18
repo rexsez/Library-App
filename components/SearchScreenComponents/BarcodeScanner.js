@@ -46,6 +46,7 @@ function BarcodeScanner({ navigation }) {
       // which page to load, if we have I'll load the book information page. Otherwise, Add book screen should
       // be loaded to give the option to user to add the new book
       const selectedBook = appCtx.books.find((book) => book.isbn === data);
+
       //  If selectedBook is set (not null),it means that there is a book and we should go to book information
       if (selectedBook){
         appCtx.changeScreenHandler("Book");

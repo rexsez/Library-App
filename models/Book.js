@@ -12,7 +12,9 @@ class Book {
     borrowed,
     badge,
     ratedBy,
-    timesBorrowed
+    timesBorrowed,
+// Hisham start
+    dateRegistered
   ) {
     this.id = id;
     this.isbn = isbn;
@@ -27,6 +29,8 @@ class Book {
     this.badge = badge;
     this.ratedBy = ratedBy;
     this.timesBorrowed = timesBorrowed;
+// Hisham start
+    this.dateRegistered = dateRegistered;
   }
 }
 

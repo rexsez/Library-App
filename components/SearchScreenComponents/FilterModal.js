@@ -1,14 +1,9 @@
 import { useContext, useState } from "react";
-import {
-  Button,
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  // Alert,
-} from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 import Modal from "react-native-modal";
 import RadioButtonRN from "radio-buttons-react-native";
+// Hisham start
+import { Ionicons } from "@expo/vector-icons";
 
 import DropDownMenu from "../AddBookComponents/Drop_Down_Menu";
 import SliderExample from "../Utility/SliderExample";
@@ -25,7 +20,6 @@ import {
 import { AppContext } from "../../store/AppContext";
 import MyButton from "../MyButton";
 import Colors from "../Utility/Colors";
-import { Ionicons } from "@expo/vector-icons";
 
 // This is going to be used to show filter options as a radio button
 // label is needed for radio button to work
@@ -67,8 +61,11 @@ function FilterModal({
   setBooks,
   isModalVisible,
   toggleModal,
-  SearchFilter,
   currentSearch,
+  // Hisham start
+  setMinimumRating,
+  setNewCategory,
+  // Hisham close
 }) {
   const appCtx = useContext(AppContext);
   var current = [...currentBooks];
@@ -76,7 +73,6 @@ function FilterModal({
   const [category, setCategory] = useState();
   const [filter, setFilter] = useState();
   const [orderBy, setOrderBy] = useState();
-  // console.log(rating);
 
   // Here we handle the options that is chosen as a sort options
   // it could be Title, Author, Date and Rating
@@ -114,13 +110,27 @@ function FilterModal({
   }
 
   function cancel() {
+    // Hisham start
+    if (currentSearch) {
+      const filteredBooks = appCtx.books.filter(
+        (book) =>
+          book.title.toLowerCase().includes(currentSearch.toLowerCase()) ||
+          book.author.toLowerCase().includes(currentSearch.toLowerCase())
+      );
+      setBooks(filteredBooks);
+    } else {
+      setBooks(appCtx.books);
+    }
+    setMinimumRating(0);
+    setNewCategory(null);
+    // Hisham close
     setChosenFilter(1);
     setChosenOrder(1);
     setCategory();
     setFilter();
     setOrderBy();
     setRating(0);
-    SearchFilter(currentSearch);
+    // Hisham Remove
     toggleModal();
   }
 
@@ -133,6 +143,9 @@ function FilterModal({
     rate = rate.replace(/\[|\]/g, "");
     // Converting it to a float so we could use comparison operations
     rate = parseFloat(rate);
+    // Hisham start
+    setMinimumRating(rate);
+    // Hisham close
     // If a category is chosen it will enter the if, otherwise it will go to the else
     if (category) {
       // Converting rating from object type to String type
@@ -141,6 +154,9 @@ function FilterModal({
       cat = cat.replace(/\W/g, "");
       // Making it lowercase to avoid case sensitive issues
       cat = cat.toLowerCase();
+      // Hisham start
+      setNewCategory(cat);
+      // Hisham close
       // Here we filter the selected Books
       // (which is the list of books left as a result of the search the user made) and we also check for rating
       // if rating is not chosen as a criteria, its value will be zero, so it won't affect the result
@@ -274,16 +290,17 @@ function FilterModal({
         borderRadius: 15,
       }}
     >
-
       <View>
         <ScrollView>
-        <View style={{ alignItems: "flex-end" }}>
-        <View >
-          <MyButton onPress={toggleModal}>
-            <Ionicons name="close" size={35} color="black" />
-          </MyButton>
-        </View>
-      </View>
+          {/* Hisham start */}
+          <View style={styles.CloseButton}>
+            <View>
+              {/* Hisham close */}
+              <MyButton onPress={toggleModal}>
+                <Ionicons name="close" size={35} color="black" />
+              </MyButton>
+            </View>
+          </View>
           <View style={styles.Container}>
             <Text style={[styles.Text, { marginTop: 20 }]}>Filter By</Text>
             <DropDownMenu //Category
@@ -365,6 +382,11 @@ function FilterModal({
 export default FilterModal;
 
 const styles = StyleSheet.create({
+  // Hisham start
+  CloseButton: {
+    alignItems: "flex-end",
+  },
+  // Hisham close
   Container: {
     flex: 1,
     marginHorizontal: 20,

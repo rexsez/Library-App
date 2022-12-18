@@ -1,15 +1,21 @@
-import { useState, useContext, useEffect } from "react";
+// Hisham start
+import { useState, useContext, useEffect, useReducer } from "react";
+// Hisham close
 import { Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import { fetchAnnouncements } from "../components/Utility/http";
 import { StudentContext } from "../store/StudentContext";
-import  Colors  from "../components/Utility/Colors";
+// Hisham start
+import Colors from "../components/Utility/Colors";
+// Hisham close
 function Announcements() {
   const Context = useContext(StudentContext);
   const [modalAnnouncement, setModalAnnouncement] = useState("");
   const [modalWorkingHours, setModalWorkingHours] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [fetchedAnnouncement, setFetchedAnnouncement] = useState();
-
+  // Hisham start
+  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
+  // Hisham close
   useEffect(() => {
     async function getAnnouncements() {
       const Announcement = await fetchAnnouncements();
@@ -17,26 +23,55 @@ function Announcements() {
       setModalWorkingHours(Announcement);
     }
     getAnnouncements();
-  }, []);
+    // Hisham start
+  }, [ignored]);
+  // Hisham close
 
   function onPressAnnouncement() {
-    
     setModalVisible(true);
     if (!!!Context.student.Email) {
       // if Email doesn't exist
-     // console.log(fetchedAnnouncement);
       setModalWorkingHours(fetchedAnnouncement.workingHours);
-      setModalAnnouncement(fetchedAnnouncement.everyone);
+      // Hisham start
+      setModalAnnouncement(
+        fetchedAnnouncement.everyone
+          ? fetchedAnnouncement.everyone
+          : "There is no announcements for everyone"
+      );
+      // If the email is for students
+      // Hisham close
     } else if (
       !!Context.student.Email &&
       Context.student.Email.search(/\d/g) != -1
     ) {
-      // Regular Expression - Regex
+      // Hisham start
+      var announce = fetchedAnnouncement.students
+        ? fetchedAnnouncement.students
+        : "There is no announcement for students";
+      announce =
+        fetchedAnnouncement.everyone != undefined
+          ? announce + "\n" + fetchedAnnouncement.everyone
+          : announce + "\n" + "There is no announcement for everyone";
+      // Hisahm start
       setModalWorkingHours(fetchedAnnouncement.workingHours);
-      setModalAnnouncement(fetchedAnnouncement.students + "\n" + fetchedAnnouncement.everyone);
+      // Hisahm start
+      setModalAnnouncement(announce);
+      // If the email is for staff
+      // Hisham close
     } else {
-     setModalWorkingHours(fetchedAnnouncement.workingHours);
-      setModalAnnouncement(fetchedAnnouncement.staff + "\n" + fetchedAnnouncement.everyone);
+      // Hisham start
+      var announce = fetchedAnnouncement.staff
+        ? fetchedAnnouncement.staff
+        : "There is no announcement for staff";
+      announce =
+        fetchedAnnouncement.everyone != undefined
+          ? announce + "\n" + fetchedAnnouncement.everyone
+          : announce + "\n" + "There is no announcement for everyone";
+      // Hisham close
+      setModalWorkingHours(fetchedAnnouncement.workingHours);
+      // Hisham start
+      setModalAnnouncement(announce);
+      // Hisahm close
     }
   }
 
@@ -54,18 +89,28 @@ function Announcements() {
           <View style={styles.modalView}>
             <Text style={styles.announcementMainText}> Announcements </Text>
             <Text style={styles.modalWorkingHoursText}>Working Hours</Text>
-            <Text style={styles.modalWorkingHoursText}>{modalWorkingHours}</Text>
-            <View style={styles.devidor}></View> 
-            <Text style={styles.modalAnnouncementText}>{modalAnnouncement}</Text>
+            <Text style={styles.modalWorkingHoursText}>
+              {modalWorkingHours}
+            </Text>
+            <View style={styles.devidor}></View>
+            <Text style={styles.modalAnnouncementText}>
+              {modalAnnouncement}
+            </Text>
             <Pressable
               style={({ pressed }) => [
                 {
-                  backgroundColor: pressed ? "#8aabdd" : Colors.primary500 ,
+                  backgroundColor: pressed
+                    ? Colors.primary500
+                    : Colors.primary500,
+                  opacity: pressed ? 0.7 : 1,
                 },
                 styles.button,
               ]}
               onPress={() => {
                 setModalVisible(!modalVisible);
+                // Hisham start
+                forceUpdate();
+                // Hisham close
               }}
             >
               <Text style={styles.textStyleClose}>Close</Text>
@@ -77,7 +122,8 @@ function Announcements() {
         <Pressable
           style={({ pressed }) => [
             {
-              backgroundColor: pressed ?  "#8aabdd" : Colors.primary500 ,
+              backgroundColor: pressed ? Colors.primary500 : Colors.primary500,
+              opacity: pressed ? 0.7 : 1,
             },
             styles.button,
           ]}
@@ -92,9 +138,9 @@ function Announcements() {
 
 const styles = StyleSheet.create({
   centeredView: {
-    // flex: 1,     
+    // flex: 1,
     marginHorizontal: 25,
-    marginVertical:10,
+    marginVertical: 10,
   },
   modalView: {
     margin: 20,
@@ -120,7 +166,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     paddingHorizontal: 31,
     borderWidth: 2,
-    borderColor: '#eddfb4',
+    borderColor: "#eddfb4",
   },
   textStyleAnnouncements: {
     color: "white",
@@ -140,17 +186,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "700",
     color: "#ec9c2d",
-
   },
   modalAnnouncementText: {
     fontSize: 16,
     marginBottom: 15,
     fontWeight: "bold",
     textAlign: "center",
-
   },
   announcementMainText: {
-    // fontFamily: "monospace",
     fontSize: 24,
     fontWeight: "bold",
     color: "#366EA0",
@@ -158,9 +201,8 @@ const styles = StyleSheet.create({
   },
   devidor: {
     borderWidth: 0.5,
-    borderColor: 'black',
+    borderColor: "black",
     margin: 10,
-},
+  },
 });
-
 export default Announcements;

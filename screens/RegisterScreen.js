@@ -1,24 +1,9 @@
-import { useFocusEffect } from "@react-navigation/native";
-import React from "react";
 import { ImageBackground, View, StyleSheet, SafeAreaView } from "react-native";
 
 import RegisterForm from "../components/RegisterAndLogin/RegisterForm";
 
 function RegisterScreen() {
-  useFocusEffect(
-    React.useCallback(() => {
-      // Do something when the screen is focused.
-       function getBooks() {
-        console.log("Rerender")
-      }
-      getBooks();
-      return () => {};
-    }, [])
-  );
-  
   return (
-
-    
     <SafeAreaView style={styles.Container}>
       <View style={styles.Container}>
         <ImageBackground

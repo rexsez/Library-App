@@ -1,8 +1,3 @@
-// Note that Descending and Ascending are actually reversed
-// because the user would expect the list to start from the top of his screen
-import { useNavigation } from "@react-navigation/native";
-import { useContext } from "react";
-import { useState } from "react";
 export function DescendingTitle(book1, book2) {
   if (book1.title.toLowerCase() > book2.title.toLowerCase()) {
     return -1;
@@ -139,7 +134,7 @@ export function dueDateToDays(dueDate) {
   days = days + 1;
   if (days == 0) return "book is due today!";
   if (days < 3 && days > 0)
-    return days == 1 ? days + " day left!" : -1 * days + " days left!";
+    return days == 1 ? days + " day left!" : Math.abs(days) + " days left!";
   else if (days >= 3) return days + " days left.";
   else
     return (
@@ -237,3 +232,43 @@ export function numDaysFromDueDate(dueDate) {
   return days;
 }
 
+// This function gives grace period to any book that is overdue
+export function updatedListOfBorrowedBooks(updatedBorrowed) {
+  //1- We calculate what the date will be in two days from now (grace period)
+  const nowYear = new Date().getFullYear();
+  const nowMonth = new Date().getMonth() + 1;
+  const nowDay = new Date().getDate();
+  const grace = nowDay + 2;
+  const graceDate = `${nowYear}-${nowMonth}-${grace}`;
+  // 2- give grace period to over due books from the list of borrowed books
+  const keys = Object.keys(updatedBorrowed);
+  keys.forEach((key, index) => {
+    if (isOverDue(updatedBorrowed[key])) {
+      updatedBorrowed[key] = graceDate;
+    }
+  });
+  return updatedBorrowed;
+}
+export function shouldSendReminder(borrowedBooks) {
+  if (!!!borrowedBooks) return false;
+  const keys = Object.keys(borrowedBooks);
+  var bool = false;
+  keys.forEach((key) => {
+    if (isClose(borrowedBooks[key])) {
+      bool = true;
+    }
+  });
+  return bool;
+}
+
+export function isClose(dueDate) {
+  if (dueDate == "pending") return false; 
+  var days = new Date(dueDate).getTime() - new Date().getTime();
+  days = Math.floor(days / (1000 * 60 * 60 * 24));
+  days = days + 1;
+  if (days <=2) {
+    return true;
+  } else {
+    return false;
+  }
+}

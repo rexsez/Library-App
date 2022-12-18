@@ -72,13 +72,12 @@ async function hasEnoughCredit(cardNumber, fineAmount) {
     .catch((error) => {
       console.log(error);
     });
-  if (credit > fineAmount) {
+  if (credit >= fineAmount) {
     pay(cardNumber, fineAmount);
     return true;
   } else {
     return false;
   }
-  console.log("credit in the db: " + credit);
 }
 function isFilledYear(year) {
   if (year == "YY") {
@@ -134,7 +133,10 @@ export default async function validateCard(
       feilds: "cardNumber",
       errorComponent: newRrrorComponent,
     });
-  } else if (cardInfo.cardNumber.length != 19) {
+  } else if (
+    cardInfo.cardNumber.length < 16 ||
+    cardInfo.cardNumber.length > 19
+  ) {
     let newRrrorComponent = (
       <ErrorComponent>Please enter your full card number!</ErrorComponent>
     );

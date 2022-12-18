@@ -1,12 +1,5 @@
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  FlatList,
-  Platform,
-  Text,
-} from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import { View, StyleSheet, TextInput, FlatList, Text } from "react-native";
+import React, { useContext, useState } from "react";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -17,6 +10,7 @@ import FilterModal from "./FilterModal";
 import { fetchBooks, fetchCategories } from "../Utility/http";
 import { AppContext } from "../../store/AppContext";
 import Colors from "../Utility/Colors";
+import { FlashList } from "@shopify/flash-list";
 
 function ListOfBooks() {
   const appCtx = useContext(AppContext);
@@ -30,9 +24,10 @@ function ListOfBooks() {
   const [isModalVisible, setModalVisible] = useState(false);
   const [chosenFilter, setChosenFilter] = useState(1);
   const [chosenOrder, setChosenOrder] = useState(1);
-
-  const [render, setRender] = useState(false);
-
+  // Hisham start
+  const [chosenMinimumRating, setMinimumRating] = useState(0);
+  const [chosenCategory, setNewCategory] = useState();
+  // Hisham close
   useFocusEffect(
     React.useCallback(() => {
       // Do something when the screen is focused.
@@ -62,17 +57,33 @@ function ListOfBooks() {
   // This is the function used to search for a book
   // with a title or an author by default
   function SearchFilter(enteredSearch) {
+    // Hisahm start
+    let filteredBooks;
+    // Hisham close
     // if something is entered (not empty), it will enter the condition
     if (enteredSearch) {
       // converting it to lower case to avoid case sensitive issues
       const temp = enteredSearch.toLowerCase();
       // Storing the list of books that matches the enteredSearch
       // in the list, which will be used as a source of data to display books
-      const filteredBooks = appCtx.books.filter(
-        (book) =>
-          book.title.toLowerCase().includes(temp) || // filtering based on the title
-          book.author.toLowerCase().includes(temp) // filtering based on the author
-      );
+      // Hisham start (I removed one line)
+      if (!chosenCategory) {
+        filteredBooks = appCtx.books.filter(
+          (book) =>
+            (book.title.toLowerCase().includes(temp) || // filtering based on the title
+              book.author.toLowerCase().includes(temp)) && // filtering based on the author
+            (book.rating >= chosenMinimumRating || book.rating == -1)
+        );
+      } else {
+        filteredBooks = appCtx.books.filter(
+          (book) =>
+            (book.title.toLowerCase().includes(temp) || // filtering based on the title
+              book.author.toLowerCase().includes(temp)) && // filtering based on the author
+            (book.rating >= chosenMinimumRating || book.rating == -1) &&
+            book.genre.toLowerCase() == chosenCategory
+        );
+      }
+      // Hisham close
       // To update the value that is displayed in the search bar
       setSearch(enteredSearch);
       // Setting the new list of books to the filtered one
@@ -80,8 +91,21 @@ function ListOfBooks() {
     } else {
       // To update the value that is displayed in the search bar
       setSearch(enteredSearch);
+      // Hisham start
+      if (chosenCategory) {
+        filteredBooks = appCtx.books.filter(
+          (book) =>
+            (book.rating >= chosenMinimumRating || book.rating == -1) &&
+            book.genre.toLowerCase() == chosenCategory
+        );
+      } else {
+        filteredBooks = appCtx.books.filter(
+          (book) => book.rating >= chosenMinimumRating || book.rating == -1
+        );
+      }
       // If nothing is entered make the list of books as the default one which is BOOKS
-      setBooks(appCtx.books);
+      setBooks(filteredBooks);
+      // Hisham close
     }
   }
 
@@ -92,8 +116,8 @@ function ListOfBooks() {
   let loadedButton = null;
   if (currentSearch) {
     loadedButton = (
-      <>
-        <MyButton style={styles.icon}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <MyButton style={[styles.searchContainer, { marginHorizontal: 4 }]}>
           <Ionicons
             name="options-sharp"
             size={iconSize}
@@ -102,7 +126,7 @@ function ListOfBooks() {
             onPress={toggleModal}
           />
         </MyButton>
-      </>
+      </View>
     );
   } else {
     loadedButton = (
@@ -144,7 +168,7 @@ function ListOfBooks() {
           style={styles.icon}
         />
         <TextInput
-          placeholder="Search using Title or Author..."
+          placeholder=" Title or Author"
           placeholderTextColor="white"
           style={styles.search}
           //   This is to keep the displayed text updated
@@ -246,12 +270,15 @@ function ListOfBooks() {
         setBooks={setBooks}
         currentBooks={currentBooks}
         toggleModal={toggleModal}
-        SearchFilter={SearchFilter}
         currentSearch={currentSearch}
         chosenFilter={chosenFilter}
         setChosenFilter={setChosenFilter}
         chosenOrder={chosenOrder}
         setChosenOrder={setChosenOrder}
+        // Hisham start
+        setMinimumRating={setMinimumRating}
+        setNewCategory={setNewCategory}
+        // Hisham close
       />
       <FlatList
         data={currentBooks}

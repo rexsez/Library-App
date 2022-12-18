@@ -5,7 +5,7 @@ import { Avatar, Drawer, Switch, TouchableRipple } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import { updateFavList } from "../Utility/http";
+import { getIsSent,putIsSent } from "../Utility/http";
 import { StudentContext } from "../../store/StudentContext";
 import Student from "../../models/Student";
 import { AppContext } from "../../store/AppContext";
@@ -81,7 +81,7 @@ export function DrawerContent(props) {
                   size={size}
                 />
               )}
-              label={studentContext.student.Email?"Profile":"Account"}
+              label={studentContext.student.Email ? "Profile" : "Account"}
               onPress={() => {
                 appCtx.changeScreenHandler("Profile");
                 props.navigation.toggleDrawer();
@@ -200,19 +200,17 @@ export function DrawerContent(props) {
                 />
               )}
               label="Sign out"
-              onPress={() => {
-                // First, we upload the changes made to student context to the database
-                updateFavList(
-                  studentContext.ID,
-                  studentContext.student,
-                  studentContext.Token
-                );
+              onPress={async() => {
                 const initialNewStudent1 = new Student("", "", "", "", [], []);
                 studentContext.registerStudent(initialNewStudent1);
                 if (appCtx.currentScreen === "Profile") {
-                  appCtx.changeScreenHandler("Home");
+                  appCtx.changeScreenHandler("Login");
                   props.navigation.toggleDrawer();
-                  props.navigation.navigate("DrawerHome");
+                  props.navigation.navigate("DrawerLogin");
+                }
+                else
+                {
+                  props.navigation.toggleDrawer();
                 }
               }}
               style={{

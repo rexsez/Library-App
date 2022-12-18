@@ -1,4 +1,4 @@
-import { ImageBackground, View, StyleSheet, SafeAreaView } from "react-native";
+import { View, StyleSheet, SafeAreaView } from "react-native";
 import { Text } from "react-native-paper";
 import PaymentForm from "../components/RegisterAndLogin/PaymentForm";
 import { useRoute } from "@react-navigation/native";
@@ -20,26 +20,23 @@ function PaymentScreen() {
 const styles = StyleSheet.create({
   Container: {
     flex: 0.96,
-    margin: 3,
-    marginTop: 30,
-    marginBottom: -20,
+    marginVertical: 3,
   },
   ImageBackground: {
     flex: 1,
-
   },
   titleContainer: {
     backgroundColor: Colors.primary500,
-    height: 50,
+    height: 90,
     justifyContent: "center",
   },
   titleText: {
+    padding: 10,
     color: "white",
     fontWeight: "900",
     textAlign: "center",
     letterSpacing: 1.5,
     fontSize: 24,
   },
-
 });
 export default PaymentScreen;

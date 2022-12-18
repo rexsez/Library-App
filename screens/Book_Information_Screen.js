@@ -2,10 +2,13 @@ import { StyleSheet, ScrollView, Platform, View } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useLayoutEffect, useEffect, useContext, useState } from "react";
 import { HeaderBackButton } from "react-navigation-stack";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { StackActions } from "@react-navigation/native";
-import Colors from "../components/Utility/Colors";
+// Hisham start
+import { Text } from "react-native-paper";
+// Hisham close
 
+import Colors from "../components/Utility/Colors";
 import BookDetails from "../components/BookInfoComponents/Book_Details";
 import BookSummary from "../components/BookInfoComponents/Book_Summary";
 import ItemsBar from "../components/ItemsBar";
@@ -14,37 +17,40 @@ import { AppContext } from "../store/AppContext";
 import { StudentContext } from "../store/StudentContext";
 import BookRatingModal from "../components/BookInfoComponents/Book_Rating";
 import { LinearGradient } from "expo-linear-gradient";
-import { postBorrowRequest, updateFavList } from "../components/Utility/http";
 import Student from "../models/Student";
 import { isFined } from "../components/Utility/UtilityFunctions";
 import PaymentNotification from "../components/Utility/PaymentNotification";
-import { Text } from "react-native-paper";
+import {
+  postBorrowRequest,
+  addToFavList,
+  removeFromFavList,
+} from "../components/Utility/http";
 
 function BookInformationScreen({ navigation }) {
   // to get the list of books
   const appCtx = useContext(AppContext);
   // to get student info and use it to rate a book
   const studentCtx = useContext(StudentContext);
+  // Hisham start
+  const route = useRoute();
+  const isScanned = route.params.isScanned;
+  // Hisham close
 
   //using the isbn to find the selected book object
   useEffect(() => {
     navigation.setOptions({
       headerLeft:
-        Platform.OS === "android"
-          ? () => (
-            <HeaderBackButton
-              onPress={() => {
-                // First, we upload the changes made to student context to the database
-                updateFavList(
-                  studentCtx.ID,
-                  studentCtx.student,
-                  studentCtx.Token
-                );
-                // This will remove The previous screen (Barcode scanner screen)
-                navigation.dispatch(StackActions.popToTop());
-              }}
-            />
-          )
+        // Hisham start
+        Platform.OS === "android" && isScanned
+          ? // Hisham close
+            () => (
+              <HeaderBackButton
+                onPress={() => {
+                  // This will remove The previous screen (Barcode scanner screen)
+                  navigation.dispatch(StackActions.popToTop());
+                }}
+              />
+            )
           : undefined,
     }); // if platform is IOS don't do anything
   }, []);
@@ -58,16 +64,24 @@ function BookInformationScreen({ navigation }) {
   */
   const Route = useRoute();
   const isbn = Route.params.bookId;
-  const isScanned = Route.params.isScanned;
   const [visible, changeVisibility] = useState(false);
 
-  // console.log(JSON.stringify(appCtx.books));
   const selectedBook = appCtx.books.find((book) => book.isbn === isbn);
-  let defaultRating = 0;
+  // Hisham start
+  let defaultRating = -1;
+  let remove = false;
+  // Hisham close
   if (selectedBook.ratedBy.some((e) => e.key == studentCtx.ID)) {
     let obj = selectedBook.ratedBy.find((o) => o.key === studentCtx.ID);
     defaultRating = obj.rating;
   }
+  // Hisahm start
+  if (defaultRating == -1) {
+    defaultRating = 0;
+  } else {
+    remove = true;
+  }
+  // Hisham close
 
   async function borrowBook() {
     if (isFined(studentCtx)) {
@@ -78,8 +92,10 @@ function BookInformationScreen({ navigation }) {
       const userEmail = studentCtx.student.Email;
       const userKey = studentCtx.ID;
       await postBorrowRequest(isbn, title, userEmail, userKey);
-      appCtx.changeScreenHandler("Home");
-      navigation.navigate("TabSearch", { request: true });
+      // Hisham start
+      appCtx.changeScreenHandler("Search");
+      navigation.navigate("TabSearch");
+      // Hisham close
     }
   }
   const [isPress, setIsPress] = useState(false);
@@ -91,24 +107,6 @@ function BookInformationScreen({ navigation }) {
   }, [Navigation, selectedBook.title]);
 
   const bookImage = selectedBook.imageUrl; //dummy image to test
-  // console.log(bookImage);
-  /*
-  // This commented section might be used later to implement the favorite books feature
-  // Note: Some variable / function namings might be changed
-  // This assumes we use the Context API for App-wide State management
-
-  const favoriteBookCtx = useContext(FavoritesContext);
-  const bookIsFavorite = favoriteBookCtx.isbnList.includes(isbn);
-
-  //function for adding / removing the book to / from favorites
-  function changeFavoriteStatus() {
-    if (bookIsFavorite) {
-      favoriteBookCtx.removeFavorite(isbn);
-    } else {
-      favoriteBookCtx.addFavorite(isbn);
-    }
-  }
- */
 
   function toggleModal() {
     if (!!studentCtx.student.Email) {
@@ -119,50 +117,46 @@ function BookInformationScreen({ navigation }) {
   //helper variable to style the icons
   const iconStyles = {
     size: 32,
-    color: "black",
+    color: Colors.primary500,
   };
 
   // Supporting function needed to change list of fav from student context
   // This method receives by defualt the values (in this case: ISBN) in the array
   const student = studentCtx.student;
-  const isInFavList = (currentItemISBN) => {
+  const isInFavList = (currentItemIsbn) => {
     // checks if the current element of the array has the same isbn
 
-    if (currentItemISBN == isbn) {
-      // if the item has the isbn, then it return false (This item is needs to be filtered out)
-      return false;
-    }
-    // Else if the item doesnt match, it returns true (Dont filter the item)
-    return true;
+    // if the item has the isbn, then it return false (This item is needs to be filtered out)
+    return currentItemIsbn != isbn;
   };
   // In the begging, we check if the book is faviroute already or not
   // This will be used as the intial value of isvaforite state.
   let isFavoriteIntial = !!student?.favBooks && student.favBooks.includes(isbn);
-  // console.log(isFavoriteIntial);
   //This state variable keeps track of wether a book has been added to faviroute or not
   const [bookIsFavorite, setBookIsFavorite] = useState(isFavoriteIntial);
   // This will be used everywhere for fav list changes
   let currentStudentContext = studentCtx.student;
-  //Function to execute if the users clicks on faviroute
+  //Function to execute if the users clicks on favorite
   const onPressFav = () => {
-    // First we change book from faviroute to not faviroute or vise-versa
+    // First we change book from favorite to not favorite or vise-versa
     if (bookIsFavorite) {
       // If the book was in fav list:
       // 1- We change the state of the current page, from fav to not fav, so button shows empty star
       setBookIsFavorite(false);
       // 2- then we delete it from fav list in the app wide context
+      removeFromFavList(studentCtx.ID, isbn);
+
+      const newFavBooks = studentCtx.student.favBooks.filter(isInFavList);
       currentStudentContext = {
         ...studentCtx.student,
-        favBooks: studentCtx.student.favBooks.filter(isInFavList),
+        favBooks: newFavBooks,
       };
-      studentCtx.registerStudent(currentStudentContext);
-      // console.log(studentCtx.student);
     } else {
       // If the book was not in fav list:
       // 1- We change the state of the current page, from not fav to fav, so button shows filled star
       setBookIsFavorite(true);
       // // 2- then we add it to fav list in the app wide context
-      currentStudentContext = studentCtx.student;
+      addToFavList(studentCtx.ID, isbn);
       // If there is no fav in the context
       if (!!!currentStudentContext?.favBooks) {
         currentStudentContext = new Student(
@@ -176,41 +170,48 @@ function BookInformationScreen({ navigation }) {
       } else {
         currentStudentContext.favBooks.push(isbn);
       }
-
-      studentCtx.registerStudent(currentStudentContext);
-      // console.log(studentCtx.student);
     }
+    studentCtx.registerStudent(currentStudentContext);
   };
 
   //List of buttons to be added to the IconButtonBar
   const iconBarButtons = [
-    //favorite button
-    <MyButton style={styles.iconButton} onPress={onPressFav}>
-      {
-        <FontAwesome
-          name={bookIsFavorite ? "star" : "star-o"}
-          {...iconStyles}
-        />
-      }
-    </MyButton>,
-
     //rating
-    <MyButton
-      style={styles.iconButton}
-      textStyle={styles.rating}
-      onPress={toggleModal}
-    >
-      {selectedBook.rating != -1 ? selectedBook.rating + " / 5" : "Unrated"}
-    </MyButton>,
+    <View style={styles.barItemContainer}>
+      <Text style={styles.itemsBarLabels}>Rating</Text>
+      <MyButton
+        style={styles.iconButton}
+        textStyle={styles.rating}
+        onPress={toggleModal}
+      >
+        {selectedBook.rating != -1 ? selectedBook.rating + " / 5" : "Unrated"}
+      </MyButton>
+    </View>,
   ];
   if (!!studentCtx.student.Email) {
     //add the borrow option if the book is scanned
     iconBarButtons.push(
-      <>
+      <View style={styles.barItemContainer}>
+        <Text style={styles.itemsBarLabels}>Borrow</Text>
         <MyButton style={styles.iconButton} onPress={borrowBook}>
-          {<FontAwesome name="hand-grab-o" {...iconStyles} />}
+          {<Ionicons name="book" {...iconStyles} />}
         </MyButton>
-      </>
+      </View>
+    );
+
+    //favorite button
+    iconBarButtons.unshift(
+      <View style={styles.barItemContainer}>
+        <Text style={styles.itemsBarLabels}>Favorite</Text>
+        <MyButton style={styles.iconButton} onPress={onPressFav}>
+          {
+            <FontAwesome
+              name={bookIsFavorite ? "star" : "star-o"}
+              {...iconStyles}
+            />
+          }
+        </MyButton>
+      </View>
     );
   }
   let component = <View></View>;
@@ -247,6 +248,9 @@ function BookInformationScreen({ navigation }) {
               changeVisibility={changeVisibility}
               studentID={studentCtx.ID}
               bookID={selectedBook.id}
+              // Hisham start
+              remove={remove}
+              // Hisham close
             />
 
             <BookDetails
@@ -283,10 +287,10 @@ const styles = StyleSheet.create({
     backgroundColor: "whitesmoke",
     marginTop: 100,
     borderRadius: 15,
+    marginHorizontal: 15,
   },
   scrollContainer: {
     margin: 16,
-
   },
   itemsBar: {
     marginTop: 8,
@@ -294,22 +298,19 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     // borderRadius: 4,
     alignItems: "center",
-
   },
   iconButton: {
     // backgroundColor: "transparent",
   },
   rating: {
     fontSize: 18,
-    color: "black",
+    color: Colors.primary500,
   },
   ImageBackground: {
     flex: 1,
   },
   linearGradient: {
     flex: 1,
-    paddingLeft: 15,
-    paddingRight: 15,
     borderRadius: 5,
   },
 
@@ -325,5 +326,19 @@ const styles = StyleSheet.create({
     textAlign: "center",
     letterSpacing: 1.5,
     fontSize: 24,
+  },
+  borrowText: {
+    color: "black",
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+  barItemContainer: {
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  itemsBarLabels: {
+    flex: 1,
+    fontSize: 12,
+    fontWeight: "bold",
   },
 });

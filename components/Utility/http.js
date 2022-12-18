@@ -12,44 +12,56 @@ import {
 import { AppContext } from "../../store/AppContext";
 import { useContext } from "react";
 import { sendMail } from "../../Server/mailUtility";
+import { updatedListOfBorrowedBooks } from "./UtilityFunctions";
 
 const database =
   "https://psu-library-app-default-rtdb.europe-west1.firebasedatabase.app/";
 // ----------------------------------------- Edit profile stuff -------------------------------------------
 
 export async function updateProfile(ID, student) {
+  const verification = await getVerification(ID);
+  const isSent = await getIsSent(ID);
+  student.borrowedBooks = await getBorrowedBooks(ID);
   axios.put(database + `students/${ID}.json`, student);
+  putVerification(ID, verification);
+  if (!!isSent) {
+    putIsSent(ID, isSent);
+  }
 }
+// Hisham start
 function assignBadges(books) {
-  var numberOfBadges = Math.ceil(books.length / 20);
-  var count = 0;
-  if (numberOfBadges == 0) numberOfBadges = numberOfBadges + 1;
   books.sort(DescendingRating);
-  for (i = 0; i < books.length && count < numberOfBadges; i++) {
-    if (books[i].rating < 4.5) break;
-    books[i].badge.push(["fire", "red", 0, "yellow", "grey"]);
-    count = count + 1;
+
+  for (let i = 0; i < books.length; i++) {
+    if (books[i].rating >= 4.75)
+      books[i].badge.push(["fire", "red", 0, "yellow", "grey"]);
+    else break;
   }
-  count = 0;
   books.sort(DescendingTimesBorrowed);
-  for (i = 0; i < numberOfBadges && count < numberOfBadges; i++) {
-    if (books[i].timesBorrowed < 3) break;
-    books[i].badge.push(["podium-gold", "purple", 0, "lightblue", "grey"]);
-    count = count + 1;
+  var timesBorrowedMax = 5;
+  if (books.length >= 5) {
+    if (books[4].timesBorrowed > 5) timesBorrowedMax = books[4].timesBorrowed;
+  } else {
+    if (books[books.length - 1].timesBorrowed > 5)
+      timesBorrowedMax = books[books.length - 1].timesBorrowed;
   }
-  count = 0;
+  for (let i = 0; i < books.length; i++) {
+    if (books[i].timesBorrowed >= timesBorrowedMax)
+      books[i].badge.push(["podium-gold", "purple", 0, "lightblue", "grey"]);
+    else break;
+  }
   books.sort(DescendingDateRegistered);
-  for (i = 0; i < numberOfBadges && count < numberOfBadges; i++) {
-    const date1 = new Date();
-    const date2 = new Date(books[i].dateRegistered);
-    const diffTime = Math.abs(date1 - date2);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    if (diffDays > 7) break;
-    books[i].badge.push(["new-box", "lightgreen", 3, "#1c1c1c", "lightgrey"]);
-    count = count + 1;
+  for (let i = 0; i < books.length; i++) {
+    let date1 = new Date();
+    let date2 = new Date(books[i].dateRegistered);
+    let diffTime = Math.abs(date1 - date2);
+    let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDays <= 7)
+      books[i].badge.push(["new-box", "lightgreen", 3, "#1c1c1c", "lightgrey"]);
   }
   return books;
 }
+// Hisham end
 // ------------------------------------------Books Stuff----------------------------------------------------
 // getting books from the database
 export async function fetchBooks() {
@@ -102,12 +114,16 @@ export async function fetchBooks() {
     // changed_
     if (bookData.image !== "") {
       img = await getImage(bookData.image);
+      img = img.trim();
     } else {
       img =
         "https://firebasestorage.googleapis.com/v0/b/psu-library-app.appspot.com/o/images%2Fno_book.png?alt=media&token=4ddb2db7-9924-4f52-9041-11e0d6cf5c63";
     }
 
     let badge = [];
+    // Hisham start
+    let dateRegistered = bookData.dateRegistered;
+    // Hisham end
 
     databaseBooks.push(
       new Book(
@@ -123,7 +139,10 @@ export async function fetchBooks() {
         false,
         badge,
         ratedBy,
-        timesBorrowed
+        timesBorrowed,
+        // Hisham start
+        dateRegistered
+        // Hisham end
       )
     );
   }
@@ -176,7 +195,16 @@ export async function postRating(studentID, bookID, rating) {
   res[studentID] = rating;
   axios.put(link, res);
 }
+// Hisahm start
+export async function deleteRating(studentID, bookID) {
+  const link = database + "books/" + bookID + "/ratings.json";
+  const result = await axios.get(link);
+  let res = result.data;
+  delete res[studentID];
+  axios.put(link, res);
+}
 
+// Hisham close
 // ------------------------------------------get books----------------------------------------------------
 export async function getBooks() {
   const appCtx = useContext(AppContext);
@@ -190,19 +218,26 @@ export async function getBooks() {
 // ------------------------------------------Book Request----------------------------------------------------
 //Send book request info to database -> so admin can view it from the admin panel
 export async function requestBook(requestData) {
+  //getting the isbn of the requested book
+  const isbn = requestData.isbn;
+  
+  // check if there's a book with the same isbn is requested
+  const response = await axios.get(database + "book_requests.json");
+
+  if(!!response?.data){
+    for (const key in response.data) {
+      let currentBook = response.data[key];
+      if (currentBook.isbn == isbn) {
+        alert("This book have already been requested");
+        return;
+      }
+    }
+  }
+  
+  // //book isn't requested -> add it to requested_books table
+  alert("Your request has been submitted");
   axios.post(database + "book_requests.json", requestData);
 }
-//uploading the requested book's image
-// export async function uploadImage(imgUri) {
-//   // await "psu-library-app.appspot.com".ref().child(filename).put(blob);
-//   // const storage = "psu-library-app.appspot.com/requests_images";
-//   const storage = getStorage();
-//   const ref = ref(storage, 'image.jpg');
-
-//   const img = await fetch(imgUri);
-//   const bytes = await img.blob();
-//   await uploadBytes(ref, bytes);
-// }
 // ------------------------------------------Announcement----------------------------------------------------
 export async function fetchAnnouncements() {
   const checkAnnouncements = await axios.get(database);
@@ -232,6 +267,7 @@ export async function fetchAnnouncements() {
 export async function registerStudent(studentInfo) {
   const token = generateRandomNumber();
   studentInfo["verification"] = token;
+  console.log("HELLO WORLD!");
   sendMail(
     studentInfo["Email"],
     "Verify your account",
@@ -284,13 +320,25 @@ export async function getStudentID(email) {
 }
 
 export async function postBorrowRequest(isbn, title, userEmail, userKey) {
-  const data = {
+  // Hisham start
+  const borrowData = {
     isbn: isbn,
     title: title,
     userEmail: userEmail,
     userKey: userKey,
   };
-  await axios.post(database + "borrow_requests.json", data);
+  const response = await axios.get(database + "borrow_requests.json");
+  if(!!response?.data){
+    for (const key in response.data) {
+      let currentBorrow = response.data[key];
+      if (currentBorrow.isbn == isbn && currentBorrow.userEmail == userEmail) {
+        alert("A request for this book have been submitted already");
+        return;
+      }
+    }
+  }
+  await axios.post(database + "borrow_requests.json", borrowData);
+  // Hisham close
   await postBorrowRequestToStudent(isbn, userKey);
 }
 
@@ -305,24 +353,71 @@ export async function postBorrowRequestToStudent(isbn, userKey) {
       res.Email,
       res.psw,
       { [isbn]: "pending" },
-      res.favBooks
+      res.favBooks,
     );
     temp["verification"] = "done";
+    if (!!res?.isSent) {
+      temp["isSent"] = res.isSent;
+    }
     // res[isbn] = "pending";
     axios.put(link, temp);
+    // Hisham added
+    alert("Your borrow request have been submitted ");
+    // Hisham close
   } else {
     link = database + "students/" + userKey + "/borrowedBooks.json";
     result = await axios.get(link);
     res = result.data;
-    res[isbn] = "pending";
-    axios.put(link, res);
+    // Hisham start
+    if (res[isbn] != null) {
+      alert("A request for this book have been submitted already");
+    } else {
+      // Hisham close
+
+      res[isbn] = "pending";
+      axios.put(link, res);
+      // Hisham start
+      alert("Your borrow request have been submitted ");
+    }
+    // Hisham close
   }
 }
 // -------------------------------------adding book to fav list---------------------------------------------
-export async function updateFavList(ID, student, Token) {
-  student["verification"] = Token;
+export async function addToFavList(studentID, isbn) {
+  //fetching the user's object
+  let link = database + "students/" + studentID + ".json";
+  let result = await axios.get(link);
+  let res = result.data;
 
-  axios.put(database + `students/${ID}.json`, student);
+  //if the user has a list of favorites -> add the isbn to it,
+  //otherwise create a new list with this isbn and add it to the student object
+  if (!!res?.favBooks) {
+    //favBooks exists
+    res.favBooks = [...res.favBooks, isbn];
+  } else {
+    //favBooks does not exist
+    res["favBooks"] = [isbn];
+  }
+
+  //upload to database
+  axios.put(link, res);
+  alert("Book is added to favorites");
+}
+
+export async function removeFromFavList(studentID, isbn) {
+  //fetching the user's current favorites
+  let link = database + "students/" + studentID + "/favBooks.json";
+  let result = await axios.get(link);
+  let res = result.data;
+
+  //removing the isbn of the book from the list
+  res = res.filter((currentIsbn) => {
+    return currentIsbn != isbn;
+  });
+
+  //uploading the new list
+  axios.put(link, res);
+  alert("Book is removed from favorites");
 }
 
 // added
@@ -358,7 +453,30 @@ export async function pay(cardNumber, fineAmount) {
 }
 export async function giveGracePeriod(studentID) {
   //1- We get current student data, so we update info currectly
-  //2- We calculate what the date will be in two days from now (grace period)
+  const response = await axios.get(database + `students/${studentID}.json`);
+  let updatedData = response.data;
+  // 2- This function gives grace period to any book that is overdue
+  let updatedBorrowed = updatedListOfBorrowedBooks(updatedData.borrowedBooks);
   // 3- we put the new date (grace period) into the object we got containing student info from db
-  //
+  updatedData = { ...updatedData, borrowedBooks: updatedBorrowed };
+  await axios.put(database + `students/${studentID}.json`, updatedData);
+}
+export async function getIsSent(studentID) {
+  const link = database + "students/" + studentID + ".json";
+  const result = await axios.get(link);
+  let res = result.data?.isSent;
+  return res;
+}
+export async function putIsSent(studentID, isSent) {
+  const link = database + "students/" + studentID + ".json";
+  var result = await axios.get(link);
+  var res = result.data;
+  res["isSent"] = isSent;
+  axios.put(link, res);
+}
+export async function getBorrowedBooks(studentID) {
+  const link = database + "students/" + studentID + ".json";
+  const result = await axios.get(link);
+  let res = result.data?.borrowedBooks;
+  return res;
 }

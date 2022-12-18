@@ -1,7 +1,14 @@
-import { View, StyleSheet, ImageBackground, Text, Pressable } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ImageBackground,
+  Text,
+  Pressable,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useContext, useEffect, useState } from "react";
+
 import { StudentContext } from "../store/StudentContext";
 import Card from "../components/Utility/Cards/Card";
 import Announcements from "./Announcements";
@@ -16,7 +23,17 @@ function HomeScreen() {
   const appCtx = useContext(AppContext);
   const studentCtx = useContext(StudentContext);
   function GoTo(stackName) {
-    return navigation.navigate({ name: stackName });
+    if (stackName == "DrawerProfile") {
+      appCtx.changeScreenHandler("Profile");
+    }
+    if (stackName == "TabSearch") {
+      appCtx.changeScreenHandler("Search");
+    }
+    if (stackName == "StackAdd") {
+      navigation.navigate(stackName, { bookId: "" });
+    } else {
+      return navigation.navigate({ name: stackName });
+    }
   }
   useEffect(() => {
     async function getBooks() {
@@ -30,6 +47,7 @@ function HomeScreen() {
   const iconBarButtons = [];
   const [isPress, setIsPress] = useState(false);
   let component = <View></View>;
+  let extraCards = <></>;
   if (isPress) {
     component = (
       <PaymentNotification
@@ -38,6 +56,23 @@ function HomeScreen() {
     );
   }
   if (!!studentCtx.student.Email) {
+    extraCards = (
+      <View style={[styles.rowContainer, { marginTop: -20 }]}>
+        <Card
+          text="Scan Book"
+          onPressed={GoTo.bind(this, "StackBarcode")}
+          path="barcode-outline"
+          color={Colors.primary500}
+          margining={22}
+        ></Card>
+        <Card
+          text="Request Book"
+          onPressed={GoTo.bind(this, "StackAdd")}
+          icon="book-plus-outline"
+          color={Colors.primary500}
+        ></Card>
+      </View>
+    );
     //add fine button if their is a fine
     if (isFined(studentCtx)) {
       iconBarButtons.push(
@@ -46,7 +81,7 @@ function HomeScreen() {
             style={({ pressed }) => [
               {
                 backgroundColor: pressed ? "darkred" : "darkred",
-                opacity : pressed ? 0.5 : 1,
+                opacity: pressed ? 0.5 : 1,
               },
               styles.fineButton,
             ]}
@@ -57,8 +92,8 @@ function HomeScreen() {
         </>
       );
     }
-
   }
+
   return (
     <View style={styles.container}>
       {/* <LinearGradient
@@ -81,12 +116,12 @@ function HomeScreen() {
             <View style={styles.rowContainer}>
               <Card
                 text="Search Books"
-                onPressed={GoTo.bind(this, "StackSearch")}
+                onPressed={GoTo.bind(this, "TabSearch")}
                 path="search"
                 color={Colors.primary500}
               ></Card>
               <Card
-                text="Profile"
+                text={!!studentCtx.student.Email ? "Profile" : "Account"}
                 onPressed={GoTo.bind(this, "DrawerProfile")}
                 path="ios-person"
                 color={Colors.primary500}
@@ -106,8 +141,7 @@ function HomeScreen() {
                 color={Colors.primary500}
               ></Card>
             </View>
-
-
+            {extraCards}
           </View>
         </ScrollView>
       </ImageBackground>
@@ -170,7 +204,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     marginHorizontal: 60,
     borderWidth: 2,
-    borderColor: '#eddfb4',
+    borderColor: "#eddfb4",
   },
   textStyleFine: {
     color: "white",

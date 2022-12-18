@@ -3,6 +3,7 @@ import { StudentContext } from "../../store/StudentContext";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { Alert } from "react-native";
+import { toFixed } from "./UtilityFunctions";
 function PaymentNotification({ onPressCancel }) {
   const navigation = useNavigation();
   const studentContext = useContext(StudentContext);
@@ -25,11 +26,12 @@ function PaymentNotification({ onPressCancel }) {
       if (isOverDue(listOfBorrowedBooks[key])) {
         numOverDue = numOverDue + 1;
         let temp = numDaysFromDueDate(listOfBorrowedBooks[key]);
-        totalFine = Math.round((totalFine + temp * 5) * 1.15);
+        totalFine = Math.round(totalFine + temp * 5);
         numDays = numDays + Math.abs(temp);
       }
     });
-
+    totalFine *= 1.15;
+    totalFine = toFixed(totalFine, 2);
     if (totalFine != 0) {
       setSeen(true);
       paymentNotification(numOverDue, Math.abs(totalFine), numDays);
@@ -61,8 +63,8 @@ function PaymentNotification({ onPressCancel }) {
     }
     const customerMassage =
       `\nYou have missed the due date for returning ${numOverDue} book${dayText}.` +
-      `You are supposed to return the book${dayText} ${numDays} day${dayText} ago!\n\n` +
-      `Now you need to pay SR 5.00/day, your total is SR ${totalFine}.00 including VAT`;
+      `The total number of late days for all book${dayText} is ${numDays} day${dayText}!\n\n` +
+      `Now you need to pay SR 5.00/day, your total is SR ${totalFine} including VAT`;
 
     const alertMassage = Alert.alert(
       "Borrowing Policy Violated",
@@ -74,7 +76,7 @@ function PaymentNotification({ onPressCancel }) {
         {
           text: "Pay Online",
           onPress: () => {
-            navigation.navigate("PaymentScreen",{onCancel: onPressCancel});
+            navigation.navigate("PaymentScreen", { onCancel: onPressCancel });
           },
         },
       ]

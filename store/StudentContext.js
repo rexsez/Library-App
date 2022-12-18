@@ -49,8 +49,7 @@ function StudentReducer(state, action) {
     }
     case "ADD":
       let studentData = action.payload;
-      // console.log(studentData);
-
+      
       const temp = new Student(
         studentData.FName,
         studentData.LName,

@@ -2,17 +2,11 @@
 import { getStudents } from "../http";
 // ---------------------------------------------------
 async function validateLoginStudent(loginStudentInfo, setError) {
-  if (!!!(await isUsedEmail(loginStudentInfo))) {
+  if (!!!(await checkPassword(loginStudentInfo))) {
     setError({
-      errorMassage: "Email doesn't exist!",
+      errorMassage: "Wrong credentials!",
       isValid: false,
       feilds: "Email",
-    });
-  } else if (!!!(await checkPassword(loginStudentInfo))) {
-    setError({
-      errorMassage: "Password is incorrect!",
-      isValid: false,
-      feilds: "psw",
     });
   } else {
     setError({
@@ -29,6 +23,10 @@ async function isUsedEmail(potentialStudent) {
 }
 async function checkPassword(potentialStudent) {
   const studens = await getStudents();
-  return studens.find((student) => student.psw === potentialStudent.psw);
+  return studens.find(
+    (student) =>
+      student.Email === potentialStudent.Email &&
+      student.psw == potentialStudent.psw
+  );
 }
 export default validateLoginStudent;

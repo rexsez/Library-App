@@ -25,13 +25,13 @@ function SearchScreen() {
   //   getBooks();
   // }, []);
 
-  const route = useRoute();
-  if (!!route.params) {
-    // Alert.alert("Your book request is recorded",[{}]);
-    Alert.alert(" Submitted", "Your request has been submitted", [
-      { text: "OK", onPress: () => console.log("OK Pressed") },
-    ]);
-  }
+  // const route = useRoute();
+  // if (!!route.params) {
+  //   // Alert.alert("Your book request is recorded",[{}]);
+  //   Alert.alert(" Submitted", "Your request has been submitted", [
+  //     { text: "OK", onPress: () => console.log("OK Pressed") },
+  //   ]);
+  // }
   return (
     <View style={styles.container}>
       <ListOfBooks></ListOfBooks>

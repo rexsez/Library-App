@@ -1,6 +1,11 @@
 import { useState, useContext } from "react";
 import { View, StyleSheet, KeyboardAvoidingView, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+// This is size-matters library imports, used to resize everything in specific scale.
+// https://www.npmjs.com/package/react-native-size-matters <-- for more information
+import { ScaledSheet } from "react-native-size-matters";
+import { s, vs, ms, mvs } from "react-native-size-matters";
+import { scale, verticalScale, moderateScale } from "react-native-size-matters";
 
 import Student from "../../models/Student";
 import MyButton from "../MyButton";
@@ -10,12 +15,13 @@ import validateNewStudent from "../Utility/InputValidation/ValidateNewStudent";
 import InputeForm from "./InputeForm";
 import PressableButton from "./PressableButton";
 import { StudentContext } from "../../store/StudentContext";
-import { getStudentID, registerStudent } from "../Utility/http";
-
+import { registerStudent } from "../Utility/http";
+import { AppContext } from "../../store/AppContext";
 function RegisterForm() {
   // ----------------- Navigation stuff --------------
 
   const navigation = useNavigation();
+  const appCtx = useContext(AppContext);
   function forceRerender(rerender) {
     rerender();
   }
@@ -28,19 +34,7 @@ function RegisterForm() {
   function onPressTermshandler() {
     navigation.navigate("StackTerms");
   }
-  // ------------------------------------------------------
-  // useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerLeft: ({ size, color }) => (
-  //       <AddIcon
-  //         name="arrow-back-outline"
-  //         size={25}
-  //         color={color}
-  //         onPress={onPressGoBackhandler}
-  //       ></AddIcon>
-  //     ),
-  //   });
-  // }, [navigation]);
+
   const studentContext = useContext(StudentContext);
   const initialError = {
     errorMassage: "Fill the form first please!",
@@ -77,13 +71,17 @@ function RegisterForm() {
       //  to the app wide context
       //  so it can be used every where else
     } else {
-      // putting new student data in context to be used locally
-      studentContext.registerStudent(newStudent);
-      // adding the new student data to the database using post
       await registerStudent(newStudent);
-      const ID = await getStudentID(newStudent.Email);
-      studentContext.setID(ID);
-      navigation.navigate({ name: "DrawerProfile" });
+      setError(initialError);
+
+      const token = newStudent["verification"];
+      // studentContext.setID(ID);
+      appCtx.changeScreenHandler("Profile");
+      studentContext.setToken(token);
+      navigation.navigate("StackVerification", {
+        student: newStudent,
+      });
+      setNewStudent(initialNewStudent);
     }
   }
 
@@ -201,34 +199,33 @@ function RegisterForm() {
             <PressableButton onPress={onPress}>Sign up</PressableButton>
             <MyButton
               Flate="flate"
-              style={{ marginTop: 20}}
+              style={{ marginTop: 20 }}
               onPress={onPressLoginHandler}
-              
             >
               I'm already a member
             </MyButton>
           </View>
         </KeyboardAvoidingView>
       </View>
-
     </>
   );
 }
-const styles = StyleSheet.create({
+
+const styles = ScaledSheet.create({
   InfoContainer: {
-    flex: 0.9,
-    padding: 10,
-    paddingBottom: 0,
-    margin: 20,
-    marginTop: 175,
+    flex: 1,
+    padding: "10@mvs",
+    paddingBottom: "0@mvs",
+    margin: "20@mvs",
+    marginTop: "175@mvs0.3",
     justifyContent: "center",
     borderWidth: 3,
     borderRadius: 15,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   ButtonContainer: {
     alignItems: "center",
-    marginBottom: 10,
+    marginBottom: "10@mvs",
   },
   InputeError: {
     borderBottomColor: "red",
@@ -238,15 +235,12 @@ const styles = StyleSheet.create({
   },
   welcomeMessage: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#144c84',
+    fontWeight: "bold",
+    color: "#144c84",
     opacity: 1,
-
   },
   containerWelcomeMessage: {
-    alignItems: 'center',
-
+    alignItems: "center",
   },
-
 });
 export default RegisterForm;
