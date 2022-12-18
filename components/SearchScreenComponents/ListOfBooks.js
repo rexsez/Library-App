@@ -116,8 +116,8 @@ function ListOfBooks() {
   let loadedButton = null;
   if (currentSearch) {
     loadedButton = (
-      <>
-        <MyButton style={styles.icon}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <MyButton style={[styles.searchContainer, { marginHorizontal: 4 }]}>
           <Ionicons
             name="options-sharp"
             size={iconSize}
@@ -126,7 +126,7 @@ function ListOfBooks() {
             onPress={toggleModal}
           />
         </MyButton>
-      </>
+      </View>
     );
   } else {
     loadedButton = (
@@ -280,13 +280,12 @@ function ListOfBooks() {
         setNewCategory={setNewCategory}
         // Hisham close
       />
-      <FlashList
+      <FlatList
         data={currentBooks}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         style={styles.Container}
-        estimatedItemSize={11}
-      ></FlashList>
+      ></FlatList>
     </View>
   );
 }
