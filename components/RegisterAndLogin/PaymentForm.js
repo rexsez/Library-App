@@ -258,7 +258,7 @@ function PaymentForm({ onCancel }) {
         </View>
         <View style={{ marginBottom: 15 }}>
           <Text style={styles.title}>Payment amount</Text>
-          <Text style={styles.amount}>{fineAmount}.00 SR</Text>
+          <Text style={styles.amount}>{fineAmount} SR</Text>
         </View>
         <View>
           <View style={styles.imagesContainer}>
