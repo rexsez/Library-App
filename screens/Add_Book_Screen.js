@@ -16,7 +16,11 @@ import Colors from "../components/Utility/Colors";
 import { containsOnlyNumbers } from "../components/Utility/UtilityFunctions";
 
 function AddBookScreen({ navigation }) {
+
   const appCtx = useContext(AppContext);
+  const Route = useRoute();
+  const isbn = Route.params.bookId;
+  const fetchedISBN = isbn;
 
   useEffect(() => {
     navigation.setOptions({
@@ -25,17 +29,22 @@ function AddBookScreen({ navigation }) {
           ? () => (
               <HeaderBackButton
                 onPress={() => {
-                  // This will remove The previous screen (Barcode scanner screen)
-                  navigation.dispatch(StackActions.popToTop());
+                  if(fetchedISBN!="")
+                  {
+
+                    // This will remove The previous screen (Barcode scanner screen)
+                    navigation.dispatch(StackActions.popToTop());
+                  }
+                  else {
+                    navigation.navigate("DrawerHome")
+                  }
                 }}
               />
             )
           : undefined,
     }); // if platform is IOS don't do anything
   }, []);
-  const Route = useRoute();
-  const isbn = Route.params.bookId;
-  const fetchedISBN = isbn;
+
 
   const [inputs, setInputs] = useState({
     //default input values
