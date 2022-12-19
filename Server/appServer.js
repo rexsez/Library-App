@@ -259,7 +259,7 @@ function sendEmail({ recipient_email, subject, message, name, token }) {
                                   <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Cabin',sans-serif;" align="left">
       
                                     <div style="color: #e5eaf5; line-height: 140%; text-align: center; word-wrap: break-word;">
-                                      <p style="font-size: 14px; line-height: 140%;"><strong>T H A N K S&nbsp; &nbsp;F O R&nbsp; &nbsp;S I G N I N G&nbsp; &nbsp;U P !</strong></p>
+                                      <p style="font-size: 14px; line-height: 140%;"></p>
                                     </div>
       
                                   </td>
@@ -273,7 +273,7 @@ function sendEmail({ recipient_email, subject, message, name, token }) {
                                   <td style="overflow-wrap:break-word;word-break:break-word;padding:0px 10px 31px;font-family:'Cabin',sans-serif;" align="left">
       
                                     <div style="color: #e5eaf5; line-height: 140%; text-align: center; word-wrap: break-word;">
-                                      <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 28px; line-height: 39.2px;"><strong><span style="line-height: 39.2px; font-size: 28px;">Verify Your E-mail Address </span></strong>
+                                      <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 28px; line-height: 39.2px;"><strong><span style="line-height: 39.2px; font-size: 28px;"></span></strong>
                                         </span>
                                       </p>
                                     </div>
