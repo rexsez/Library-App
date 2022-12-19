@@ -203,7 +203,7 @@ export function DrawerContent(props) {
               onPress={async() => {
                 const initialNewStudent1 = new Student("", "", "", "", [], []);
                 studentContext.registerStudent(initialNewStudent1);
-                if (appCtx.currentScreen === "Profile") {
+                if (appCtx.currentScreen === "Profile" || appCtx.currentScreen === "Edit") {
                   appCtx.changeScreenHandler("Login");
                   props.navigation.toggleDrawer();
                   props.navigation.navigate("DrawerLogin");

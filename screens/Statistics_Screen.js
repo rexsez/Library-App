@@ -151,7 +151,7 @@ function StatisticsScreen() {
   ];
 
   const screenWidth = Dimensions.get("window").width * 1.001;
-  const screenheight = Dimensions.get("window").height * 0.75;
+  const screenheight = Dimensions.get("window").height * 0.76;
   return (
     //root container
     <View style={styles.rootContainer}>

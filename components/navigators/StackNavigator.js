@@ -65,7 +65,7 @@ function StackNavigator() {
         name="StackAdd"
         component={AddBookScreen}
         options={{
-          title: "Request Book",
+          title: "",
         }}
       />
       <Stack.Screen
