@@ -11,7 +11,7 @@ function hasUpperCase(myString) {
 }
 function hasNonLetters(myString) {
   let isValid = true;
-  let pattern = /[^ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxuz]/;
+  let pattern = /[^ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz]/;
   for (let i = 0; i < myString.length; i++) {
     let temp = myString.charAt(i);
 

@@ -6,7 +6,7 @@ import {
   ImageBackground,
   StatusBar,
 } from "react-native";
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { StudentContext } from "../store/StudentContext";
 import {
   useNavigation,
@@ -17,7 +17,7 @@ import BookCard from "../components/SearchScreenComponents/BookCard";
 import BorrowedBookCard from "../components/ProfileScreenComponents/BorrowedBookCard";
 import CardBorrow_Fav from "../components/Utility/Cards/CardBorrow_Fav";
 import { dueDateSort,fixedBorrowedBooksList } from "../components/Utility/UtilityFunctions";
-import { getStudentID, putVerification } from "../components/Utility/http";
+import { getStudentID, putVerification,getBorrowedBooks } from "../components/Utility/http";
 import { AppContext } from "../store/AppContext";
 import { Text } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -26,9 +26,9 @@ import { round } from "react-native-reanimated";
 import PaymentNotification from "../components/Utility/PaymentNotification";
 
 function ProfileScreen({ defaultScreen }) {
+  const [resBorrowedBooks,setResBorrowedBooks] = useState();
   const appCtx = useContext(AppContext);
   const route = useRoute();
-
   function renderItem(book) {
     if (currentList == "fav") {
       const favoriteBook = appCtx.books.find(
@@ -45,10 +45,14 @@ function ProfileScreen({ defaultScreen }) {
       return (
         <BorrowedBookCard
           bookData={borrowedBook}
-          dueDate={studentContext.student.borrowedBooks[book.item]}
+          dueDate={resBorrowedBooks[book.item]}
         ></BorrowedBookCard>
       );
     }
+  }
+  async function getBorrowedBooksOuter() {
+    const books = await getBorrowedBooks(studentContext.ID);
+    setResBorrowedBooks(books);
   }
   function keyExtractor(book) {
     return book.item;
@@ -61,19 +65,19 @@ function ProfileScreen({ defaultScreen }) {
       
       return studentContext.student.favBooks;
     } else {
-      
-      if (!!!studentContext.student.borrowedBooks) {
+      getBorrowedBooksOuter();
+      if (!!!resBorrowedBooks) {
         return [];
       }
       // changed_abdullah
       // setDescription("Your list of borrowed books");
-      if (!!Object.keys(studentContext.student.borrowedBooks)) {
-        var currentKey = Object.keys(studentContext.student.borrowedBooks);
+      if (!!Object.keys(resBorrowedBooks)) {
+        var currentKey = Object.keys(resBorrowedBooks);
         var currentDictionary = [];
         for (var i = 0; i < currentKey.length; i++) {
           currentDictionary.push([
             currentKey[i],
-            studentContext.student.borrowedBooks[currentKey[i]],
+            resBorrowedBooks[currentKey[i]],
           ]);
         }
         currentDictionary.sort(dueDateSort);
@@ -90,82 +94,6 @@ function ProfileScreen({ defaultScreen }) {
   const [currentList, setList] = useState("fav");
   const navigation = useNavigation();
   const studentContext = useContext(StudentContext);
-  // changed_
-  // This variable will make sure to show the Aler massage only once
-  // const [seen, setSeen] = useState(false);
-
-  // if (
-  //   studentContext?.student.Email &&
-  //   !seen &&
-  //   studentContext.student?.borrowedBooks
-  // ) {
-  //   const listOfBorrowedBooks = studentContext?.student.borrowedBooks;
-  //   const keys = Object.keys(listOfBorrowedBooks);
-  //   let numOverDue = 0;
-  //   let totalFine = 0;
-  //   let numDays = 0;
-  //   keys.forEach((key, index) => {
-  //     if (isOverDue(listOfBorrowedBooks[key])) {
-  //       numOverDue = numOverDue + 1;
-  //       let temp = numDaysFromDueDate(listOfBorrowedBooks[key]);
-  //       totalFine = Math.round((totalFine + temp * 5) * 1.15);
-  //       numDays = numDays + Math.abs(temp);
-  //     }
-  //   });
-  //   setSeen(true);
-  //   paymentNotification(numOverDue, Math.abs(totalFine), numDays);
-  // }
-  // // Supporting function for checking if books are overdue
-  // function isOverDue(dueDate) {
-  //   const dueDateObject = new Date(dueDate);
-  //   const now = new Date();
-  //   if (dueDateObject - now <= 0) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-  // // Supporting function for finding number of days from due date
-  // function numDaysFromDueDate(dueDate) {
-  //   if (dueDate == "pending") return 0;
-  //   var days = new Date(dueDate).getTime() - new Date().getTime();
-  //   days = Math.floor(days / (1000 * 60 * 60 * 24));
-  //   days = days + 1;
-  //   return days;
-  // }
-  // // function that shows customer alert messages when books are over due
-  // function paymentNotification(numOverDue, totalFine, numDays) {
-  //   let dayText = "";
-  //   if (numOverDue > 1) {
-  //     dayText = "s";
-  //   }
-  //   const customerMassage =
-  //     `\nYou have missed the due date for returning ${numOverDue} book${dayText}.\n\n` +
-  //     `You are supposed to return the book${dayText} ${numDays} ago!\n\n` +
-  //     `Now you need to pay SR 5.00/day, your total is SR ${totalFine}.00 including VAT`;
-
-  //   const alertMassage = Alert.alert(
-  //     "Borrowing Policy Violated",
-  //     `${customerMassage}`,
-  //     // add_nav
-  //     [
-  //       { text: "Got it!", onPress: () => console.log("Got it!") },
-  //       { text: "Pay Online", onPress: () => console.log("Pay Online") },
-  //     ]
-  //   );
-  //   return alertMassage;
-  // }
-
-  // Checking if you have logged in / registered already
-  // If you have logged in, then u can view ur profile
-  // -----------------------------------------------
-  // useFocusEffect runs every time the screen is focused,
-  // This means that whenever u click on profile it will check
-  // if student has logged in --> he has put his email
-  // --------------------------------------------
-  // "!!" turns an empty string into false,
-  //  "!" the third one is just so if it is empty --> false
-  //  it will become !false --> true
   useFocusEffect(() => {
     if (!!!studentContext.student.Email) {
       alert("You have to sign in first");
@@ -182,7 +110,7 @@ function ProfileScreen({ defaultScreen }) {
       }
       setList("fav");
     } else {
-      if (!!studentContext.student?.borrowedBooks) {
+      if (!!resBorrowedBooks) {
         setDescription("Books You Have Borrowed");
       } else {
         setDescription("You Haven't Borrowed Any Books Yet!");
